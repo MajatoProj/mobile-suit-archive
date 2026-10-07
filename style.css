@@ -1,0 +1,240 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #02040a;
+  color: #d7ecff;
+  overflow: hidden;
+}
+
+body {
+  position: relative;
+}
+
+/* Space background */
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+    radial-gradient(1.5px 1.5px at 100px 80px, #9fd3ff, transparent),
+    radial-gradient(2px 2px at 180px 120px, #ffffff, transparent),
+    radial-gradient(1.5px 1.5px at 260px 200px, #8dc6ff, transparent),
+    radial-gradient(2px 2px at 340px 60px, #ffffff, transparent),
+    radial-gradient(1px 1px at 420px 160px, #b8e0ff, transparent);
+  background-size: 500px 300px;
+  animation: drift 90s linear infinite;
+  opacity: 0.45;
+}
+
+.stars2 {
+  background-size: 700px 400px;
+  animation-duration: 130s;
+  opacity: 0.25;
+}
+
+.stars3 {
+  background-size: 900px 500px;
+  animation-duration: 180s;
+  opacity: 0.18;
+}
+
+@keyframes drift {
+  from { transform: translateY(0) translateX(0); }
+  to   { transform: translateY(-120px) translateX(-60px); }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0, 10, 20, 0.35), rgba(0, 0, 0, 0.75)),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+  pointer-events: none;
+}
+
+.terminal {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.frame {
+  width: min(920px, 100%);
+  border: 1px solid rgba(125, 200, 255, 0.45);
+  background: rgba(3, 10, 20, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(100, 170, 255, 0.15) inset,
+    0 0 30px rgba(40, 120, 255, 0.12);
+  backdrop-filter: blur(2px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(125, 200, 255, 0.2);
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9ad0ff;
+}
+
+.status {
+  color: #8fffc2;
+}
+
+.content {
+  padding: 32px 24px 28px;
+}
+
+.title-block {
+  margin-bottom: 24px;
+}
+
+.small {
+  margin: 0 0 8px;
+  color: #7ea9c9;
+  letter-spacing: 0.18em;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d9f0ff;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  color: #6fb6ff;
+  letter-spacing: 0.18em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.boot-log {
+  min-height: 180px;
+  margin: 26px 0 24px;
+  padding: 16px;
+  border: 1px solid rgba(111, 182, 255, 0.2);
+  background: rgba(0, 0, 0, 0.25);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #bfe2ff;
+}
+
+.log-line {
+  opacity: 0;
+  animation: fadeIn 0.35s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.progress-wrap {
+  margin-top: 10px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  color: #9ccfff;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  border: 1px solid rgba(111, 182, 255, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #54a8ff, #b8f0ff);
+  box-shadow: 0 0 12px rgba(84, 168, 255, 0.5);
+  transition: width 0.3s ease;
+}
+
+.final-message {
+  margin-top: 20px;
+  color: #92ffc6;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.button-row {
+  margin-top: 28px;
+}
+
+.enter-btn {
+  display: inline-block;
+  padding: 14px 24px;
+  border: 1px solid #8ccfff;
+  color: #d9f3ff;
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: 0.25s ease;
+  background: rgba(80, 140, 255, 0.08);
+}
+
+.enter-btn:hover {
+  background: rgba(80, 140, 255, 0.18);
+  box-shadow: 0 0 18px rgba(80, 140, 255, 0.22);
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .content {
+    padding: 22px 16px 22px;
+  }
+
+  .boot-log {
+    min-height: 220px;
+    font-size: 0.88rem;
+  }
+
+  .header {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+}
