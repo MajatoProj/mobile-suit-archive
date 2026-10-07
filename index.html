@@ -1,21 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="robots" content="noindex, nofollow">
-
-    <title>Mobile Suit Archive</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Mobile Suit Archive</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <div class="stars"></div>
+  <div class="stars stars2"></div>
+  <div class="stars stars3"></div>
 
-    <h1>MOBILE SUIT ARCHIVE</h1>
+  <div class="overlay"></div>
 
-    <p>Personal database</p>
+  <main class="terminal">
+    <div class="frame">
+      <div class="header">
+        <span>MOBILE SUIT ARCHIVE</span>
+        <span class="status">SYSTEM ONLINE</span>
+      </div>
 
-    <a href="#">ENTER DATABASE</a>
+      <div class="content">
+        <div class="title-block">
+          <p class="small">PERSONAL COLLECTION INTERFACE</p>
+          <h1>ARCHIVE STARTUP</h1>
+          <p class="subtitle">SPACEFRAME DATABASE INITIALIZATION</p>
+        </div>
 
+        <div id="bootLog" class="boot-log"></div>
+
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>BOOT SEQUENCE</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div id="finalMessage" class="final-message hidden">
+          ACCESS GRANTED // ARCHIVE READY
+        </div>
+
+        <div class="button-row">
+          <a id="enterBtn" class="enter-btn hidden" href="home.html">ENTER DATABASE</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
