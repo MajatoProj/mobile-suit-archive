@@ -441,6 +441,7 @@ function buildSearchText(item) {
     item.series,
     item.timeline_label,
     item.timeline_parent,
+    item.timeline_rejoin,
     item.family,
     item.source,
     item.grade,
@@ -461,22 +462,232 @@ function buildSearchText(item) {
 }
 
 
+
+function scheduleTimelineBranchOverlay(rail) {
+  const redraw = () => drawTimelineBranchOverlay(rail);
+  requestAnimationFrame(() => requestAnimationFrame(redraw));
+  setTimeout(redraw, 80);
+}
+
+function drawTimelineBranchOverlay(rail) {
+  if (!rail || !rail.isConnected) return;
+
+  rail.querySelectorAll(".timeline-branch-overlay").forEach(node => node.remove());
+
+  const stages = [...rail.querySelectorAll(":scope > .timeline-stage")];
+  const branchedStages = stages.filter(stage => stage.classList.contains("has-side-stories"));
+  if (!branchedStages.length) return;
+
+  const railRect = rail.getBoundingClientRect();
+  const width = Math.max(rail.scrollWidth, rail.clientWidth);
+  const height = Math.max(rail.scrollHeight, rail.clientHeight);
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "timeline-branch-overlay");
+  svg.setAttribute("width", String(width));
+  svg.setAttribute("height", String(height));
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("aria-hidden", "true");
+
+  const pointFor = element => {
+    const rect = element.getBoundingClientRect();
+    return {
+      x: rect.left - railRect.left + rail.scrollLeft + rect.width / 2,
+      y: rect.top - railRect.top + rail.scrollTop + rect.height / 2
+    };
+  };
+
+  const makePath = (d, className) => {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d);
+    path.setAttribute("class", className);
+    path.setAttribute("fill", "none");
+    svg.appendChild(path);
+  };
+
+  branchedStages.forEach(stage => {
+    const sourceMarker = stage.querySelector(":scope > .series-node-main .series-marker");
+    const branchMarkers = [...stage.querySelectorAll(":scope > .timeline-side-stories .side-story-marker")];
+    if (!sourceMarker || !branchMarkers.length) return;
+
+    const source = pointFor(sourceMarker);
+    const branches = branchMarkers.map(pointFor).sort((a, b) => a.x - b.x);
+
+    // All compact branch cards sit on one branch bus.
+    const busY = Math.min(...branches.map(point => point.y));
+    const busStartX = source.x;
+    const busEndX = Math.max(...branches.map(point => point.x));
+
+    makePath(
+      `M ${source.x} ${source.y} L ${source.x} ${busY} L ${busEndX} ${busY}`,
+      "timeline-branch-path"
+    );
+
+    branches.forEach(point => {
+      if (Math.abs(point.y - busY) > 1) {
+        makePath(
+          `M ${point.x} ${busY} L ${point.x} ${point.y}`,
+          "timeline-branch-path timeline-branch-drop"
+        );
+      }
+    });
+
+    if (stage.classList.contains("has-rejoin")) {
+      const stageIndex = stages.indexOf(stage);
+      const nextStage = stages.slice(stageIndex + 1).find(candidate =>
+        candidate.querySelector(":scope > .series-node-main .series-marker")
+      );
+
+      const targetMarker = nextStage?.querySelector(":scope > .series-node-main .series-marker");
+      if (targetMarker) {
+        const target = pointFor(targetMarker);
+
+        makePath(
+          `M ${busEndX} ${busY} L ${target.x} ${busY} L ${target.x} ${target.y}`,
+          "timeline-rejoin-path"
+        );
+      }
+    }
+  });
+
+  rail.prepend(svg);
+}
+
+let timelineBranchResizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(timelineBranchResizeTimer);
+  timelineBranchResizeTimer = setTimeout(() => {
+    document.querySelectorAll(".timeline-graph").forEach(drawTimelineBranchOverlay);
+  }, 80);
+});
+
+function scheduleTimelineV41Overlay(rail) {
+  const redraw = () => drawTimelineV41Overlay(rail);
+  requestAnimationFrame(() => requestAnimationFrame(redraw));
+  setTimeout(redraw, 90);
+}
+
+function drawTimelineV41Overlay(rail) {
+  if (!rail || !rail.isConnected) return;
+
+  rail.querySelectorAll(".timeline-v41-overlay").forEach(node => node.remove());
+
+  const mainStages = [...rail.querySelectorAll(":scope > .timeline-main-stage")];
+  const branchCells = [...rail.querySelectorAll(":scope > .timeline-branch-cell")];
+  if (!branchCells.length) return;
+
+  const railRect = rail.getBoundingClientRect();
+  const width = Math.max(rail.scrollWidth, rail.clientWidth);
+  const height = Math.max(rail.scrollHeight, rail.clientHeight);
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "timeline-v41-overlay");
+  svg.setAttribute("width", String(width));
+  svg.setAttribute("height", String(height));
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("aria-hidden", "true");
+
+  const center = element => {
+    const rect = element.getBoundingClientRect();
+    return {
+      x: rect.left - railRect.left + rail.scrollLeft + rect.width / 2,
+      y: rect.top - railRect.top + rail.scrollTop + rect.height / 2
+    };
+  };
+
+  const addPath = (d, className) => {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d);
+    path.setAttribute("class", className);
+    path.setAttribute("fill", "none");
+    svg.appendChild(path);
+  };
+
+  branchCells.forEach(cell => {
+    const parentIndex = Number(cell.dataset.parentIndex);
+    const parentStage = mainStages.find(stage => Number(stage.dataset.stageIndex) === parentIndex);
+    if (!parentStage) return;
+
+    const sourceMarker = parentStage.querySelector(".series-marker");
+    const branchMarkers = [...cell.querySelectorAll(".side-story-marker")];
+    if (!sourceMarker || !branchMarkers.length) return;
+
+    const source = center(sourceMarker);
+    const branches = branchMarkers.map(center);
+    const busY = Math.min(...branches.map(point => point.y)) - 12;
+    const leftX = Math.min(source.x, ...branches.map(point => point.x));
+    const rightX = Math.max(source.x, ...branches.map(point => point.x));
+
+    // Split from main rail to a horizontal branch bus.
+    addPath(
+      `M ${source.x} ${source.y} L ${source.x} ${busY} L ${leftX} ${busY} M ${source.x} ${busY} L ${rightX} ${busY}`,
+      "timeline-v41-branch-path"
+    );
+
+    // Drop into each branch node.
+    branches.forEach(point => {
+      addPath(
+        `M ${point.x} ${busY} L ${point.x} ${point.y}`,
+        "timeline-v41-branch-path"
+      );
+    });
+
+    // Merge the branch bus back into the next main stage.
+    const nextStage = mainStages.find(stage => Number(stage.dataset.stageIndex) === parentIndex + 1);
+    const targetMarker = nextStage?.querySelector(".series-marker");
+    if (targetMarker) {
+      const target = center(targetMarker);
+      const mergeX = target.x;
+      const mergeY = busY;
+
+      addPath(
+        `M ${rightX} ${busY} L ${mergeX} ${mergeY} L ${mergeX} ${target.y}`,
+        "timeline-v41-rejoin-path"
+      );
+    }
+  });
+
+  rail.prepend(svg);
+}
+
 function renderTimeline(items) {
   timelineView.innerHTML = "";
 
-  // Known continuities/series get a preferred order, but anything new is
-  // automatically appended. Missing values are always shown as UNSORTED / UNASSIGNED.
   const preferredContinuities = [
     "Cosmic Era",
     "Universal Century",
+    "Anno Domini",
     "Post Disaster",
+    "Regild Century",
     "Build Series"
   ];
 
   const preferredSeries = {
-    "Cosmic Era": ["SEED", "SEED Destiny", "Stargazer", "SEED Freedom"],
-    "Universal Century": ["Mobile Suit Gundam", "Char's Counterattack", "Gundam Unicorn"],
-    "Post Disaster": ["Iron-Blooded Orphans", "IBO Gekko"],
+    "Cosmic Era": [
+      "Mobile Suit Gundam SEED",
+      "Mobile Suit Gundam SEED Astray",
+      "Mobile Suit Gundam SEED Destiny",
+      "Mobile Suit Gundam SEED C.E. 73: Stargazer",
+      "Mobile Suit Gundam SEED Destiny Astray R",
+      "Mobile Suit Gundam SEED Freedom"
+    ],
+    "Universal Century": [
+      "Mobile Suit Gundam",
+      "Mobile Suit Gundam: Char's Counterattack",
+      "Mobile Suit Gundam Unicorn"
+    ],
+    "Anno Domini": [
+      "Mobile Suit Gundam 00",
+      "Mobile Suit Gundam 00 Second Season",
+      "Mobile Suit Gundam 00 the Movie: A Wakening of the Trailblazer"
+    ],
+    "Post Disaster": [
+      "Mobile Suit Gundam IRON-BLOODED ORPHANS",
+      "Mobile Suit Gundam IRON-BLOODED ORPHANS Gekko"
+    ],
+    "Regild Century": [
+      "Gundam Reconguista in G"
+    ],
     "Build Series": [
       "Gundam Build Fighters",
       "Gundam Build Fighters: GM's Counterattack",
@@ -495,14 +706,47 @@ function renderTimeline(items) {
     _series: cleanGroupValue(item.series)
   }));
 
-  const continuityNames = uniqueValues(normalized.map(item => item._continuity));
   const orderedContinuities = sortWithPreference(
-    continuityNames,
+    uniqueValues(normalized.map(item => item._continuity)),
     preferredContinuities,
     "UNSORTED / UNASSIGNED"
   );
 
-  orderedContinuities.forEach(continuity => {
+  const seriesPosition = group => {
+    const values = group.items
+      .map(item => Number(item.timeline_position))
+      .filter(Number.isFinite);
+    return values.length ? Math.min(...values) : Number.MAX_SAFE_INTEGER;
+  };
+
+  const seriesLane = group => {
+    const lane = group.items
+      .map(item => String(item.timeline_lane || "").trim().toLowerCase())
+      .find(Boolean);
+    return lane || "main";
+  };
+
+  const seriesParent = group => group.items
+    .map(item => String(item.timeline_parent || "").trim())
+    .find(Boolean) || "";
+
+  const normalizedName = value => normalizeSearchText(value || "");
+
+  const compareSeriesGroups = (a, b, continuity) => {
+    const posDiff = seriesPosition(a) - seriesPosition(b);
+    if (posDiff) return posDiff;
+
+    const preference = preferredSeries[continuity] || [];
+    const ai = preference.indexOf(a.series);
+    const bi = preference.indexOf(b.series);
+    const ar = ai >= 0 ? ai : Number.MAX_SAFE_INTEGER;
+    const br = bi >= 0 ? bi : Number.MAX_SAFE_INTEGER;
+    if (ar !== br) return ar - br;
+
+    return a.series.localeCompare(b.series, undefined, { sensitivity: "base" });
+  };
+
+  orderedContinuities.forEach((continuity, continuityIndex) => {
     const continuityItems = normalized.filter(item => item._continuity === continuity);
     if (!continuityItems.length) return;
 
@@ -512,7 +756,7 @@ function renderTimeline(items) {
     const header = document.createElement("div");
     header.className = "continuity-header";
     header.innerHTML = `
-      <span class="continuity-index">${String(orderedContinuities.indexOf(continuity) + 1).padStart(2, "0")}</span>
+      <span class="continuity-index">${String(continuityIndex + 1).padStart(2, "0")}</span>
       <div>
         <span class="panel-label">TIMELINE / CONTINUITY</span>
         <h2>${escapeHtml(continuity.toUpperCase())}</h2>
@@ -520,45 +764,112 @@ function renderTimeline(items) {
     `;
     section.appendChild(header);
 
+    const seriesGroups = uniqueValues(continuityItems.map(item => item._series))
+      .map(series => ({
+        series,
+        items: continuityItems.filter(item => item._series === series)
+      }));
+
+    const mainGroups = seriesGroups
+      .filter(group => seriesLane(group) !== "side-story")
+      .sort((a, b) => compareSeriesGroups(a, b, continuity));
+
+    const sideGroups = seriesGroups
+      .filter(group => seriesLane(group) === "side-story")
+      .sort((a, b) => compareSeriesGroups(a, b, continuity));
+
+    // Main stages are the only columns on the continuity spine.
     const rail = document.createElement("div");
-    rail.className = "timeline-rail";
+    rail.className = "timeline-rail timeline-v41";
+    rail.style.setProperty("--timeline-columns", String(Math.max(mainGroups.length, 1)));
 
-    const seriesNames = uniqueValues(continuityItems.map(item => item._series));
-    const orderedSeries = sortWithPreference(
-      seriesNames,
-      preferredSeries[continuity] || [],
-      "UNSORTED / UNASSIGNED"
-    );
-
-    orderedSeries.forEach(series => {
-      const seriesItems = continuityItems.filter(item => item._series === series);
-      if (!seriesItems.length) return;
+    mainGroups.forEach((group, stageIndex) => {
+      const stage = document.createElement("div");
+      stage.className = "timeline-main-stage";
+      stage.dataset.stageIndex = String(stageIndex);
+      stage.style.setProperty("--timeline-col", String(stageIndex + 1));
 
       const node = document.createElement("article");
-      node.className = "series-node";
+      node.className = "series-node series-node-main";
       node.innerHTML = `
         <div class="series-marker"></div>
         <div class="series-heading">
           <span class="panel-label">SERIES</span>
-          <h3>${escapeHtml(series)}</h3>
+          <h3>${escapeHtml(group.series)}</h3>
         </div>
         <div class="series-items"></div>
       `;
 
       const holder = node.querySelector(".series-items");
-      seriesItems
+      group.items
         .slice()
         .sort((a, b) => compareArchiveItems(a, b, "timeline"))
         .forEach(item => holder.appendChild(makeGundamCard(item)));
 
-      rail.appendChild(node);
+      stage.appendChild(node);
+      rail.appendChild(stage);
+    });
+
+    // Attach every side story to its explicit parent, with same-position fallback.
+    const branchMap = new Map();
+
+    sideGroups.forEach(branch => {
+      const parent = seriesParent(branch);
+      let parentIndex = mainGroups.findIndex(
+        group => normalizedName(group.series) === normalizedName(parent)
+      );
+
+      if (parentIndex < 0) {
+        const branchPos = seriesPosition(branch);
+        parentIndex = mainGroups.findIndex(group => seriesPosition(group) === branchPos);
+      }
+
+      if (parentIndex < 0) return;
+      if (!branchMap.has(parentIndex)) branchMap.set(parentIndex, []);
+      branchMap.get(parentIndex).push(branch);
+    });
+
+    branchMap.forEach((branches, parentIndex) => {
+      const cell = document.createElement("div");
+      cell.className = "timeline-branch-cell";
+      cell.dataset.parentIndex = String(parentIndex);
+      cell.style.setProperty("--timeline-col", String(parentIndex + 1));
+      cell.style.setProperty("--branch-count", String(Math.min(branches.length, 2)));
+
+      branches
+        .slice()
+        .sort((a, b) => compareSeriesGroups(a, b, continuity))
+        .forEach(branch => {
+          const branchNode = document.createElement("article");
+          branchNode.className = "side-story-node";
+          if (branch.items.length > 1) branchNode.classList.add("has-multiple-items");
+
+          branchNode.innerHTML = `
+            <div class="side-story-marker"></div>
+            <div class="side-story-heading">
+              <span class="panel-label">SIDE STORY</span>
+              <h4>${escapeHtml(branch.series)}</h4>
+            </div>
+            <div class="side-story-items"></div>
+          `;
+
+          const holder = branchNode.querySelector(".side-story-items");
+          branch.items
+            .slice()
+            .sort((a, b) => compareArchiveItems(a, b, "timeline"))
+            .forEach(item => holder.appendChild(makeGundamCard(item)));
+
+          cell.appendChild(branchNode);
+        });
+
+      rail.appendChild(cell);
     });
 
     section.appendChild(rail);
     timelineView.appendChild(section);
+    scheduleTimelineV41Overlay(rail);
   });
 
-  // Safety fallback: even malformed Gundam records should remain visible.
   if (!timelineView.children.length && items.length) {
     timelineView.appendChild(makeFallbackBucket(items, "UNSORTED / UNASSIGNED"));
   } else if (!timelineView.children.length) {
@@ -1677,3 +1988,12 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+
+let timelineV41ResizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(timelineV41ResizeTimer);
+  timelineV41ResizeTimer = setTimeout(() => {
+    document.querySelectorAll(".timeline-v41").forEach(drawTimelineV41Overlay);
+  }, 90);
+});

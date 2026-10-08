@@ -3156,3 +3156,528 @@ body.theme-fantasy {
     left: -15px;
   }
 }
+
+
+/* ============================================================
+   SIDE-STORY TIMELINE BRANCHES v39
+   Side stories leave the main continuity rail, stack below their
+   parent series, and visually merge back into the next main stage.
+   ============================================================ */
+
+.timeline-graph {
+  align-items: flex-start;
+}
+
+.timeline-graph .timeline-stage {
+  position: relative;
+  flex: 0 0 min(420px, 82vw);
+  min-width: 0;
+  padding: 0 16px 24px;
+}
+
+.timeline-graph .series-node {
+  padding: 0;
+  flex: none;
+}
+
+.timeline-graph .series-node-main {
+  position: relative;
+  z-index: 2;
+}
+
+/* Existing main-line rail remains at the main series marker level. */
+.timeline-graph::before {
+  top: 46px;
+}
+
+/* Branch rail: drops from the main series marker to the side stories. */
+.timeline-stage.has-side-stories::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 21px;
+  top: 46px;
+  bottom: 20px;
+  border-left: 1px solid rgba(127,199,255,.34);
+  pointer-events: none;
+}
+
+/* Rejoin rail: climbs back to the main continuity rail at stage exit. */
+.timeline-stage.has-side-stories.has-rejoin::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  top: 46px;
+  bottom: 20px;
+  border-right: 1px solid rgba(127,199,255,.28);
+  pointer-events: none;
+}
+
+.timeline-side-stories {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 17px;
+  margin: 22px 0 0 28px;
+  padding: 8px 14px 32px 16px;
+  border-left: 1px solid rgba(127,199,255,.12);
+  background:
+    linear-gradient(90deg, rgba(55,132,181,.055), transparent 56%);
+}
+
+/* Bottom line makes the branch visibly merge back toward the main rail. */
+.timeline-stage.has-rejoin .timeline-side-stories::after {
+  content: "";
+  position: absolute;
+  left: -23px;
+  right: -14px;
+  bottom: 19px;
+  border-bottom: 1px solid rgba(127,199,255,.28);
+  pointer-events: none;
+}
+
+.side-story-node {
+  position: relative;
+  min-width: 0;
+}
+
+/* Horizontal arm from branch rail into every side-story node. */
+.side-story-node::before {
+  content: "";
+  position: absolute;
+  left: -39px;
+  top: 12px;
+  width: 31px;
+  border-top: 1px solid rgba(127,199,255,.42);
+}
+
+.side-story-marker {
+  position: relative;
+  z-index: 2;
+  width: 8px;
+  height: 8px;
+  margin: 8px 0 9px;
+  border: 1px solid rgba(127,199,255,.78);
+  background: #06111d;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 4px rgba(127,199,255,.035);
+}
+
+.side-story-heading {
+  min-height: 52px;
+}
+
+.side-story-heading h4 {
+  margin: .25rem 0 0;
+  color: #b8d5e4;
+  font-size: .82rem;
+  line-height: 1.25;
+  letter-spacing: .055em;
+  font-weight: 520;
+}
+
+.side-story-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.timeline-rejoin-label {
+  position: relative;
+  z-index: 2;
+  justify-self: end;
+  max-width: 76%;
+  margin-top: -2px;
+  padding: 4px 7px;
+  border: 1px solid rgba(127,199,255,.15);
+  background: #06111d;
+  color: rgba(162,199,219,.64);
+  font: .48rem/1.25 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .08em;
+  text-align: right;
+}
+
+.timeline-rejoin-label span {
+  margin-right: 5px;
+  color: rgba(127,199,255,.48);
+}
+
+.timeline-rejoin-label strong {
+  color: rgba(199,225,238,.72);
+  font-weight: 500;
+}
+
+/* Orphaned side stories remain visible, but are visibly flagged. */
+.timeline-stage-orphan .series-marker {
+  border-style: dashed;
+  opacity: .68;
+}
+
+@media (max-width: 760px) {
+  .timeline-graph .timeline-stage {
+    flex-basis: min(360px, 88vw);
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .timeline-stage.has-side-stories::before {
+    left: 18px;
+  }
+
+  .timeline-side-stories {
+    margin-left: 24px;
+    padding-left: 13px;
+  }
+
+  .side-story-node::before {
+    left: -33px;
+    width: 27px;
+  }
+
+  .side-story-items {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-rejoin-label {
+    max-width: 88%;
+  }
+}
+
+
+/* ============================================================
+   COMPACT SIDE-STORY GRAPH v40
+   Replaces the tall v39 branch towers with a compact branch bus.
+   ============================================================ */
+
+.timeline-graph {
+  isolation: isolate;
+  align-items: flex-start;
+}
+
+.timeline-graph .timeline-stage {
+  flex: 0 0 min(430px, 84vw);
+  padding: 0 14px 18px;
+}
+
+/* v40 connectors are drawn by the SVG overlay, not pseudo-element boxes. */
+.timeline-stage.has-side-stories::before,
+.timeline-stage.has-side-stories::after,
+.timeline-stage.has-rejoin .timeline-side-stories::after,
+.side-story-node::before {
+  content: none !important;
+  display: none !important;
+}
+
+.timeline-rejoin-label {
+  display: none !important;
+}
+
+.timeline-branch-overlay {
+  position: absolute;
+  z-index: 0;
+  inset: 0 auto auto 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.timeline-branch-path,
+.timeline-rejoin-path {
+  vector-effect: non-scaling-stroke;
+  stroke: rgba(127,199,255,.34);
+  stroke-width: 1;
+  shape-rendering: geometricPrecision;
+}
+
+.timeline-rejoin-path {
+  stroke: rgba(127,199,255,.24);
+}
+
+.timeline-graph .series-node-main,
+.timeline-side-stories {
+  position: relative;
+  z-index: 2;
+}
+
+/*
+  Side stories are a compact row under the parent stage.
+  One side-story can use the full width; two branch side-by-side.
+*/
+.timeline-side-stories {
+  display: grid;
+  align-items: start;
+  gap: 10px;
+  margin: 18px 0 0 19px;
+  padding: 15px 0 0 14px;
+  border: 0;
+  background: none;
+}
+
+.timeline-side-stories.branch-count-1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.timeline-side-stories.branch-count-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.timeline-side-stories.branch-count-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.side-story-node {
+  min-width: 0;
+  padding: 9px 9px 10px;
+  border: 1px solid rgba(127,199,255,.12);
+  background:
+    linear-gradient(180deg, rgba(34,82,111,.07), transparent 42%),
+    rgba(3,11,19,.34);
+}
+
+.side-story-marker {
+  width: 8px;
+  height: 8px;
+  margin: -19px 0 10px -3px;
+  border-color: rgba(127,199,255,.72);
+  background: #06111d;
+  box-shadow: 0 0 0 4px rgba(127,199,255,.025);
+}
+
+.side-story-heading {
+  min-height: 42px;
+}
+
+.side-story-heading .panel-label {
+  font-size: .47rem;
+  color: rgba(127,199,255,.48);
+}
+
+.side-story-heading h4 {
+  margin: .18rem 0 0;
+  font-size: .69rem;
+  line-height: 1.23;
+  letter-spacing: .035em;
+  color: #b9d2df;
+}
+
+.side-story-items {
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+/* A single branch that contains several kits (e.g. SEED Astray)
+   may use two cards without turning the branch into a tall tower. */
+.side-story-node.has-multiple-items .side-story-items {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Slightly tighter cards only inside the branch lane. */
+.side-story-items .gundam-record {
+  padding: 7px;
+}
+
+.side-story-items .gundam-record h4 {
+  font-size: .61rem;
+}
+
+.side-story-items .gundam-record-image-wrap {
+  margin-bottom: 6px;
+}
+
+/* Keep main series visually dominant over side-story branches. */
+.timeline-stage.has-side-stories > .series-node-main {
+  padding-bottom: 2px;
+}
+
+@media (max-width: 820px) {
+  .timeline-side-stories.branch-count-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .timeline-graph .timeline-stage {
+    flex-basis: min(360px, 90vw);
+  }
+
+  .timeline-side-stories,
+  .timeline-side-stories.branch-count-2,
+  .timeline-side-stories.branch-count-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .side-story-node.has-multiple-items .side-story-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* ============================================================
+   TWO-ROW SIDE-STORY TIMELINE v41
+   Main continuity is one row. Side stories live in a separate,
+   aligned branch row instead of growing inside the main stage.
+   ============================================================ */
+
+.timeline-v41 {
+  --timeline-gap: 28px;
+  position: relative;
+  display: grid !important;
+  grid-template-columns:
+    repeat(var(--timeline-columns), minmax(330px, 330px));
+  grid-template-rows: auto auto;
+  column-gap: var(--timeline-gap);
+  row-gap: 54px;
+  align-items: start;
+  width: max-content;
+  min-width: 100%;
+  padding: 0 18px 24px;
+}
+
+/* Turn off v39/v40 pseudo connector systems for this renderer. */
+.timeline-v41::before,
+.timeline-v41 .timeline-stage::before,
+.timeline-v41 .timeline-stage::after,
+.timeline-v41 .timeline-main-stage::before,
+.timeline-v41 .timeline-main-stage::after,
+.timeline-v41 .timeline-branch-cell::before,
+.timeline-v41 .timeline-branch-cell::after,
+.timeline-v41 .side-story-node::before,
+.timeline-v41 .timeline-side-stories::before,
+.timeline-v41 .timeline-side-stories::after {
+  content: none !important;
+  display: none !important;
+}
+
+.timeline-main-stage {
+  grid-column: var(--timeline-col);
+  grid-row: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* Main continuity rail only. */
+.timeline-main-stage::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute;
+  z-index: 0;
+  top: 11px;
+  left: -18px;
+  right: calc(-1 * var(--timeline-gap) - 18px);
+  border-top: 1px solid rgba(127,199,255,.34);
+  pointer-events: none;
+}
+
+.timeline-main-stage:last-of-type::before {
+  right: 50%;
+}
+
+.timeline-main-stage .series-node-main {
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-main-stage .series-marker {
+  background: #06111d;
+}
+
+.timeline-branch-cell {
+  grid-column: var(--timeline-col);
+  grid-row: 2;
+  align-self: start;
+  display: grid;
+  grid-template-columns: repeat(var(--branch-count), minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.timeline-branch-cell .side-story-node {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(127,199,255,.16);
+  background:
+    linear-gradient(180deg, rgba(45,105,143,.065), transparent 38%),
+    rgba(3,10,17,.42);
+}
+
+.timeline-branch-cell .side-story-marker {
+  width: 8px;
+  height: 8px;
+  margin: -15px 0 10px 1px;
+  border: 1px solid rgba(127,199,255,.72);
+  background: #06111d;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 4px rgba(127,199,255,.03);
+}
+
+.timeline-branch-cell .side-story-heading {
+  min-height: 45px;
+}
+
+.timeline-branch-cell .side-story-heading h4 {
+  margin: .2rem 0 0;
+  font-size: .69rem;
+  line-height: 1.25;
+  letter-spacing: .035em;
+  color: #bed6e2;
+}
+
+.timeline-branch-cell .side-story-items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.timeline-branch-cell .side-story-node.has-multiple-items .side-story-items {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.timeline-branch-cell .gundam-record {
+  min-width: 0;
+}
+
+/* SVG branch / merge lines */
+.timeline-v41-overlay {
+  position: absolute;
+  z-index: 1;
+  inset: 0 auto auto 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.timeline-v41-branch-path,
+.timeline-v41-rejoin-path {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1;
+  shape-rendering: geometricPrecision;
+}
+
+.timeline-v41-branch-path {
+  stroke: rgba(127,199,255,.45);
+}
+
+.timeline-v41-rejoin-path {
+  stroke: rgba(127,199,255,.27);
+}
+
+@media (max-width: 760px) {
+  .timeline-v41 {
+    grid-template-columns:
+      repeat(var(--timeline-columns), minmax(290px, 290px));
+    column-gap: 22px;
+  }
+
+  .timeline-branch-cell {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-branch-cell .side-story-node.has-multiple-items .side-story-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
