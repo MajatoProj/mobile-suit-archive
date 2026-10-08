@@ -385,20 +385,58 @@ function renderFamilies(items) {
       const origin = document.createElement("div");
       origin.className = "design-origin-note";
 
-      const rows = originLinks.map(link => {
-        const source = link.sourceId
-          ? `<a class="design-origin-source" href="item.html?category=gundam&id=${encodeURIComponent(link.sourceId)}">${escapeHtml(link.sourceName)}</a>`
-          : `<span class="design-origin-source">${escapeHtml(link.sourceName)}</span>`;
+      // Merge relationships that share the same origin into one branch row.
+      // Example:
+      // Strike Freedom Gundam → Mighty Strike Freedom Gundam
+      //                       → Rising Freedom Gundam
+      const groupedOrigins = [];
 
-        const target = link.targetId
-          ? `<a class="design-origin-target" href="item.html?category=gundam&id=${encodeURIComponent(link.targetId)}">${escapeHtml(link.targetName)}</a>`
-          : `<span class="design-origin-target">${escapeHtml(link.targetName)}</span>`;
+      originLinks.forEach(link => {
+        const sourceKey = link.sourceId || `name:${link.sourceName}`;
+        let group = groupedOrigins.find(entry => entry.sourceKey === sourceKey);
+
+        if (!group) {
+          group = {
+            sourceKey,
+            sourceId: link.sourceId,
+            sourceName: link.sourceName,
+            targets: []
+          };
+          groupedOrigins.push(group);
+        }
+
+        const targetKey = link.targetId || `name:${link.targetName}`;
+        if (!group.targets.some(target => target.targetKey === targetKey)) {
+          group.targets.push({
+            targetKey,
+            targetId: link.targetId,
+            targetName: link.targetName
+          });
+        }
+      });
+
+      const rows = groupedOrigins.map(group => {
+        const source = group.sourceId
+          ? `<a class="design-origin-source" href="item.html?category=gundam&id=${encodeURIComponent(group.sourceId)}">${escapeHtml(group.sourceName)}</a>`
+          : `<span class="design-origin-source">${escapeHtml(group.sourceName)}</span>`;
+
+        const targets = group.targets.map(target => {
+          const targetMarkup = target.targetId
+            ? `<a class="design-origin-target" href="item.html?category=gundam&id=${encodeURIComponent(target.targetId)}">${escapeHtml(target.targetName)}</a>`
+            : `<span class="design-origin-target">${escapeHtml(target.targetName)}</span>`;
+
+          return `
+            <div class="design-origin-target-row">
+              <span class="design-origin-arrow" aria-hidden="true">→</span>
+              ${targetMarkup}
+            </div>
+          `;
+        }).join("");
 
         return `
-          <div class="design-origin-row">
+          <div class="design-origin-row${group.targets.length > 1 ? " is-branch" : ""}">
             ${source}
-            <span class="design-origin-arrow" aria-hidden="true">→</span>
-            ${target}
+            <div class="design-origin-targets">${targets}</div>
           </div>
         `;
       }).join("");
@@ -511,28 +549,108 @@ function makeFallbackBucket(items, title) {
 
 function getBuildStatusInfo(value) {
   const map = {
-    backlog: { label: "Backlog", percent: 10 },
-    assembly: { label: "Assembly", percent: 35 },
-    detailing: { label: "Detailing", percent: 65 },
-    finishing: { label: "Finishing", percent: 85 },
-    completed: { label: "Completed", percent: 100 }
+    backlog: { label: "Backlog", percent: 10, hideProgress: false },
+    assembly: { label: "Assembly", percent: 35, hideProgress: false },
+    detailing: { label: "Detailing", percent: 65, hideProgress: false },
+    finishing: { label: "Finishing", percent: 85, hideProgress: false },
+    completed: { label: "Completed", percent: 100, hideProgress: false },
+    faulted: { label: "Faulted", percent: null, hideProgress: true }
   };
 
   const key = String(value || "").trim().toLowerCase();
 
   if (!key) {
-    return { key: "unassigned", label: "Wanted", percent: 0 };
+    return { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
   }
 
-  return map[key] ? { key, ...map[key] } : { key: "unassigned", label: "Wanted", percent: 0 };
+  return map[key] || { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
+}
+
+
+function getBuildStatusVisual(statusKey) {
+  const key = String(statusKey || "").trim().toLowerCase();
+
+  const map = {
+    unassigned: { icon: "clock", title: "Wanted" },
+    backlog: { icon: "clock", title: "Backlog" },
+    assembly: { icon: "nipper", title: "Assembly" },
+    detailing: { icon: "brush", title: "Detailing" },
+    finishing: { icon: "spark", title: "Finishing" },
+    completed: { icon: "crown", title: "Completed" },
+    faulted: { icon: "vault", title: "Faulted / stored away" }
+  };
+
+  return map[key] || map.unassigned;
+}
+
+function getStatusIconSvg(name) {
+  const icons = {
+    clock: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.5"></circle>
+        <path d="M12 7.7v4.7l3 1.9"></path>
+      </svg>
+    `,
+    brush: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14.8 4.8l4.4 4.4"></path>
+        <path d="M8.4 17.9c1.1-1.1 2.5-1.8 4-2.1l6.8-6.8a1.9 1.9 0 0 0 0-2.7l-1.5-1.5a1.9 1.9 0 0 0-2.7 0l-6.8 6.8c-.3 1.5-1 2.9-2.1 4-.9.9-2.1 1.5-3.4 1.6 0 0 .6 1.9 2 2.4 1.8.6 2.9-.7 3.7-1.7Z"></path>
+      </svg>
+    `,
+    nipper: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M10.3 10.2 6.1 5.9"></path>
+        <path d="M13.7 10.2 17.9 5.9"></path>
+        <path d="M10.8 10.7 7.2 18"></path>
+        <path d="M13.2 10.7 16.8 18"></path>
+        <circle cx="12" cy="11.2" r="1.4"></circle>
+      </svg>
+    `,
+    spark: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3.8 13.9 9l5.3 1.9-5.3 1.9-1.9 5.4-1.9-5.4-5.3-1.9L10.1 9 12 3.8Z"></path>
+      </svg>
+    `,
+    crown: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 17.5 3.8 8.3l4.3 3.2L12 6.4l3.9 5.1 4.3-3.2-1.2 9.2Z"></path>
+        <path d="M5.2 17.5h13.6"></path>
+      </svg>
+    `,
+    vault: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4.2" y="4.2" width="15.6" height="15.6" rx="1.6"></rect>
+        <circle cx="12" cy="12" r="3.4"></circle>
+        <path d="M12 8.6v6.8"></path>
+        <path d="M8.6 12h6.8"></path>
+      </svg>
+    `
+  };
+
+  return icons[name] || icons.clock;
+}
+
+function makeStatusIconMarkup(statusKey) {
+  const visual = getBuildStatusVisual(statusKey);
+  return `
+    <span
+      class="mini-state-icon icon-${statusKey}"
+      title="${escapeHtml(visual.title)}"
+      aria-label="${escapeHtml(visual.title)}"
+    >
+      ${getStatusIconSvg(visual.icon)}
+    </span>
+  `;
 }
 
 function makeGundamCard(item) {
   const status = getBuildStatusInfo(item.build_status);
   const link = document.createElement("a");
-  const mutedStatus =
-    status.key === "backlog" || status.key === "unassigned" ? " is-backlog" : "";
-  link.className = `gundam-record${mutedStatus}`;
+  const visualStatus =
+    status.key === "faulted"
+      ? " is-faulted"
+      : (status.key === "backlog" || status.key === "unassigned" ? " is-backlog" : "");
+  link.className = `gundam-record${visualStatus}`;
   link.href = `item.html?category=gundam&id=${encodeURIComponent(item.id)}`;
 
   const sourceLabel = SOURCE_LABELS[item.source] || String(item.source || "").toUpperCase();
@@ -545,16 +663,19 @@ function makeGundamCard(item) {
     : "";
 
   const cardTitle = item.name || item.designation || item.id;
+  const topStatusIcon = makeStatusIconMarkup(status.key);
 
   const statusMarkup = status.key
     ? `
       <div class="build-status-compact">
         <span class="status-chip status-${escapeClass(status.key)}">${escapeHtml(status.label)}</span>
-        <span class="status-percent">${status.percent}%</span>
+        ${status.hideProgress ? "" : `<span class="status-percent">${status.percent}%</span>`}
       </div>
-      <div class="status-meter" aria-hidden="true">
-        <span class="status-meter-fill status-${escapeClass(status.key)}" style="width:${status.percent}%"></span>
-      </div>
+      ${status.hideProgress ? "" : `
+        <div class="status-meter" aria-hidden="true">
+          <span class="status-meter-fill status-${escapeClass(status.key)}" style="width:${status.percent}%"></span>
+        </div>
+      `}
     `
     : "";
 
@@ -567,6 +688,7 @@ function makeGundamCard(item) {
 
     <div class="gundam-record-topline">
       <span class="kit-badge badge-${escapeClass(item.source)}"><i></i>${escapeHtml(sourceLabel)}</span>
+      <span class="gundam-record-topicons">${topStatusIcon}</span>
     </div>
 
     <h4>${escapeHtml(cardTitle)}</h4>

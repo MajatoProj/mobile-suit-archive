@@ -1552,3 +1552,274 @@ body.theme-fantasy {
     transform-origin: left center;
   }
 }
+
+
+/* ============================================================
+   AUTOMATIC GUNDAM IMAGE PALETTE v21
+   The large display samples the Gundam PNG and derives its own
+   primary/secondary colours. Continuity styling is the fallback.
+   ============================================================ */
+.theme-gundam .item-image.bg-auto-palette {
+  --hero-primary-rgb: 79, 155, 204;
+  --hero-secondary-rgb: 79, 155, 204;
+  --hero-neutral-rgb: 145, 155, 165;
+  --hero-neutral-alpha: .04;
+  --hero-primary-dark-rgb: 17, 33, 43;
+  --hero-secondary-dark-rgb: 11, 20, 27;
+  background-color: rgb(var(--hero-secondary-dark-rgb));
+}
+
+.theme-gundam .item-image.bg-auto-palette::before {
+  background:
+    radial-gradient(circle at 68% 30%, rgba(var(--hero-primary-rgb), .30), transparent 23%),
+    radial-gradient(circle at 28% 70%, rgba(var(--hero-secondary-rgb), .11), transparent 31%),
+    radial-gradient(circle at 48% 54%, rgba(var(--hero-neutral-rgb), var(--hero-neutral-alpha)), transparent 40%),
+    linear-gradient(
+      145deg,
+      rgb(var(--hero-primary-dark-rgb)),
+      rgb(var(--hero-secondary-dark-rgb)) 48%,
+      #02060a 88%
+    );
+  background-size: auto;
+}
+
+.theme-gundam .item-image.bg-auto-palette::after {
+  background:
+    linear-gradient(rgba(var(--hero-primary-rgb), .052) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--hero-primary-rgb), .042) 1px, transparent 1px),
+    repeating-linear-gradient(
+      135deg,
+      rgba(var(--hero-secondary-rgb), .012) 0 18px,
+      transparent 18px 38px
+    );
+  background-size: 52px 52px, 52px 52px, auto;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.82), transparent 95%);
+}
+
+.theme-gundam .item-image.bg-auto-palette img {
+  filter:
+    drop-shadow(0 24px 28px rgba(0,0,0,.52))
+    drop-shadow(0 0 24px rgba(var(--hero-primary-rgb), .11));
+}
+
+
+/* ============================================================
+   FAULTED BUILD STATUS v22
+   Owned kits that are stored away / retired / used for parts.
+   No percentage or progress meter is shown.
+   ============================================================ */
+.gundam-record.is-faulted {
+  border-color: rgba(135, 143, 151, .18);
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,.018) 0 10px,
+      transparent 10px 22px
+    ),
+    linear-gradient(180deg, rgba(11,14,17,.96), rgba(6,9,12,.99));
+}
+
+.gundam-record.is-faulted .gundam-record-image {
+  filter:
+    grayscale(.82)
+    saturate(.38)
+    brightness(.72)
+    contrast(.96)
+    drop-shadow(0 8px 10px rgba(0,0,0,.42));
+}
+
+.gundam-record.is-faulted .unit-ghost,
+.gundam-record.is-faulted .unit-crosshair {
+  opacity: .12;
+}
+
+.status-chip.status-faulted {
+  border-color: rgba(151, 158, 166, .28);
+  background: rgba(132, 140, 148, .10);
+  color: #aab1b8;
+}
+
+.build-status-block.status-faulted {
+  border-color: rgba(151,158,166,.16);
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,.018) 0 10px,
+      transparent 10px 22px
+    ),
+    rgba(120,128,136,.025);
+}
+
+.build-status-block.status-faulted .build-status-copy strong {
+  color: #b7bec5;
+}
+
+.build-status-block.status-faulted .build-status-kicker {
+  color: #747f88;
+}
+
+.build-status-header-no-progress {
+  min-height: 42px;
+}
+
+
+/* ============================================================
+   STATUS ICONS v23
+   ============================================================ */
+.gundam-record-topicons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.mini-state-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(127,199,255,.18);
+  background: rgba(255,255,255,.03);
+  color: #9fc5da;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.015);
+}
+
+.mini-state-icon svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-backlog,
+.icon-unassigned {
+  color: #b6bec5;
+  border-color: rgba(181,188,196,.22);
+  background: rgba(181,188,196,.06);
+}
+
+.icon-assembly {
+  color: #7fc4ef;
+  border-color: rgba(127,196,239,.24);
+  background: rgba(127,196,239,.06);
+}
+
+.icon-detailing {
+  color: #88d3d9;
+  border-color: rgba(136,211,217,.24);
+  background: rgba(136,211,217,.06);
+}
+
+.icon-finishing {
+  color: #87e0bc;
+  border-color: rgba(135,224,188,.24);
+  background: rgba(135,224,188,.06);
+}
+
+.icon-completed {
+  color: #9be8a3;
+  border-color: rgba(155,232,163,.24);
+  background: rgba(155,232,163,.06);
+}
+
+.icon-completed svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+.icon-faulted {
+  color: #abb3ba;
+  border-color: rgba(171,179,186,.24);
+  background: rgba(171,179,186,.06);
+}
+
+.build-status-symbol-wrap {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+}
+
+.build-status-symbol-wrap .mini-state-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.build-status-symbol-wrap .mini-state-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 520px) {
+  .build-status-symbol-wrap .mini-state-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .build-status-symbol-wrap .mini-state-icon svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+
+/* ============================================================
+   DESIGN ORIGIN BRANCH ROWS v24
+   Multiple children of the same source share one source bar.
+   ============================================================ */
+.design-origin-row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.design-origin-source {
+  text-align: right;
+  align-self: center;
+}
+
+.design-origin-targets {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.design-origin-target-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.design-origin-row.is-branch .design-origin-targets {
+  position: relative;
+  padding-left: 2px;
+}
+
+.design-origin-row.is-branch .design-origin-target-row {
+  min-height: 20px;
+}
+
+@media (max-width: 620px) {
+  .design-origin-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .design-origin-source {
+    text-align: left;
+  }
+
+  .design-origin-target-row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .design-origin-arrow {
+    transform: none;
+    transform-origin: initial;
+  }
+}

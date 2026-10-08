@@ -59,6 +59,12 @@ function renderItem(item) {
     const img = document.createElement("img");
     img.src = item.image;
     img.alt = item.name || item.id;
+    img.decoding = "async";
+
+    img.addEventListener("load", () => {
+      applyAutomaticImagePalette(imageBox, img);
+    }, { once: true });
+
     imageBox.appendChild(img);
   }
 
@@ -91,6 +97,258 @@ function applyImageBackground(imageBox, item) {
   };
 
   imageBox.classList.add(themeMap[requested] || "bg-gundam-default");
+}
+
+
+/* Automatic palette extraction from the Gundam image itself. */
+function applyAutomaticImagePalette(imageBox, img) {
+  try {
+    const palette = extractImagePalette(img);
+    if (!palette) return;
+
+    const primary = palette.primary;
+    const secondary = palette.secondary || palette.primary;
+    const neutral = palette.neutral || [145, 155, 165];
+    const primaryDark = darkenRgb(primary, 0.79);
+    const secondaryDark = darkenRgb(secondary, 0.86);
+
+    imageBox.style.setProperty("--hero-primary-rgb", primary.join(", "));
+    imageBox.style.setProperty("--hero-secondary-rgb", secondary.join(", "));
+    imageBox.style.setProperty("--hero-neutral-rgb", neutral.join(", "));
+    imageBox.style.setProperty(
+      "--hero-neutral-alpha",
+      String(Math.max(0.025, Math.min(0.13, palette.neutralStrength || 0.04)))
+    );
+    imageBox.style.setProperty("--hero-primary-dark-rgb", primaryDark.join(", "));
+    imageBox.style.setProperty("--hero-secondary-dark-rgb", secondaryDark.join(", "));
+    imageBox.classList.add("bg-auto-palette");
+  } catch (error) {
+    console.debug("Automatic Gundam palette unavailable:", error);
+  }
+}
+
+function extractImagePalette(img) {
+  const canvas = document.createElement("canvas");
+  const size = 96;
+  canvas.width = size;
+  canvas.height = size;
+
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  if (!context) return null;
+
+  context.clearRect(0, 0, size, size);
+  context.drawImage(img, 0, 0, size, size);
+
+  const pixels = context.getImageData(0, 0, size, size).data;
+
+  const hueBins = Array.from({ length: 24 }, () => ({
+    weight: 0,
+    r: 0,
+    g: 0,
+    b: 0
+  }));
+
+  const neutrals = {
+    light: { weight: 0, r: 0, g: 0, b: 0 },
+    mid:   { weight: 0, r: 0, g: 0, b: 0 },
+    dark:  { weight: 0, r: 0, g: 0, b: 0 }
+  };
+
+  let opaqueWeight = 0;
+  let chromaticWeight = 0;
+
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const alpha = pixels[i + 3] / 255;
+
+    if (alpha < 0.25) continue;
+
+    opaqueWeight += alpha;
+
+    const hsv = rgbToHsv(r, g, b);
+
+    // White, gray and black now contribute, but at reduced strength.
+    if (hsv.s < 0.18) {
+      let bucket;
+
+      if (hsv.v >= 0.72) bucket = neutrals.light;
+      else if (hsv.v <= 0.28) bucket = neutrals.dark;
+      else bucket = neutrals.mid;
+
+      const neutralWeight =
+        alpha * (hsv.v >= 0.72 || hsv.v <= 0.28 ? 0.55 : 0.28);
+
+      bucket.weight += neutralWeight;
+      bucket.r += r * neutralWeight;
+      bucket.g += g * neutralWeight;
+      bucket.b += b * neutralWeight;
+      continue;
+    }
+
+    const brightnessWeight =
+      0.35 + 0.65 * Math.min(hsv.v, 0.85) / 0.85;
+
+    const weight =
+      Math.pow(hsv.s, 1.6) *
+      brightnessWeight *
+      alpha;
+
+    const binIndex = Math.floor(hsv.h * hueBins.length) % hueBins.length;
+    const bin = hueBins[binIndex];
+
+    bin.weight += weight;
+    bin.r += r * weight;
+    bin.g += g * weight;
+    bin.b += b * weight;
+    chromaticWeight += weight;
+  }
+
+  if (opaqueWeight < 2) return null;
+
+  const ranked = hueBins
+    .map((bin, index) => ({ ...bin, index }))
+    .filter(bin => bin.weight > 0)
+    .sort((a, b) => b.weight - a.weight);
+
+  const neutralBuckets = Object.values(neutrals)
+    .filter(bucket => bucket.weight > 0)
+    .sort((a, b) => b.weight - a.weight);
+
+  const totalNeutralWeight = neutralBuckets.reduce(
+    (sum, bucket) => sum + bucket.weight,
+    0
+  );
+
+  const dominantNeutral = neutralBuckets[0]
+    ? averageBinRgb(neutralBuckets[0])
+    : [145, 155, 165];
+
+  const neutralShare = Math.min(
+    1,
+    totalNeutralWeight / Math.max(opaqueWeight * 0.55, 0.0001)
+  );
+
+  // Mostly-white, mostly-black, or mostly-gray suits still get their own
+  // automatically generated palette.
+  if (!ranked.length || chromaticWeight < 0.75) {
+    const lightWeight = neutrals.light.weight;
+    const darkWeight = neutrals.dark.weight;
+
+    let primary;
+    let secondary;
+
+    if (lightWeight > darkWeight * 1.15) {
+      primary = blendRgb(dominantNeutral, [185, 205, 218], 0.42);
+      secondary = [92, 112, 126];
+    } else if (darkWeight > lightWeight * 1.15) {
+      primary = blendRgb(dominantNeutral, [72, 84, 98], 0.48);
+      secondary = [105, 122, 136];
+    } else {
+      primary = blendRgb(dominantNeutral, [130, 146, 158], 0.38);
+      secondary = [88, 105, 118];
+    }
+
+    return {
+      primary,
+      secondary,
+      neutral: dominantNeutral,
+      neutralStrength: 0.10
+    };
+  }
+
+  const primaryBin = ranked[0];
+  let primary = averageBinRgb(primaryBin);
+  const primaryHue = binHueDegrees(primaryBin.index, hueBins.length);
+
+  let secondary = null;
+
+  for (const candidate of ranked.slice(1)) {
+    const candidateHue = binHueDegrees(candidate.index, hueBins.length);
+    const hueDistance = circularHueDistance(primaryHue, candidateHue);
+
+    if (hueDistance >= 35 && candidate.weight >= primaryBin.weight * 0.08) {
+      secondary = averageBinRgb(candidate);
+      break;
+    }
+  }
+
+  // Neutral armour affects the palette gently rather than being ignored.
+  const neutralMix = Math.min(0.22, neutralShare * 0.20);
+  primary = blendRgb(primary, dominantNeutral, neutralMix);
+
+  if (secondary) {
+    secondary = blendRgb(secondary, dominantNeutral, neutralMix * 0.55);
+  } else {
+    secondary = blendRgb(
+      primary,
+      dominantNeutral,
+      Math.min(0.26, neutralShare * 0.22)
+    );
+  }
+
+  return {
+    primary,
+    secondary,
+    neutral: dominantNeutral,
+    neutralStrength: 0.025 + neutralShare * 0.075
+  };
+}
+
+function averageBinRgb(bin) {
+  const divisor = Math.max(bin.weight, 0.0001);
+  return [
+    Math.round(bin.r / divisor),
+    Math.round(bin.g / divisor),
+    Math.round(bin.b / divisor)
+  ];
+}
+
+function binHueDegrees(index, totalBins) {
+  return ((index + 0.5) / totalBins) * 360;
+}
+
+function circularHueDistance(a, b) {
+  const raw = Math.abs(a - b) % 360;
+  return Math.min(raw, 360 - raw);
+}
+
+function blendRgb(a, b, amount) {
+  const t = Math.max(0, Math.min(1, amount));
+  return a.map((channel, index) =>
+    Math.round(channel * (1 - t) + b[index] * t)
+  );
+}
+
+function darkenRgb(rgb, amount) {
+  return rgb.map(channel =>
+    Math.max(0, Math.min(255, Math.round(channel * (1 - amount))))
+  );
+}
+
+function rgbToHsv(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+
+  let h = 0;
+
+  if (delta !== 0) {
+    if (max === r) h = ((g - b) / delta) % 6;
+    else if (max === g) h = (b - r) / delta + 2;
+    else h = (r - g) / delta + 4;
+
+    h /= 6;
+    if (h < 0) h += 1;
+  }
+
+  const s = max === 0 ? 0 : delta / max;
+  return { h, s, v: max };
 }
 
 function renderSuitData(item) {

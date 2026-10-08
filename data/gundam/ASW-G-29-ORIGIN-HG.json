@@ -1,0 +1,43 @@
+{
+  "category": "gundam",
+  "id": "ASW-G-29-ORIGIN-HG",
+  "designation": "ASW-G-29",
+  "name": "Gundam Astaroth Origin",
+  "summary": "Post Disaster / Mobile Suit Gundam IRON-BLOODED ORPHANS Gekko",
+  "description": "",
+  "continuity": "Post Disaster",
+  "series": "Mobile Suit Gundam IRON-BLOODED ORPHANS Gekko",
+  "timeline_position": 1,
+  "timeline_lane": "side-story",
+  "timeline_label": "P.D. 323",
+  "timeline_parent": "Mobile Suit Gundam IRON-BLOODED ORPHANS",
+  "family": "Astaroth Family",
+  "family_order": 1,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Argi Mirage",
+    "height": "18.5 m",
+    "weight": "32.2 t",
+    "armament": [
+      "150mm Shotgun",
+      "Sledgehammer",
+      "γ Nanolaminate Sword"
+    ],
+    "features": [
+      "Flight Form",
+      "Special Energy Transmission Mechanism",
+      "Nanolaminate Armor"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "detailing",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/ASW-G-29-ORIGIN-HG.png",
+  "specs": {
+    "Release date": "2016-08-27",
+    "Paint": "Details"
+  }
+}

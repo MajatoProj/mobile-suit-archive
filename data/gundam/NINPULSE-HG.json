@@ -1,0 +1,48 @@
+{
+  "category": "gundam",
+  "id": "NINPULSE-HG",
+  "designation": "Shinobu no san",
+  "name": "Ninpulse Gundam",
+  "summary": "Build Series / Gundam Build Fighters: GM's Counterattack",
+  "description": "Build complete. Water decals and additional detail painting may be added later. might buy a second one.",
+  "continuity": "Build Series",
+  "series": "Gundam Build Fighters: GM's Counterattack",
+  "timeline_position": 2,
+  "timeline_lane": "main",
+  "timeline_label": "GM's Counterattack",
+  "timeline_parent": "Gundam Build Fighters",
+  "family": "Impulse Family",
+  "family_order": 2,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Nils Nielsen",
+    "height": "19.2 m",
+    "weight": "74.4 t",
+    "armament": [
+      "Gen'ei Kochoken ×2",
+      "Beam Saber ×4",
+      "Gun ×4",
+      "Power Axe",
+      "Tenku Jujiken"
+    ],
+    "features": [
+      "Wing ×8",
+      "Wing cloak configuration",
+      "Large shuriken configuration",
+      "Movable mono-eye stealth configuration"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "completed",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/NINPULSE-HG.png",
+  "specs": {
+    "Release date": "2017-08-11",
+    "Build date": "2026-07-22",
+    "Paint": "None",
+    "Top coat": "none"
+  }
+}

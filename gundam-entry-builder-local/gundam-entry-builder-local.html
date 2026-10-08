@@ -123,6 +123,14 @@
       width:0%;
       background:linear-gradient(90deg, rgba(127,199,255,.55), rgba(127,199,255,.95));
     }
+
+    .card.is-faulted{
+      opacity:.78;
+    }
+    .card.is-faulted .visual img{
+      filter:grayscale(.82) saturate(.38) brightness(.72)
+        drop-shadow(0 10px 12px rgba(0,0,0,.45));
+    }
     .card.is-backlog .visual img{
       filter:grayscale(1) contrast(.92) brightness(.93) drop-shadow(0 10px 12px rgba(0,0,0,.4));
     }
@@ -303,7 +311,12 @@
 
         <label>Timeline position
           <input name="timeline_position" type="number" min="1" step="1" placeholder="2">
-          <span class="normalize-note">Main horizontal position. Parallel series can share the same number.</span>
+          <span class="normalize-note">Series/story position in the continuity. Parallel series can share the same number.</span>
+        </label>
+
+        <label>Timeline order (within series)
+          <input name="timeline_order" type="number" min="1" step="1" placeholder="1">
+          <span class="normalize-note">Order of mobile suits inside the same series. Example: Rising Freedom 1, Mighty Strike Freedom 2.</span>
         </label>
 
         <label>Timeline lane
@@ -403,12 +416,13 @@
         </label>
         <label>Build status
           <select name="build_status">
-            <option value="">Unassigned</option>
+            <option value="">Unassigned / Wanted</option>
             <option value="backlog">Backlog</option>
             <option value="assembly">Assembly</option>
             <option value="detailing">Detailing</option>
             <option value="finishing">Finishing</option>
             <option value="completed">Completed</option>
+            <option value="faulted">Faulted</option>
           </select>
         </label>
         <label>Paint
@@ -803,6 +817,7 @@
     setValue("continuity", item.continuity);
     setValue("series", item.series);
     setValue("timeline_position", item.timeline_position);
+    setValue("timeline_order", item.timeline_order);
     setValue("timeline_lane", item.timeline_lane);
     setValue("timeline_label", item.timeline_label);
     setValue("timeline_parent", item.timeline_parent);
@@ -928,8 +943,14 @@
     field.value = value ?? "";
   }
 
-  form.addEventListener("input", () => {
-    renderOriginSelect();
+  form.addEventListener("input", event => {
+    // Only rebuild the Design Origin dropdown when the archive ID changes.
+    // Rebuilding it for every form input caused a selected origin to
+    // immediately jump back to "SELECT EXISTING GUNDAM...".
+    if (event.target === form.elements.id) {
+      renderOriginSelect();
+    }
+
     update();
   });
 
@@ -1022,6 +1043,10 @@
         item.timeline_position === null || item.timeline_position === undefined
           ? null
           : Number(item.timeline_position),
+      timeline_order:
+        item.timeline_order === null || item.timeline_order === undefined
+          ? null
+          : Number(item.timeline_order),
       timeline_lane: String(item.timeline_lane || ""),
       timeline_label: String(item.timeline_label || ""),
       timeline_parent: String(item.timeline_parent || ""),
@@ -1055,15 +1080,21 @@
 
   function buildStatusInfo(value) {
     const map = {
-      "backlog": { label: "Backlog", percent: 10 },
-      "assembly": { label: "Assembly", percent: 35 },
-      "detailing": { label: "Detailing", percent: 65 },
-      "finishing": { label: "Finishing", percent: 85 },
-      "completed": { label: "Completed", percent: 100 }
+      "backlog": { label: "Backlog", percent: 10, hideProgress: false },
+      "assembly": { label: "Assembly", percent: 35, hideProgress: false },
+      "detailing": { label: "Detailing", percent: 65, hideProgress: false },
+      "finishing": { label: "Finishing", percent: 85, hideProgress: false },
+      "completed": { label: "Completed", percent: 100, hideProgress: false },
+      "faulted": { label: "Faulted", percent: null, hideProgress: true }
     };
 
     const key = String(value || "").trim().toLowerCase();
-    return map[key] ? { key, ...map[key] } : { key: "", label: "", percent: 0 };
+
+    if (!key) {
+      return { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
+    }
+
+    return map[key] || { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
   }
 
   function paintLabel(value) {
@@ -1091,6 +1122,7 @@
 
     const familyOrder = String(fd.get("family_order") || "").trim();
     const timelinePosition = String(fd.get("timeline_position") || "").trim();
+    const timelineOrder = String(fd.get("timeline_order") || "").trim();
 
     const continuity = canonicalizeValue("continuity", fd.get("continuity"));
     const series = canonicalizeValue("series", fd.get("series"));
@@ -1127,6 +1159,7 @@
       continuity,
       series,
       timeline_position:timelinePosition ? Number(timelinePosition) : null,
+      timeline_order:timelineOrder ? Number(timelineOrder) : null,
       timeline_lane:String(fd.get("timeline_lane") || "").trim(),
       timeline_label:String(fd.get("timeline_label") || "").trim(),
       timeline_parent:timelineParent,
@@ -1175,16 +1208,31 @@
     const statusInfo = buildStatusInfo(item.build_status);
     const statusWrap = document.getElementById("previewStatus");
     const previewCard = document.querySelector(".card");
-    previewCard.classList.toggle("is-backlog", statusInfo.key === "backlog");
+    previewCard.classList.toggle(
+      "is-backlog",
+      statusInfo.key === "backlog" || statusInfo.key === "unassigned"
+    );
+    previewCard.classList.toggle(
+      "is-faulted",
+      statusInfo.key === "faulted"
+    );
 
-    if (statusInfo.key) {
-      statusWrap.hidden = false;
-      document.getElementById("pBuildStatus").textContent = statusInfo.label.toUpperCase();
-      document.getElementById("pBuildPercent").textContent = `${statusInfo.percent}%`;
-      document.getElementById("pBuildMeter").style.width = `${statusInfo.percent}%`;
+    statusWrap.hidden = false;
+    document.getElementById("pBuildStatus").textContent = statusInfo.label.toUpperCase();
+
+    const percent = document.getElementById("pBuildPercent");
+    const meterFill = document.getElementById("pBuildMeter");
+    const meter = meterFill.closest(".preview-status-meter");
+
+    percent.hidden = statusInfo.hideProgress;
+    meter.hidden = statusInfo.hideProgress;
+
+    if (!statusInfo.hideProgress) {
+      percent.textContent = `${statusInfo.percent}%`;
+      meterFill.style.width = `${statusInfo.percent}%`;
     } else {
-      statusWrap.hidden = true;
-      document.getElementById("pBuildMeter").style.width = "0%";
+      percent.textContent = "";
+      meterFill.style.width = "0%";
     }
   }
 
