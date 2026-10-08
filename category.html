@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Collection Category</title>
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/themes.css?v=28">
+  <link rel="stylesheet" href="css/themes.css?v=35">
 </head>
 <body class="category-page">
   <div class="theme-background" aria-hidden="true">
@@ -111,6 +111,52 @@
       <div class="gundam-view" id="gundamFamiliesView" hidden></div>
     </section>
 
+
+    <section class="generic-explorer" id="genericExplorer" hidden>
+      <div class="gundam-toolbar archive-generic-toolbar">
+        <div class="gundam-toolbar-top">
+          <div>
+            <span class="panel-label" id="genericExplorerLabel">ARCHIVE CATALOG</span>
+          </div>
+          <button class="archive-action-button" type="button" id="genericStatisticsButton"
+                  aria-expanded="false" aria-controls="genericStatisticsPanel">STATISTICS</button>
+        </div>
+
+        <div class="gundam-search-row">
+          <label class="archive-search" for="genericSearch">
+            <span class="panel-label">SEARCH DATABASE</span>
+            <span class="archive-search-field">
+              <span class="archive-search-symbol" aria-hidden="true">⌕</span>
+              <input id="genericSearch" type="search" autocomplete="off"
+                     placeholder="Name, series, franchise, source, notes...">
+            </span>
+          </label>
+        </div>
+
+        <div class="gundam-filter-row" id="genericGroupRow">
+          <span class="panel-label" id="genericGroupLabel">GROUP</span>
+          <div class="filter-strip" id="genericGroupFilters"></div>
+        </div>
+
+        <div class="gundam-filter-row" id="genericSourceRow">
+          <span class="panel-label">SOURCE</span>
+          <div class="filter-strip" id="genericSourceFilters"></div>
+        </div>
+
+        <div class="gundam-filter-row" id="genericStatusRow">
+          <span class="panel-label">STATUS</span>
+          <div class="filter-strip status-filter-strip" id="genericStatusFilters"></div>
+        </div>
+
+        <div class="gundam-filter-row">
+          <span class="panel-label">ORDER</span>
+          <div class="filter-strip" id="genericSortControls"></div>
+        </div>
+
+        <div class="archive-statistics" id="genericStatisticsPanel" hidden></div>
+      </div>
+    </section>
+
     <section class="items-grid" id="itemsGrid" aria-live="polite"></section>
 
     <section class="empty-state" id="emptyState" hidden>
@@ -121,6 +167,6 @@
   </main>
 
   <script src="js/shared.js"></script>
-  <script src="js/category.js?v=29"></script>
+  <script src="js/category.js?v=34"></script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+{
+  "id": "FGO-PETITRITS-MUSASHI",
+  "designation": "Petitrits",
+  "name": "Saber / Miyamoto Musashi",
+  "summary": "Fate/Grand Order Petitrits model kit.",
+  "franchise": "Fate/Grand Order",
+  "series": "Fate/Grand Order",
+  "subseries": "Petitrits",
+  "family": "FGO Petitrits",
+  "archive_folder": "fate-grand-order/petitrits",
+  "source": "bandai",
+  "custom": false,
+  "grade": "Petitrits",
+  "scale": "Non-scale",
+  "image": "assets/images/fantasy/fate-grand-order/petitrits/FGO-PETITRITS-MUSASHI.png",
+  "file": "fate-grand-order/petitrits/FGO-PETITRITS-MUSASHI.json",
+  "release_date": "2020-02-29",
+  "build_date": "2018-01-01",
+  "build_status": "completed",
+  "paint": "None",
+  "top_coat": "None",
+  "notes": "Completed older build. Build date is recorded as approximately 2018 from collection memory. Sticker details are still present; planned future upgrade is to replace sticker details with paint.",
+  "specs": {
+    "Release date": "2020-02-29",
+    "Build date": "2018-01-01",
+    "Paint": "None",
+    "Top coat": "None",
+    "Future work": "Replace sticker details with paint"
+  }
+}

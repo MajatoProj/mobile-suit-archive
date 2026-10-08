@@ -1,0 +1,49 @@
+{
+  "category": "gundam",
+  "id": "GNT-0000-RG",
+  "designation": "GNT-0000",
+  "name": "00 Qan[T]",
+  "summary": "Anno Domini / Mobile Suit Gundam 00 the Movie: A Wakening of the Trailblazer",
+  "description": "old build, still want water decalls and fix the details",
+  "continuity": "Anno Domini",
+  "series": "Mobile Suit Gundam 00 the Movie: A Wakening of the Trailblazer",
+  "timeline_position": 3,
+  "timeline_lane": "main",
+  "timeline_label": "A.D. 2314",
+  "timeline_parent": "Mobile Suit Gundam 00 Second Season",
+  "family": "00 Family",
+  "family_order": 3,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Setsuna F. Seiei",
+    "height": "18.3 m",
+    "weight": "63.5 t",
+    "armament": [
+      "GN Sword V",
+      "GN Sword Bit ×6",
+      "GN Shield (GN Beam Gun)"
+    ],
+    "features": [
+      "Twin Drive System",
+      "Quantum System",
+      "Quantum Burst",
+      "Quantum Teleportation",
+      "Trans-Am System",
+      "Quantum Brainwave Control System",
+      "Small Veda Terminal"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "detailing",
+  "grade": "RG",
+  "grade_family": "RG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/anno-domini/trailblazer/GNT-0000-RG.png",
+  "specs": {
+    "Release date": "2016-05-28",
+    "Build date": "2016-07-08",
+    "Paint": "Panel Line",
+    "Top coat": "None"
+  }
+}

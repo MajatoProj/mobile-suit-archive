@@ -23,8 +23,8 @@
       "grade": "RG",
       "grade_family": "RG",
       "scale": "1/144",
-      "image": "assets/images/gundam/GNT-0000-RG.png",
-      "file": "GNT-0000-RG.json"
+      "image": "assets/images/gundam/anno-domini/trailblazer/GNT-0000-RG.png",
+      "file": "anno-domini/trailblazer/GNT-0000-RG.json"
     },
     {
       "category": "gundam",
@@ -47,8 +47,8 @@
       "grade": "HGCE",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/ZGMF-X10A-HGCE.png",
-      "file": "ZGMF-X10A-HGCE.json"
+      "image": "assets/images/gundam/cosmic-era/seed/ZGMF-X10A-HGCE.png",
+      "file": "cosmic-era/seed/ZGMF-X10A-HGCE.json"
     },
     {
       "category": "gundam",
@@ -71,8 +71,8 @@
       "grade": "HG",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/ASW-G-29-ORIGIN-HG.png",
-      "file": "ASW-G-29-ORIGIN-HG.json"
+      "image": "assets/images/gundam/post-disaster/gekko/ASW-G-29-ORIGIN-HG.png",
+      "file": "post-disaster/gekko/ASW-G-29-ORIGIN-HG.json"
     },
     {
       "category": "gundam",
@@ -101,8 +101,8 @@
       "grade": "HGCE",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/ZGMF-A-262PD-P-HGCE.png",
-      "file": "ZGMF-A-262PD-P-HGCE.json",
+      "image": "assets/images/gundam/cosmic-era/seed-freedom/ZGMF-A-262PD-P-HGCE.png",
+      "file": "cosmic-era/seed-freedom/ZGMF-A-262PD-P-HGCE.json",
       "timeline_order": 2
     },
     {
@@ -126,8 +126,8 @@
       "grade": "HG",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/NINPULSE-HG.png",
-      "file": "NINPULSE-HG.json"
+      "image": "assets/images/gundam/build-series/gm-counterattack/NINPULSE-HG.png",
+      "file": "build-series/gm-counterattack/NINPULSE-HG.json"
     },
     {
       "category": "gundam",
@@ -156,8 +156,8 @@
       "grade": "HGCE",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/STTS-909-HGCE.png",
-      "file": "STTS-909-HGCE.json",
+      "image": "assets/images/gundam/cosmic-era/seed-freedom/STTS-909-HGCE.png",
+      "file": "cosmic-era/seed-freedom/STTS-909-HGCE.json",
       "timeline_order": 1
     },
     {
@@ -187,8 +187,8 @@
       "grade": "HGCE",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/ZGMF-X20A-HGCE.png",
-      "file": "ZGMF-X20A-HGCE.json"
+      "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X20A-HGCE.png",
+      "file": "cosmic-era/seed-destiny/ZGMF-X20A-HGCE.json"
     },
     {
       "category": "gundam",
@@ -211,8 +211,8 @@
       "grade": "HG",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/GN-0000-GNR-010-HG-DC.png",
-      "file": "GN-0000-GNR-010-HG-DC.json"
+      "image": "assets/images/gundam/anno-domini/00-second-season/GN-0000-GNR-010-HG-DC.png",
+      "file": "anno-domini/00-second-season/GN-0000-GNR-010-HG-DC.json"
     },
     {
       "category": "gundam",
@@ -235,8 +235,8 @@
       "grade": "HG",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/XXXG-00W0CV-HG.png",
-      "file": "XXXG-00W0CV-HG.json"
+      "image": "assets/images/gundam/build-series/honoo-try/XXXG-00W0CV-HG.png",
+      "file": "build-series/honoo-try/XXXG-00W0CV-HG.json"
     },
     {
       "category": "gundam",
@@ -259,8 +259,8 @@
       "grade": "HG",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/YG-111-PP-HG-INCOMPLETE.png",
-      "file": "YG-111-PP-HG-INCOMPLETE.json"
+      "image": "assets/images/gundam/regild-century/reconguista-in-g/YG-111-PP-HG-INCOMPLETE.png",
+      "file": "regild-century/reconguista-in-g/YG-111-PP-HG-INCOMPLETE.json"
     },
     {
       "category": "gundam",
@@ -283,8 +283,8 @@
       "grade": "HG",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/MSZ-006LGT-HG.png",
-      "file": "MSZ-006LGT-HG.json"
+      "image": "assets/images/gundam/build-series/build-fighters-try/MSZ-006LGT-HG.png",
+      "file": "build-series/build-fighters-try/MSZ-006LGT-HG.json"
     },
     {
       "category": "gundam",
@@ -307,8 +307,8 @@
       "grade": "HG",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/ASW-G-08-6TH-HG.png",
-      "file": "ASW-G-08-6TH-HG.json"
+      "image": "assets/images/gundam/post-disaster/ibo/ASW-G-08-6TH-HG.png",
+      "file": "post-disaster/ibo/ASW-G-08-6TH-HG.json"
     },
     {
       "category": "gundam",
@@ -331,8 +331,8 @@
       "grade": "HG",
       "grade_family": "HG",
       "scale": "1/144",
-      "image": "assets/images/gundam/MBF-P03-SECOND-L-HG.png",
-      "file": "MBF-P03-SECOND-L-HG.json"
+      "image": "assets/images/gundam/cosmic-era/seed-astray/MBF-P03-SECOND-L-HG.png",
+      "file": "cosmic-era/seed-astray/MBF-P03-SECOND-L-HG.json"
     }
   ]
 }

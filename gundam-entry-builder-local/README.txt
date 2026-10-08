@@ -1,28 +1,15 @@
-GUNDAM ENTRY BUILDER — FAULTED STATUS
+GUNDAM ENTRY BUILDER v17 — AUTO FOLDERS
 
-Faulted is for Gundams you own but have retired/stored away or use for other purposes.
+New records now use continuity / series subfolders automatically.
 
-Saved JSON:
-  "build_status": "faulted"
+Examples:
+- Cosmic Era + Mobile Suit Gundam SEED Freedom -> cosmic-era/seed-freedom/
+- Anno Domini + Mobile Suit Gundam 00 Second Season -> anno-domini/00-second-season/
+- Build Series + Gundam Build Fighters Try -> build-series/build-fighters-try/
 
-Display behavior:
-- Shows FAULTED as the status.
-- No percentage is shown.
-- No progress bar is shown.
-- The archive card is muted/desaturated.
+The individual JSON still downloads as ID.json because browsers cannot reliably create nested download folders.
+After downloading, place it in the folder shown by the builder status message.
+The updated index.json already stores the nested relative file path.
 
-The builder does not include or modify your collection data folder.
-
-TIMELINE ORDER
-- New optional field: timeline_order.
-- timeline_position orders the series/story stage.
-- timeline_order orders Gundams inside the same series.
-- Example: Rising Freedom = 1; Mighty Strike Freedom = 2.
-
-
-RELATIONSHIPS v16
-- Design Origin remains backward-compatible in design_origins[].
-- Additional typed links are stored in relationships[].
-- Supported types: successor, variant, upgrade, equipment-pack.
-- Successor/Upgrade render current -> linked record.
-- Variant/Equipment-Pack render current <-> linked record.
+If Image path is left blank, the builder automatically generates the matching nested PNG path.
+A manually entered custom image path is preserved.

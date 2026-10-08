@@ -3,13 +3,44 @@
   "version": 1,
   "items": [
     {
-      "category": "fantasy",
-      "id": "DEMO-FANTASY",
-      "designation": "EXT // RELIC RECORD",
-      "name": "Example Fantasy Record",
-      "summary": "Fate / fantasy plamo demonstration entry.",
-      "image": "",
-      "file": "DEMO-FANTASY.json"
+      "id": "FGO-PETITRITS-MUSASHI",
+      "designation": "Petitrits",
+      "name": "Saber / Miyamoto Musashi",
+      "summary": "Fate/Grand Order Petitrits model kit.",
+      "franchise": "Fate/Grand Order",
+      "series": "Fate/Grand Order",
+      "subseries": "Petitrits",
+      "family": "FGO Petitrits",
+      "archive_folder": "fate-grand-order/petitrits",
+      "source": "bandai",
+      "custom": false,
+      "grade": "Petitrits",
+      "scale": "Non-scale",
+      "image": "assets/images/fantasy/fate-grand-order/petitrits/FGO-PETITRITS-MUSASHI.png",
+      "file": "fate-grand-order/petitrits/FGO-PETITRITS-MUSASHI.json",
+      "release_date": "2020-02-29",
+      "build_date": "2018-01-01",
+      "build_status": "completed"
+    },
+    {
+      "id": "FGO-PETITRITS-ALTRIA",
+      "designation": "Petitrits",
+      "name": "Saber / Altria Pendragon",
+      "summary": "Fate/Grand Order Petitrits model kit.",
+      "franchise": "Fate/Grand Order",
+      "series": "Fate/Grand Order",
+      "subseries": "Petitrits",
+      "family": "FGO Petitrits",
+      "archive_folder": "fate-grand-order/petitrits",
+      "source": "bandai",
+      "custom": false,
+      "grade": "Petitrits",
+      "scale": "Non-scale",
+      "image": "assets/images/fantasy/fate-grand-order/petitrits/FGO-PETITRITS-ALTRIA.png",
+      "file": "fate-grand-order/petitrits/FGO-PETITRITS-ALTRIA.json",
+      "release_date": "2020-08-08",
+      "build_date": "2018-01-01",
+      "build_status": "completed"
     }
   ]
 }

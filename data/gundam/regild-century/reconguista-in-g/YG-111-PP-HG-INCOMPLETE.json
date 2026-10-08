@@ -1,0 +1,49 @@
+{
+  "category": "gundam",
+  "id": "YG-111-PP-HG-INCOMPLETE",
+  "designation": "YG-111",
+  "name": "Gundam G-Self Perfect Pack (Incomplete)",
+  "summary": "Regild Century / Gundam Reconguista in G",
+  "description": "Old incomplete build from 2015. Faulted. The Perfect Pack backpack is broken. Needs cleaning, restoration and repair. Reserved as a future custom-build base; a new complete G-Self Perfect Pack can be archived separately.",
+  "continuity": "Regild Century",
+  "series": "Gundam Reconguista in G",
+  "timeline_position": 1,
+  "timeline_lane": "main",
+  "timeline_label": "R.C. 1014",
+  "timeline_parent": "",
+  "family": "G-Self Family",
+  "family_order": 1,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Bellri Zenam",
+    "height": "18.0 m",
+    "weight": "31.1 t (+14.1 t Perfect Pack)",
+    "armament": [
+      "Head Vulcan ×2",
+      "Beam Saber ×2",
+      "Beam Rifle",
+      "Photon Armor Shield",
+      "Traffic Fin ×2",
+      "Photon Torpedo",
+      "Omnidirectional Laser"
+    ],
+    "features": [
+      "BPMP-01 Perfect Pack",
+      "Core Block System",
+      "Photon Armor",
+      "Photon Searcher"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "faulted",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/regild-century/reconguista-in-g/YG-111-PP-HG-INCOMPLETE.png",
+  "specs": {
+    "Release date": "2015-08-22",
+    "Build date": "2015-01-01",
+    "Paint": "None"
+  }
+}
