@@ -25,6 +25,96 @@
       "scale": "1/144",
       "image": "assets/images/gundam/ZGMF-X10A-HGCE.png",
       "file": "ZGMF-X10A-HGCE.json"
+    },
+    {
+      "category": "gundam",
+      "id": "ZGMF-A-262PD-P-HGCE",
+      "designation": "ZGMF/A-262PD-P",
+      "name": "Mighty Strike Freedom Gundam",
+      "summary": "Cosmic Era / Mobile Suit Gundam SEED Freedom",
+      "continuity": "Cosmic Era",
+      "series": "Mobile Suit Gundam SEED Freedom",
+      "timeline_position": 3,
+      "timeline_lane": "main",
+      "timeline_label": "C.E. 75",
+      "timeline_parent": "Mobile Suit Gundam SEED Destiny",
+      "family": "Freedom Family",
+      "family_order": 4,
+      "design_origins": [
+        {
+          "id": "ZGMF-X20A-HGCE",
+          "designation": "ZGMF-X20A",
+          "name": "Strike Freedom Gundam"
+        }
+      ],
+      "source": "bandai",
+      "custom": false,
+      "build_status": "backlog",
+      "grade": "HGCE",
+      "grade_family": "HG",
+      "scale": "1/144",
+      "image": "assets/images/gundam/ZGMF-A-262PD-P-HGCE.png",
+      "file": "ZGMF-A-262PD-P-HGCE.json"
+    },
+    {
+      "category": "gundam",
+      "id": "STTS-909-HGCE",
+      "designation": "STTS-909",
+      "name": "Rising Freedom Gundam",
+      "summary": "Cosmic Era / Mobile Suit Gundam SEED Freedom",
+      "continuity": "Cosmic Era",
+      "series": "Mobile Suit Gundam SEED Freedom",
+      "timeline_position": 3,
+      "timeline_lane": "main",
+      "timeline_label": "C.E. 75",
+      "timeline_parent": "Mobile Suit Gundam SEED Destiny",
+      "family": "Freedom Family",
+      "family_order": 4,
+      "design_origins": [
+        {
+          "id": "ZGMF-X20A-HGCE",
+          "designation": "ZGMF-X20A",
+          "name": "Strike Freedom Gundam"
+        }
+      ],
+      "source": "bandai",
+      "custom": false,
+      "build_status": "backlog",
+      "grade": "HGCE",
+      "grade_family": "HG",
+      "scale": "1/144",
+      "image": "assets/images/gundam/STTS-909-HGCE.png",
+      "file": "STTS-909-HGCE.json"
+    },
+    {
+      "category": "gundam",
+      "id": "ZGMF-X20A-HGCE",
+      "designation": "ZGMF-X20A",
+      "name": "Strike Freedom Gundam",
+      "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny",
+      "continuity": "Cosmic Era",
+      "series": "Mobile Suit Gundam SEED Destiny",
+      "timeline_position": 2,
+      "timeline_lane": "main",
+      "timeline_label": "C.E. 74",
+      "timeline_parent": "Mobile Suit Gundam SEED",
+      "family": "Freedom Family",
+      "family_order": 2,
+      "design_origins": [
+        {
+          "id": "ZGMF-X10A-HGCE",
+          "designation": "ZGMF-X10A",
+          "name": "Freedom Gundam"
+        }
+      ],
+      "source": "bandai",
+      "custom": false,
+      "build_status": "backlog",
+      "grade": "HGCE",
+      "grade_family": "HG",
+      "scale": "1/144",
+      "image": "assets/images/gundam/ZGMF-X20A-HGCE.png",
+      "file": "ZGMF-X20A-HGCE.json"
     }
   ]
 }

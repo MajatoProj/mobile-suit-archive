@@ -347,3 +347,13 @@ On the archive cards:
 
 On the individual record page:
 - The BUILD panel shows a larger status block with a circle + progress bar.
+
+
+### Unassigned status = Wanted
+
+A blank `build_status` is intentionally treated as **Wanted / Looking For**:
+- archive card is grayed out;
+- status displays as `WANTED`;
+- progress displays as `0%`.
+
+This lets the archive contain kits the user is actively looking for before they are owned.

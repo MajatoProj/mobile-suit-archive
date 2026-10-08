@@ -259,7 +259,12 @@ function getBuildStatusInfo(value) {
   };
 
   const key = String(value || "").trim().toLowerCase();
-  return map[key] ? { key, ...map[key] } : { key: "", label: "", percent: 0 };
+
+  if (!key) {
+    return { key: "unassigned", label: "Wanted", percent: 0 };
+  }
+
+  return map[key] ? { key, ...map[key] } : { key: "unassigned", label: "Wanted", percent: 0 };
 }
 
 function renderSpecs(item) {

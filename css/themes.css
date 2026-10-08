@@ -1306,3 +1306,249 @@ body.theme-fantasy {
   height:100%;
   background:linear-gradient(90deg, rgba(127,199,255,.5), rgba(127,199,255,.95));
 }
+
+
+.status-unassigned,
+.build-status-block.status-unassigned .build-status-fill {
+  background: linear-gradient(90deg, rgba(145,153,160,.32), rgba(171,180,188,.62));
+}
+
+.build-status-block.status-unassigned {
+  border-color: rgba(171,181,190,.14);
+  background: rgba(155,164,172,.025);
+}
+
+.build-status-block.status-unassigned .build-status-circle {
+  border-color: rgba(171,181,190,.22);
+  color: #aeb8bf;
+}
+
+.build-status-block.status-unassigned .build-status-copy strong {
+  color: #b8c1c8;
+}
+
+
+/* ============================================================
+   ITEM HEADER TITLE FIXES
+   Prevent long Gundam names from visually colliding with the
+   designation line below them.
+   ============================================================ */
+.item-page .category-header {
+  align-items: flex-start;
+}
+
+.item-page .category-header > div {
+  min-width: 0;
+  flex: 1 1 auto;
+  max-width: min(100%, 1200px);
+}
+
+.item-page .category-header h1 {
+  margin: .22rem 0 .95rem;
+  line-height: 1.08;
+  letter-spacing: .05em;
+  font-size: clamp(2.2rem, 5.5vw, 4.8rem);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.item-page .category-subtitle {
+  margin: 0 0 .15rem;
+  padding-top: .08rem;
+  line-height: 1.35;
+  max-width: 75ch;
+}
+
+@media (max-width: 900px) {
+  .item-page .category-header h1 {
+    margin-bottom: .85rem;
+    font-size: clamp(2rem, 6.6vw, 3.8rem);
+    line-height: 1.1;
+    letter-spacing: .035em;
+  }
+}
+
+
+/* ============================================================
+   FAMILY VIEW BRANCHING + CARD TITLE CLEANUP v17
+   Same family_order values occupy the same generation column.
+   A fork rail feeds every card in that generation.
+   ============================================================ */
+.gundam-record-topline {
+  justify-content: flex-end;
+  min-height: 18px;
+  margin-bottom: .12rem;
+}
+
+.gundam-record h4 {
+  min-height: 2.6em;
+  margin: .16rem 0 .62rem;
+  font-size: .76rem;
+  line-height: 1.28;
+  letter-spacing: .025em;
+  font-weight: 590;
+}
+
+.family-flow {
+  align-items: stretch;
+}
+
+.family-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.family-stage-stack {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 14px;
+}
+
+.family-branch-row {
+  position: relative;
+}
+
+/* A generation with multiple kits becomes a vertical branch. */
+.family-stage.is-branch .family-stage-stack {
+  padding-left: 34px;
+}
+
+/* Vertical rail joining the branch cards. */
+.family-stage.is-branch .family-stage-stack::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: calc(25% - 1px);
+  bottom: calc(25% - 1px);
+  border-left: 1px solid rgba(127,199,255,.42);
+}
+
+/* Horizontal arm from the rail into each branch card. */
+.family-stage.is-branch .family-branch-row::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 50%;
+  width: 18px;
+  border-top: 1px solid rgba(127,199,255,.42);
+}
+
+/* Incoming lineage line from the prior generation into the fork rail. */
+.family-stage.is-branch::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 16px;
+  border-top: 1px solid rgba(127,199,255,.42);
+}
+
+.family-stage .gundam-record {
+  width: 210px;
+}
+
+/* Keep the connector centered against the whole generation column. */
+.family-stage > .family-connector {
+  align-self: stretch;
+}
+
+@media (max-width: 760px) {
+  .family-stage .gundam-record {
+    width: 185px;
+  }
+
+  .family-stage.is-branch .family-stage-stack {
+    padding-left: 28px;
+  }
+
+  .family-stage.is-branch .family-stage-stack::before {
+    left: 13px;
+  }
+
+  .family-stage.is-branch .family-branch-row::before {
+    left: -15px;
+    width: 15px;
+  }
+
+  .family-stage.is-branch::before {
+    width: 13px;
+  }
+}
+
+
+/* ============================================================
+   DESIGN ORIGIN LINKS v18
+   ============================================================ */
+.design-origin-note {
+  margin: 18px 20px 0;
+  padding: 12px 14px 14px;
+  border-left: 2px solid rgba(127,199,255,.45);
+  background: rgba(70,135,176,.07);
+}
+
+.design-origin-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.design-origin-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.15fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid rgba(127,199,255,.10);
+  background: rgba(2,10,17,.28);
+}
+
+.design-origin-source,
+.design-origin-target {
+  min-width: 0;
+  color: #bfdbe9;
+  font-size: .72rem;
+  font-weight: 570;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.design-origin-source {
+  color: #8fb6ca;
+  text-align: right;
+}
+
+.design-origin-target {
+  color: #d4e7f0;
+}
+
+.design-origin-source:hover,
+.design-origin-target:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.design-origin-arrow {
+  color: rgba(127,199,255,.68);
+  font: .9rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+@media (max-width: 620px) {
+  .design-origin-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .design-origin-source {
+    text-align: left;
+  }
+
+  .design-origin-arrow {
+    transform: rotate(90deg);
+    transform-origin: left center;
+  }
+}

@@ -320,42 +320,92 @@ function renderFamilies(items) {
     const flow = document.createElement("div");
     flow.className = "family-flow";
 
-    familyItems.forEach((item, index) => {
-      const wrapper = document.createElement("div");
-      wrapper.className = "family-step";
+    const groupedStages = [];
+    familyItems.forEach(item => {
+      const rawOrder = Number(item.family_order);
+      const orderKey = Number.isFinite(rawOrder) ? rawOrder : "UNASSIGNED";
+      const existing = groupedStages.find(stage => stage.orderKey === orderKey);
+      if (existing) {
+        existing.items.push(item);
+      } else {
+        groupedStages.push({ orderKey, items: [item] });
+      }
+    });
 
-      wrapper.appendChild(makeGundamCard(item));
+    groupedStages.forEach((stage, stageIndex) => {
+      const stageEl = document.createElement("div");
+      stageEl.className = `family-stage${stage.items.length > 1 ? " is-branch" : ""}`;
 
-      if (index < familyItems.length - 1) {
+      const stack = document.createElement("div");
+      stack.className = "family-stage-stack";
+
+      stage.items.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "family-branch-row";
+        row.appendChild(makeGundamCard(item));
+        stack.appendChild(row);
+      });
+
+      stageEl.appendChild(stack);
+
+      if (stageIndex < groupedStages.length - 1) {
         const connector = document.createElement("div");
         connector.className = "family-connector";
         connector.setAttribute("aria-hidden", "true");
         connector.innerHTML = `<span></span>`;
-        wrapper.appendChild(connector);
+        stageEl.appendChild(connector);
       }
 
-      flow.appendChild(wrapper);
+      flow.appendChild(stageEl);
     });
 
-    // Show stored cross-design relationships when they are included in the index.
+    // Show stored cross-design relationships as clean, separate rows.
     const originLinks = familyItems.flatMap(item => {
       if (Array.isArray(item.design_origins)) {
-        return item.design_origins.map(origin => {
-          const source = origin.designation || origin.name || origin.id || "Unknown";
-          return `${source} → ${item.name}`;
-        });
+        return item.design_origins.map(origin => ({
+          sourceId: origin.id || "",
+          sourceName: origin.name || origin.designation || origin.id || "Unknown",
+          targetId: item.id || "",
+          targetName: item.name || item.designation || item.id || "Unknown"
+        }));
       }
 
       // Legacy single-text field support.
-      return item.design_origin ? [`${item.design_origin} → ${item.name}`] : [];
+      return item.design_origin
+        ? [{
+            sourceId: "",
+            sourceName: item.design_origin,
+            targetId: item.id || "",
+            targetName: item.name || item.designation || item.id || "Unknown"
+          }]
+        : [];
     });
 
     if (originLinks.length) {
       const origin = document.createElement("div");
       origin.className = "design-origin-note";
+
+      const rows = originLinks.map(link => {
+        const source = link.sourceId
+          ? `<a class="design-origin-source" href="item.html?category=gundam&id=${encodeURIComponent(link.sourceId)}">${escapeHtml(link.sourceName)}</a>`
+          : `<span class="design-origin-source">${escapeHtml(link.sourceName)}</span>`;
+
+        const target = link.targetId
+          ? `<a class="design-origin-target" href="item.html?category=gundam&id=${encodeURIComponent(link.targetId)}">${escapeHtml(link.targetName)}</a>`
+          : `<span class="design-origin-target">${escapeHtml(link.targetName)}</span>`;
+
+        return `
+          <div class="design-origin-row">
+            ${source}
+            <span class="design-origin-arrow" aria-hidden="true">→</span>
+            ${target}
+          </div>
+        `;
+      }).join("");
+
       origin.innerHTML = `
         <span class="panel-label">DESIGN ORIGIN LINK${originLinks.length > 1 ? "S" : ""}</span>
-        ${originLinks.map(link => `<strong>${escapeHtml(link)}</strong>`).join("")}
+        <div class="design-origin-list">${rows}</div>
       `;
       section.appendChild(origin);
     }
@@ -469,13 +519,20 @@ function getBuildStatusInfo(value) {
   };
 
   const key = String(value || "").trim().toLowerCase();
-  return map[key] ? { key, ...map[key] } : { key: "", label: "", percent: 0 };
+
+  if (!key) {
+    return { key: "unassigned", label: "Wanted", percent: 0 };
+  }
+
+  return map[key] ? { key, ...map[key] } : { key: "unassigned", label: "Wanted", percent: 0 };
 }
 
 function makeGundamCard(item) {
   const status = getBuildStatusInfo(item.build_status);
   const link = document.createElement("a");
-  link.className = `gundam-record${status.key === "backlog" ? " is-backlog" : ""}`;
+  const mutedStatus =
+    status.key === "backlog" || status.key === "unassigned" ? " is-backlog" : "";
+  link.className = `gundam-record${mutedStatus}`;
   link.href = `item.html?category=gundam&id=${encodeURIComponent(item.id)}`;
 
   const sourceLabel = SOURCE_LABELS[item.source] || String(item.source || "").toUpperCase();
@@ -486,6 +543,8 @@ function makeGundamCard(item) {
   const thumbnail = item.image
     ? `<img class="gundam-record-image" src="${escapeHtml(item.image)}" alt="" loading="lazy">`
     : "";
+
+  const cardTitle = item.name || item.designation || item.id;
 
   const statusMarkup = status.key
     ? `
@@ -507,11 +566,10 @@ function makeGundamCard(item) {
     </div>
 
     <div class="gundam-record-topline">
-      <span class="unit-designation">${escapeHtml(item.designation || item.id)}</span>
       <span class="kit-badge badge-${escapeClass(item.source)}"><i></i>${escapeHtml(sourceLabel)}</span>
     </div>
 
-    <h4>${escapeHtml(item.name)}</h4>
+    <h4>${escapeHtml(cardTitle)}</h4>
 
     <div class="gundam-record-meta">
       <span>${escapeHtml(item.grade || "")}</span>

@@ -1,0 +1,58 @@
+{
+  "category": "gundam",
+  "id": "ZGMF-X20A-HGCE",
+  "designation": "ZGMF-X20A",
+  "name": "Strike Freedom Gundam",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny",
+  "description": "",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED Destiny",
+  "timeline_position": 2,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 74",
+  "timeline_parent": "Mobile Suit Gundam SEED",
+  "family": "Freedom Family",
+  "family_order": 2,
+  "design_origins": [
+    {
+      "id": "ZGMF-X10A-HGCE",
+      "designation": "ZGMF-X10A",
+      "name": "Freedom Gundam"
+    }
+  ],
+  "mobile_suit_data": {
+    "pilot": "Kira Yamato",
+    "height": "18.88 m",
+    "weight": "80.09 t",
+    "armament": [
+      "MMI-GAU27D 31mm CIWS ×2",
+      "MGX-2235 \"Calidus\" Multi-Phase Beam Cannon",
+      "MA-M02G \"Super Lacerta\" Beam Saber ×2",
+      "MMI-M15E \"Xiphias 3\" Railgun ×2",
+      "MX2200 Beam Shield ×2",
+      "MA-M21KF High-Energy Beam Rifle ×2",
+      "EQFU-3X Super DRAGOON Mobile Weapon Wing ×8",
+      "MA-80V Beam Assault Cannon ×8"
+    ],
+    "features": [
+      "HiMAT Mode",
+      "Full Burst Mode",
+      "Multi Lock-On System",
+      "Super DRAGOON System",
+      "Voiture Lumiere Propulsion System",
+      "Neutron Jammer Canceller",
+      "METEOR compatibility"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "backlog",
+  "grade": "HGCE",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/ZGMF-X20A-HGCE.png",
+  "specs": {
+    "Release date": "2016-11-12",
+    "Paint": "None"
+  }
+}
