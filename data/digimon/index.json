@@ -1,0 +1,15 @@
+{
+  "category": "digimon",
+  "version": 1,
+  "items": [
+    {
+      "category": "digimon",
+      "id": "DEMO-DIGIMON",
+      "designation": "DEMO // DIGITAL WORLD",
+      "name": "Example Digimon Record",
+      "summary": "Replace or remove this demonstration entry.",
+      "image": "",
+      "file": "DEMO-DIGIMON.json"
+    }
+  ]
+}

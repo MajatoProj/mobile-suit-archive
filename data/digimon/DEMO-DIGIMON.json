@@ -1,0 +1,14 @@
+{
+  "category": "digimon",
+  "id": "DEMO-DIGIMON",
+  "designation": "DEMO // DIGITAL WORLD",
+  "name": "Example Digimon Record",
+  "summary": "Replace or remove this demonstration entry.",
+  "description": "A sample item using the digital-nature theme.",
+  "image": "",
+  "specs": {
+    "Type": "Add yours here",
+    "Series": "Add yours here",
+    "Build status": "Example"
+  }
+}

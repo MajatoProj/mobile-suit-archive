@@ -1,0 +1,14 @@
+{
+  "category": "mecha",
+  "id": "DEMO-PROTOTYPE",
+  "designation": "EXT // TEST UNIT",
+  "name": "Example Prototype Mecha",
+  "summary": "Third-party / aftermarket mecha demonstration entry.",
+  "description": "A sample item using the industrial prototype archive theme.",
+  "image": "",
+  "specs": {
+    "Manufacturer": "Add yours here",
+    "Scale": "Add yours here",
+    "Status": "Test record"
+  }
+}

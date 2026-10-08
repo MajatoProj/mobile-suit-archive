@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Collection Category</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/themes.css">
+</head>
+<body class="category-page">
+  <div class="theme-background" aria-hidden="true">
+    <div class="theme-layer theme-layer-a"></div>
+    <div class="theme-layer theme-layer-b"></div>
+    <div class="theme-decoration"></div>
+  </div>
+
+  <header class="category-header">
+    <div>
+      <a class="back-link" id="backLink" href="archive.html">← MAIN ARCHIVE</a>
+      <p class="eyebrow" id="categoryEyebrow">COLLECTION ARCHIVE</p>
+      <h1 id="categoryTitle">DATABASE</h1>
+      <p class="category-subtitle" id="categorySubtitle"></p>
+    </div>
+
+    <nav class="category-rotator" data-category-rotator aria-label="Switch archive category">
+      <button class="rotator-card rotator-gundam" type="button"
+              data-rotator-card data-category="gundam"
+              data-href="category.html?type=gundam">
+        <span>GUNDAM</span>
+      </button>
+
+      <button class="rotator-card rotator-digimon" type="button"
+              data-rotator-card data-category="digimon"
+              data-href="category.html?type=digimon">
+        <span>DIGIMON</span>
+      </button>
+
+      <button class="rotator-card rotator-external" type="button"
+              data-rotator-card data-category="external"
+              data-href="external.html">
+        <span>EXTERNAL</span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="category-content">
+    <section class="category-intro hud-corners">
+      <div>
+        <span class="panel-label">DATABASE STATUS</span>
+        <strong>ONLINE</strong>
+      </div>
+      <div>
+        <span class="panel-label">ENTRIES</span>
+        <strong id="entryCount">0</strong>
+      </div>
+      <div>
+        <span class="panel-label">DISPLAY MODE</span>
+        <strong>ARCHIVE</strong>
+      </div>
+    </section>
+
+    <section class="gundam-explorer" id="gundamExplorer" hidden>
+      <div class="gundam-toolbar">
+        <div class="gundam-view-switch" role="group" aria-label="Gundam archive view">
+          <button class="view-button active" type="button" data-gundam-view="timeline">TIMELINE</button>
+          <button class="view-button" type="button" data-gundam-view="families">FAMILIES</button>
+        </div>
+
+        <div class="gundam-filter-row">
+          <span class="panel-label">SOURCE</span>
+          <div class="filter-strip" id="sourceFilters"></div>
+        </div>
+
+        <div class="gundam-filter-row">
+          <span class="panel-label">GRADE</span>
+          <div class="filter-strip" id="gradeFilters"></div>
+        </div>
+      </div>
+
+      <div class="gundam-view" id="gundamTimelineView"></div>
+      <div class="gundam-view" id="gundamFamiliesView" hidden></div>
+    </section>
+
+    <section class="items-grid" id="itemsGrid" aria-live="polite"></section>
+
+    <section class="empty-state" id="emptyState" hidden>
+      <p class="panel-label">NO ENTRIES REGISTERED</p>
+      <h2>This archive is ready for your collection.</h2>
+      <p>Add records to this archive’s <code>index.json</code> and keep each model in its own JSON file. NFC cards can link directly to individual records.</p>
+    </section>
+  </main>
+
+  <script src="js/shared.js"></script>
+  <script src="js/category.js"></script>
+</body>
+</html>

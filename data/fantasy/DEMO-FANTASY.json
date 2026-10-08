@@ -1,0 +1,14 @@
+{
+  "category": "fantasy",
+  "id": "DEMO-FANTASY",
+  "designation": "EXT // RELIC RECORD",
+  "name": "Example Fantasy Record",
+  "summary": "Fate / fantasy plamo demonstration entry.",
+  "description": "A sample item using the scenic medieval fantasy archive theme.",
+  "image": "",
+  "specs": {
+    "Series": "Add yours here",
+    "Character / subject": "Add yours here",
+    "Status": "Archive record"
+  }
+}

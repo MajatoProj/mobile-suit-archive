@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Collection Archive</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/archive.css">
+</head>
+<body class="archive-page">
+  <div class="archive-atmosphere" aria-hidden="true">
+    <div class="archive-stars"></div>
+    <div class="archive-grid"></div>
+  </div>
+
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">COLLECTION ARCHIVE</p>
+      <h1>SELECT DATABASE</h1>
+    </div>
+    <div class="header-status">
+      <span class="status-dot"></span>
+      <span>SYSTEM ONLINE</span>
+    </div>
+  </header>
+
+  <main class="archive-main">
+    <section class="category-stage" aria-label="Category selector">
+      <button class="carousel-nav carousel-prev" id="prevBtn" aria-label="Previous category">‹</button>
+
+      <div class="category-carousel" id="categoryCarousel">
+        <article class="category-card category-gundam" data-category="gundam" tabindex="0">
+          <div class="card-visual">
+            <div class="card-space"></div>
+            <div class="card-hud-ring"></div>
+          </div>
+          <div class="card-copy">
+            <span class="card-code">ARCHIVE // 01</span>
+            <h2>GUNDAM</h2>
+            <p>Mobile suit database</p>
+          </div>
+        </article>
+
+        <article class="category-card category-digimon" data-category="digimon" tabindex="0">
+          <div class="card-visual">
+            <div class="card-canopy"></div>
+            <div class="card-data-vines"></div>
+          </div>
+          <div class="card-copy">
+            <span class="card-code">ARCHIVE // 02</span>
+            <h2>DIGIMON</h2>
+            <p>Digital world archive</p>
+          </div>
+        </article>
+
+        <article class="category-card category-external" data-category="external" tabindex="0">
+          <div class="card-visual">
+            <div class="card-external-left"></div>
+            <div class="card-external-right"></div>
+          </div>
+          <div class="card-copy">
+            <span class="card-code">ARCHIVE // 03</span>
+            <h2>EXTERNAL ARCHIVES</h2>
+            <p>Independent mecha & fantasy collections</p>
+          </div>
+        </article>
+      </div>
+
+      <button class="carousel-nav carousel-next" id="nextBtn" aria-label="Next category">›</button>
+    </section>
+
+    <p class="archive-help">Use ← / →, click or swipe to rotate. Click the front card to enter. Bookmark this page to skip the startup sequence.</p>
+  </main>
+
+  <script src="js/shared.js"></script>
+  <script src="js/archive.js"></script>
+</body>
+</html>

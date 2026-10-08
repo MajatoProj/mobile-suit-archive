@@ -1,0 +1,48 @@
+{
+  "category": "gundam",
+  "id": "ZGMF-X10A-HGCE",
+  "designation": "ZGMF-X10A",
+  "name": "Freedom Gundam",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED",
+  "description": "",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED",
+  "timeline_position": 1,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 71",
+  "timeline_parent": "",
+  "family": "Freedom Family",
+  "family_order": 1,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Kira Yamato",
+    "height": "18.03 m",
+    "weight": "71.5 t",
+    "armament": [
+      "MMI-GAU2 Picus 76mm CIWS ×2",
+      "MA-M20 Lupus Beam Rifle",
+      "MA-M01 Lacerta Beam Saber ×2",
+      "M100 Balaena Plasma Beam Cannon ×2",
+      "MMI-M15 Xiphias Rail Cannon ×2",
+      "Laminated Anti-Beam Shield"
+    ],
+    "features": [
+      "HiMAT Mode",
+      "Full Burst Mode",
+      "Connected beam saber configuration"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "completed",
+  "grade": "HGCE",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/ZGMF-X10A-HGCE.png",
+  "specs": {
+    "Release date": "2015-08-08",
+    "Build date": "2026-08-25",
+    "Paint": "Details",
+    "Top coat": "Matte"
+  }
+}

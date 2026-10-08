@@ -1,56 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Mobile Suit Archive</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Collection Archive // Startup</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/startup.css">
 </head>
-<body>
-  <div class="stars"></div>
-  <div class="stars stars2"></div>
-  <div class="stars stars3"></div>
+<body class="startup-page">
+  <div class="startup-space" aria-hidden="true">
+    <div class="stars stars-a"></div>
+    <div class="stars stars-b"></div>
+    <div class="startup-scan"></div>
+  </div>
 
-  <div class="overlay"></div>
-
-  <main class="terminal">
-    <div class="frame">
-      <div class="header">
-        <span>MOBILE SUIT ARCHIVE</span>
-        <span class="status">SYSTEM ONLINE</span>
-      </div>
-
-      <div class="content">
-        <div class="title-block">
-          <p class="small">PERSONAL COLLECTION INTERFACE</p>
+  <main class="startup-shell" aria-live="polite">
+    <section class="startup-panel hud-corners">
+      <header class="startup-header">
+        <div>
+          <p class="eyebrow">COLLECTION ARCHIVE NETWORK</p>
           <h1>ARCHIVE STARTUP</h1>
-          <p class="subtitle">SPACEFRAME DATABASE INITIALIZATION</p>
         </div>
+        <div class="startup-id">
+          <span>SYS // ARC-01</span>
+          <span id="clock">00:00:00</span>
+        </div>
+      </header>
 
-        <div id="bootLog" class="boot-log"></div>
+      <div class="warning-strip">
+        <span class="warning-mark">CAUTION</span>
+        <span>ARCHIVE SYSTEM INITIALIZATION IN PROGRESS</span>
+      </div>
 
-        <div class="progress-wrap">
-          <div class="progress-label">
-            <span>BOOT SEQUENCE</span>
-            <span id="progressPercent">0%</span>
+      <div class="startup-grid">
+        <section class="boot-log" id="bootLog" aria-label="Startup log"></section>
+
+        <aside class="startup-status">
+          <p class="panel-label">SYSTEM CHECK</p>
+          <div class="status-row"><span>CORE</span><b data-system="core">STANDBY</b></div>
+          <div class="status-row"><span>INDEX</span><b data-system="index">STANDBY</b></div>
+          <div class="status-row"><span>VISUAL</span><b data-system="visual">STANDBY</b></div>
+          <div class="status-row"><span>ACCESS</span><b data-system="access">STANDBY</b></div>
+
+          <div class="micro-reticle" aria-hidden="true">
+            <span></span><i></i>
           </div>
-          <div class="progress-bar">
-            <div id="progressFill" class="progress-fill"></div>
-          </div>
-        </div>
+        </aside>
+      </div>
 
-        <div id="finalMessage" class="final-message hidden">
-          ACCESS GRANTED // ARCHIVE READY
+      <div class="progress-block">
+        <div class="progress-meta">
+          <span>BOOT SEQUENCE</span>
+          <span id="progressPercent">0%</span>
         </div>
-
-        <div class="button-row">
-          <a id="enterBtn" class="enter-btn hidden" href="home.html">ENTER DATABASE</a>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
         </div>
       </div>
-    </div>
+
+      <div class="startup-footer">
+        <span>UNAUTHORIZED MODIFICATION OF ARCHIVE DATA IS PROHIBITED</span>
+        <span id="startupFinal">WAITING FOR SYSTEM RESPONSE...</span>
+      </div>
+    </section>
   </main>
 
-  <script src="script.js"></script>
+  <div class="transition-shutter transition-shutter-left" aria-hidden="true"></div>
+  <div class="transition-shutter transition-shutter-right" aria-hidden="true"></div>
+  <div class="transition-flash" aria-hidden="true"></div>
+
+  <noscript>
+    <div class="noscript-box">
+      JavaScript is required for the startup sequence.
+      <a href="archive.html">Open the archive directly.</a>
+    </div>
+  </noscript>
+
+  <script src="js/startup.js"></script>
 </body>
 </html>

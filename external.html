@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>External Archives</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/external.css">
+</head>
+<body class="external-page">
+  <header class="external-header">
+    <a class="back-link" href="archive.html">← RETURN</a>
+    <div>
+      <p class="eyebrow">EXTERNAL ARCHIVES</p>
+      <h1>SELECT BRANCH</h1>
+    </div>
+    <nav class="category-rotator" data-category-rotator aria-label="Switch archive category">
+      <button class="rotator-card rotator-gundam" type="button"
+              data-rotator-card data-category="gundam"
+              data-href="category.html?type=gundam">
+        <span>GUNDAM</span>
+      </button>
+
+      <button class="rotator-card rotator-digimon" type="button"
+              data-rotator-card data-category="digimon"
+              data-href="category.html?type=digimon">
+        <span>DIGIMON</span>
+      </button>
+
+      <button class="rotator-card rotator-external" type="button"
+              data-rotator-card data-category="external"
+              data-href="external.html">
+        <span>EXTERNAL</span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="split-selector" id="splitSelector">
+    <a class="split-panel split-mecha" href="category.html?type=mecha" data-branch="mecha">
+      <div class="split-image"></div>
+      <div class="split-noise"></div>
+      <div class="split-copy">
+        <span class="split-code">EXT // P-01</span>
+        <h2>MECHA<br>PROTOTYPES</h2>
+        <p>Third-party, aftermarket and independent mecha.</p>
+        <span class="split-enter">OPEN PROTOTYPE ARCHIVE →</span>
+      </div>
+    </a>
+
+    <a class="split-panel split-fantasy" href="category.html?type=fantasy" data-branch="fantasy">
+      <div class="split-image"></div>
+      <div class="split-noise"></div>
+      <div class="split-copy">
+        <span class="split-code">EXT // F-01</span>
+        <h2>FANTASY<br>ARCHIVE</h2>
+        <p>Fate, fantasy plamo, relics and legends.</p>
+        <span class="split-enter">OPEN FANTASY ARCHIVE →</span>
+      </div>
+    </a>
+  </main>
+
+  <script src="js/shared.js"></script>
+  <script src="js/external.js"></script>
+</body>
+</html>

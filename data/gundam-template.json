@@ -1,0 +1,29 @@
+{
+  "category": "gundam",
+  "id": "ZGMF-X10A-HGCE",
+  "designation": "ZGMF-X10A",
+  "name": "Freedom Gundam",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED",
+  "description": "",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED",
+  "timeline_position": 1,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 71",
+  "timeline_parent": "",
+  "family": "Freedom Family",
+  "family_order": 1,
+  "design_origins": [],
+  "source": "bandai",
+  "custom": false,
+  "grade": "HGCE",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/freedom-hgce.jpg",
+  "specs": {
+    "Release date": "",
+    "Build date": "",
+    "Paint": "None",
+    "Top coat": ""
+  }
+}

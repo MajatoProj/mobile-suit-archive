@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Archive Record</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/themes.css">
+</head>
+<body class="category-page item-page">
+  <div class="theme-background" aria-hidden="true">
+    <div class="theme-layer theme-layer-a"></div>
+    <div class="theme-layer theme-layer-b"></div>
+    <div class="theme-decoration"></div>
+  </div>
+
+  <header class="category-header">
+    <div>
+      <a class="back-link" id="itemBackLink" href="archive.html">← ARCHIVE</a>
+      <p class="eyebrow" id="itemCategory">ARCHIVE RECORD</p>
+      <h1 id="itemTitle">LOADING...</h1>
+      <p class="category-subtitle" id="itemDesignation"></p>
+    </div>
+    <nav class="category-rotator" data-category-rotator aria-label="Switch archive category">
+      <button class="rotator-card rotator-gundam" type="button"
+              data-rotator-card data-category="gundam"
+              data-href="category.html?type=gundam">
+        <span>GUNDAM</span>
+      </button>
+
+      <button class="rotator-card rotator-digimon" type="button"
+              data-rotator-card data-category="digimon"
+              data-href="category.html?type=digimon">
+        <span>DIGIMON</span>
+      </button>
+
+      <button class="rotator-card rotator-external" type="button"
+              data-rotator-card data-category="external"
+              data-href="external.html">
+        <span>EXTERNAL</span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="item-layout">
+    <section class="item-hero hud-corners">
+      <div class="item-image" id="itemImage">
+        <span>IMAGE SLOT</span>
+      </div>
+      <div class="item-summary">
+        <span class="panel-label">MOBILE SUIT DATA</span>
+        <h2 id="itemName">Loading record...</h2>
+        <div class="suit-data" id="itemSuitData" hidden></div>
+        <p class="item-additional-notes" id="itemDescription"></p>
+      </div>
+    </section>
+
+    <section class="item-specs" id="itemSpecs"></section>
+
+    <section class="item-missing" id="itemMissing" hidden>
+      <h2>Record not found.</h2>
+      <p>Check the <code>category</code> and <code>id</code> parameters in the URL.</p>
+      <p>Example: <code>item.html?category=gundam&id=ZGMF-X10A</code></p>
+    </section>
+  </main>
+
+  <script src="js/shared.js"></script>
+  <script src="js/item.js"></script>
+</body>
+</html>

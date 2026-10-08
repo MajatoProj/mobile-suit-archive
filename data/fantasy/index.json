@@ -1,0 +1,15 @@
+{
+  "category": "fantasy",
+  "version": 1,
+  "items": [
+    {
+      "category": "fantasy",
+      "id": "DEMO-FANTASY",
+      "designation": "EXT // RELIC RECORD",
+      "name": "Example Fantasy Record",
+      "summary": "Fate / fantasy plamo demonstration entry.",
+      "image": "",
+      "file": "DEMO-FANTASY.json"
+    }
+  ]
+}

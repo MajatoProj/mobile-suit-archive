@@ -1,0 +1,15 @@
+{
+  "category": "mecha",
+  "version": 1,
+  "items": [
+    {
+      "category": "mecha",
+      "id": "DEMO-PROTOTYPE",
+      "designation": "EXT // TEST UNIT",
+      "name": "Example Prototype Mecha",
+      "summary": "Third-party / aftermarket mecha demonstration entry.",
+      "image": "",
+      "file": "DEMO-PROTOTYPE.json"
+    }
+  ]
+}
