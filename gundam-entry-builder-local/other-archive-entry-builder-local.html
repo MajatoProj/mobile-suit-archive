@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Other Archive Entry Builder</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#070b0d;--panel:#0b1215;--line:#26353a;--text:#edf3f2;--muted:#84969a;
+  --accent:#67d0b0;--soft:rgba(103,208,176,.10);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(circle at 80% 10%,var(--soft),transparent 30%),var(--bg);
+  color:var(--text);
+  font-family:Segoe UI,Arial,sans-serif
+}
+body[data-vault="fantasy"]{--accent:#d4be78;--soft:rgba(212,190,120,.10)}
+body[data-vault="mecha"]{--accent:#d3a16e;--soft:rgba(211,161,110,.10)}
+body[data-vault="digimon"]{--accent:#67d0b0;--soft:rgba(103,208,176,.10)}
+main{max-width:1160px;margin:auto;padding:28px 20px 60px}
+.builder-switch,.vault-switch,.top-actions,.actions{display:flex;gap:9px;flex-wrap:wrap}
+.builder-switch{
+  margin-bottom:18px;padding:7px;border:1px solid color-mix(in srgb,var(--accent),transparent 82%);
+  background:rgba(255,255,255,.018)
+}
+.builder-switch a,.vault-switch button,button,.file-label{
+  display:inline-flex;align-items:center;justify-content:center;padding:.72rem .9rem;
+  border:1px solid color-mix(in srgb,var(--accent),transparent 66%);
+  background:var(--soft);color:var(--text);text-decoration:none;cursor:pointer;
+  font:inherit;font-size:.7rem;letter-spacing:.08em
+}
+.builder-switch a:not(.active),button.secondary,.file-label.secondary{
+  background:rgba(255,255,255,.02);border-color:var(--line);color:#a7b7ba
+}
+.builder-switch a.active,.vault-switch button.active{border-color:var(--accent);background:var(--soft)}
+button:hover,.file-label:hover,.builder-switch a:hover{border-color:var(--accent)}
+.eyebrow{font-size:.68rem;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+h1{margin:.35rem 0 .55rem;letter-spacing:.07em;font-weight:560}
+.lead{max-width:75ch;color:#95a5a8;line-height:1.55}
+.notice{margin:16px 0;padding:12px 14px;border-left:3px solid var(--accent);background:var(--soft);color:#bcc9c7}
+.vault-switch{margin:18px 0}
+.top-actions{margin:18px 0}
+input[type=file]{display:none}
+.layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(310px,.75fr);gap:18px}
+.panel{border:1px solid var(--line);background:rgba(9,15,18,.91)}
+.panel-head{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:13px 15px;border-bottom:1px solid var(--line)}
+.panel-head strong{font-size:.78rem;letter-spacing:.1em}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:15px}
+.full{grid-column:1/-1}
+.section{
+  grid-column:1/-1;margin-top:5px;padding-top:11px;border-top:1px solid color-mix(in srgb,var(--accent),transparent 82%);
+  color:color-mix(in srgb,var(--accent),white 12%);font-size:.66rem;font-weight:700;letter-spacing:.14em
+}
+label{display:grid;gap:6px;color:#93a4a7;font-size:.67rem;letter-spacing:.075em;text-transform:uppercase}
+input,select,textarea{
+  width:100%;padding:.78rem;border:1px solid var(--line);background:#071013;color:var(--text);font:inherit
+}
+textarea{min-height:88px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:1px solid var(--accent);border-color:var(--accent)}
+.check{display:flex;align-items:center;gap:9px}.check input{width:auto}
+.help{font-size:.59rem;letter-spacing:0;text-transform:none;color:#73878a;line-height:1.4}
+.actions{padding:0 15px 15px}
+.status{padding:0 15px 15px;min-height:2.4em;color:#80969a;font-size:.78rem;line-height:1.5}
+.status.error{color:#e59b95}
+.preview{padding:15px}
+.card{border:1px solid color-mix(in srgb,var(--accent),transparent 65%);background:#071013}
+.visual{
+  height:235px;display:grid;place-items:center;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,var(--soft),transparent 40%),linear-gradient(160deg,#0d181b,#071013)
+}
+.visual:before{content:"";position:absolute;inset:14px;border:1px solid color-mix(in srgb,var(--accent),transparent 82%)}
+.visual img{width:94%;height:94%;object-fit:contain;filter:drop-shadow(0 13px 14px rgba(0,0,0,.42))}
+.visual span{color:#607579;font-size:.64rem;letter-spacing:.12em}
+.card-body{padding:14px}
+.designation{color:#7d9195;font:.67rem Consolas,monospace}
+.card h3{margin:.42rem 0 .65rem}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{padding:.31rem .44rem;border:1px solid var(--line);font-size:.59rem;color:#b7c7c8}
+.path{margin-top:12px;padding:10px;border:1px solid var(--line);background:#050b0d;color:#8ca1a4;font:.68rem/1.55 Consolas,monospace;overflow-wrap:anywhere;white-space:pre-wrap}
+pre{margin:0;padding:14px;max-height:570px;overflow:auto;background:#05090b;color:#cededf;font:.7rem/1.52 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:880px){.layout{grid-template-columns:1fr}}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}.full,.section{grid-column:auto}}
+</style>
+</head>
+<body data-vault="digimon">
+<main>
+  <nav class="builder-switch" aria-label="Switch builder">
+    <a href="gundam-entry-builder-local.html">GUNDAM BUILDER</a>
+    <a class="active" href="other-archive-entry-builder-local.html">DIGIMON / MECHA / FANTASY</a>
+  </nav>
+
+  <div class="eyebrow">LOCAL-ONLY TOOL</div>
+  <h1>OTHER ARCHIVE ENTRY BUILDER</h1>
+  <p class="lead">A separate builder for Digimon, Mecha and Fantasy. The Gundam builder stays untouched apart from the switch link above.</p>
+  <div class="notice"><strong>Nothing is uploaded.</strong> Load the current vault index, build/edit a record and download the two JSON files you need.</div>
+
+  <div class="vault-switch" id="vaultSwitch">
+    <button type="button" data-vault="digimon" class="active">DIGIMON</button>
+    <button type="button" data-vault="mecha">MECHA</button>
+    <button type="button" data-vault="fantasy">FANTASY</button>
+  </div>
+
+  <div class="top-actions">
+    <label class="file-label" for="indexInput">LOAD CURRENT INDEX.JSON</label>
+    <input id="indexInput" type="file" accept=".json,application/json">
+    <label class="file-label secondary" for="recordInput">LOAD / EDIT RECORD JSON</label>
+    <input id="recordInput" type="file" accept=".json,application/json">
+    <label class="file-label secondary" for="imageInput">SELECT PREVIEW IMAGE</label>
+    <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+    <button class="secondary" type="button" id="newIndex">START EMPTY INDEX</button>
+  </div>
+
+  <div class="layout">
+    <section class="panel">
+      <div class="panel-head"><strong>ENTRY DATA</strong><span class="eyebrow" id="dbState">NO INDEX LOADED</span></div>
+      <form class="form-grid" id="form">
+        <div class="section">CORE RECORD</div>
+        <label>ID *
+          <input name="id" required placeholder="FGO-PETITRITS-MUSASHI">
+        </label>
+        <label>Designation
+          <input name="designation" placeholder="Petitrits">
+        </label>
+        <label class="full">Name *
+          <input name="name" required placeholder="Saber / Miyamoto Musashi">
+        </label>
+        <label class="full">Summary
+          <input name="summary" placeholder="Optional short card summary">
+        </label>
+
+        <div class="section">CLASSIFICATION</div>
+        <label>Franchise
+          <input name="franchise" list="franchiseList" placeholder="Fate/Grand Order">
+        </label>
+        <label id="seriesLabel">Series / World
+          <input name="series" list="seriesList" placeholder="Series or world">
+        </label>
+        <label id="subseriesLabel">Subseries / Line
+          <input name="subseries" list="subseriesList" placeholder="Petitrits">
+        </label>
+        <label>Family / Collection
+          <input name="family" list="familyList" placeholder="Optional">
+        </label>
+        <label id="universeLabel">Universe / Realm
+          <input name="universe" placeholder="Optional">
+        </label>
+        <label>Form / Stage / Class
+          <input name="form_stage" placeholder="Optional">
+        </label>
+        <label>Brand / Manufacturer
+          <input name="brand" list="brandList" placeholder="Bandai Spirits">
+        </label>
+        <label>Product line
+          <input name="line" placeholder="Optional">
+        </label>
+
+        <div class="section">COLLECTION / BUILD DATA</div>
+        <label>Source
+          <input name="source" list="sourceList" value="bandai" placeholder="bandai">
+        </label>
+        <label>Grade / Product line
+          <input name="grade" placeholder="Petitrits / Figure-rise / ...">
+        </label>
+        <label>Scale
+          <input name="scale" placeholder="Non-scale / 1/144">
+        </label>
+        <label>Build status
+          <select name="build_status">
+            <option value="">Unassigned / Wanted</option>
+            <option value="backlog">Backlog</option>
+            <option value="assembly">Assembly</option>
+            <option value="detailing">Detailing</option>
+            <option value="finishing">Finishing</option>
+            <option value="completed">Completed</option>
+            <option value="faulted">Faulted</option>
+          </select>
+        </label>
+        <label>Release date<input name="release_date" type="date"></label>
+        <label>Build date<input name="build_date" type="date"></label>
+        <label>Paint
+          <select name="paint">
+            <option value="None">None</option>
+            <option value="Panel Line">Panel Line</option>
+            <option value="Details">Details</option>
+            <option value="Custom">Custom</option>
+          </select>
+        </label>
+        <label>Top coat<input name="top_coat" placeholder="None / Matte / Gloss"></label>
+        <label class="check"><input name="custom" type="checkbox"><span>Custom build</span></label>
+        <span></span>
+
+        <label class="full">Future work
+          <textarea name="future_work" placeholder="Example: Replace sticker details with paint"></textarea>
+        </label>
+        <label class="full">Additional notes
+          <textarea name="notes" placeholder="Extra notes only"></textarea>
+        </label>
+
+        <div class="section">FILES</div>
+        <label class="full">Archive folder
+          <input name="archive_folder" placeholder="Auto-generated">
+          <span class="help">Leave empty for automatic folder generation. You can override it for special cases.</span>
+        </label>
+        <label class="full">Image path
+          <input name="image" placeholder="Auto-generated from ID and folder">
+        </label>
+      </form>
+
+      <div class="actions">
+        <button type="button" id="downloadRecord">DOWNLOAD RECORD JSON</button>
+        <button type="button" id="downloadIndex">DOWNLOAD UPDATED INDEX.JSON</button>
+        <button type="button" id="downloadImage" class="secondary">DOWNLOAD IMAGE WITH ID NAME</button>
+        <button type="button" id="clear" class="secondary">CLEAR FORM</button>
+      </div>
+      <div class="status" id="status"></div>
+    </section>
+
+    <aside>
+      <section class="panel">
+        <div class="panel-head"><strong>LIVE PREVIEW</strong><span class="eyebrow" id="previewVault">DIGIMON</span></div>
+        <div class="preview">
+          <div class="card">
+            <div class="visual">
+              <img id="previewImage" hidden alt="">
+              <span id="previewFallback">IMAGE PREVIEW</span>
+            </div>
+            <div class="card-body">
+              <div class="designation" id="pDesignation">DESIGNATION</div>
+              <h3 id="pName">RECORD NAME</h3>
+              <div class="badges" id="pBadges"></div>
+              <div class="path" id="pathBox"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="panel" style="margin-top:18px">
+        <div class="panel-head"><strong>GENERATED JSON</strong><span class="eyebrow">LIVE</span></div>
+        <pre id="output">{}</pre>
+      </section>
+    </aside>
+  </div>
+
+  <datalist id="franchiseList"></datalist>
+  <datalist id="seriesList"></datalist>
+  <datalist id="subseriesList"></datalist>
+  <datalist id="familyList"></datalist>
+  <datalist id="brandList"></datalist>
+  <datalist id="sourceList">
+    <option value="bandai"><option value="p-bandai"><option value="good-smile"><option value="kotobukiya"><option value="other">
+  </datalist>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const form = document.getElementById("form");
+  const output = document.getElementById("output");
+  const status = document.getElementById("status");
+  const dbState = document.getElementById("dbState");
+  const previewImage = document.getElementById("previewImage");
+  const previewFallback = document.getElementById("previewFallback");
+  const vaultButtons = [...document.querySelectorAll("#vaultSwitch [data-vault]")];
+
+  let vault = "digimon";
+  let indexData = {category:vault,version:1,items:[]};
+  let selectedImage = null;
+  let selectedImageUrl = "";
+
+  const $ = name => form.elements[name];
+  const val = name => String($(name)?.value || "").trim();
+  const checked = name => Boolean($(name)?.checked);
+
+  function slug(value) {
+    return String(value || "")
+      .trim().toLowerCase()
+      .replace(/&/g," and ")
+      .replace(/[’']/g,"")
+      .replace(/[^a-z0-9]+/g,"-")
+      .replace(/^-+|-+$/g,"") || "unsorted";
+  }
+
+  function clean(obj) {
+    const result = {};
+    Object.entries(obj).forEach(([key,value]) => {
+      if (value === "" || value === null || value === undefined) return;
+      if (Array.isArray(value) && value.length === 0) return;
+      if (typeof value === "object" && !Array.isArray(value)) {
+        const nested = clean(value);
+        if (Object.keys(nested).length) result[key] = nested;
+        return;
+      }
+      result[key] = value;
+    });
+    return result;
+  }
+
+  function autoFolder() {
+    const manual = val("archive_folder").replace(/^[/\\]+|[/\\]+$/g,"");
+    if (manual) return manual;
+
+    if (vault === "digimon") {
+      return slug(val("series") || val("franchise") || val("universe") || val("family") || val("line"));
+    }
+
+    if (vault === "mecha") {
+      const primary = slug(val("franchise") || val("brand") || val("series") || val("line"));
+      const secondaryRaw = val("series");
+      const secondary = slug(secondaryRaw);
+      return secondaryRaw && secondary !== primary ? `${primary}/${secondary}` : primary;
+    }
+
+    const primary = slug(val("franchise") || val("universe") || val("series") || val("family"));
+    const secondaryRaw = val("subseries") || val("line");
+    const secondary = slug(secondaryRaw);
+    if (secondaryRaw && secondary !== primary) return `${primary}/${secondary}`;
+
+    const seriesRaw = val("series");
+    const series = slug(seriesRaw);
+    return seriesRaw && series !== primary ? `${primary}/${series}` : primary;
+  }
+
+  function buildRecord() {
+    const id = val("id");
+    const folder = autoFolder();
+    const image = val("image") || `assets/images/${vault}/${folder}/${id || "RECORD-ID"}.png`;
+
+    return clean({
+      category:vault,
+      id,
+      designation:val("designation"),
+      name:val("name"),
+      summary:val("summary") || [val("franchise"), val("subseries") || val("series")].filter(Boolean).join(" / "),
+      franchise:val("franchise"),
+      series:val("series"),
+      subseries:val("subseries"),
+      line:val("line"),
+      family:val("family"),
+      universe:val("universe"),
+      form_stage:val("form_stage"),
+      brand:val("brand"),
+      source:val("source"),
+      custom:checked("custom"),
+      grade:val("grade"),
+      scale:val("scale"),
+      release_date:val("release_date"),
+      build_date:val("build_date"),
+      build_status:val("build_status"),
+      archive_folder:folder,
+      image,
+      specs:clean({
+        "Release date":val("release_date"),
+        "Build date":val("build_date"),
+        "Paint":val("paint"),
+        "Top coat":val("top_coat"),
+        "Future work":val("future_work")
+      }),
+      notes:val("notes")
+    });
+  }
+
+  function makeIndexEntry(record) {
+    return clean({
+      category:vault,
+      id:record.id,
+      designation:record.designation,
+      name:record.name,
+      summary:record.summary,
+      franchise:record.franchise,
+      series:record.series,
+      subseries:record.subseries,
+      line:record.line,
+      family:record.family,
+      universe:record.universe,
+      form_stage:record.form_stage,
+      brand:record.brand,
+      source:record.source,
+      custom:record.custom,
+      grade:record.grade,
+      scale:record.scale,
+      release_date:record.release_date,
+      build_date:record.build_date,
+      build_status:record.build_status,
+      archive_folder:record.archive_folder,
+      image:record.image,
+      file:`${record.archive_folder}/${record.id}.json`
+    });
+  }
+
+  function validate(record) {
+    if (!record.id) return "ID is required.";
+    if (!record.name) return "Name is required.";
+    if (!/^[A-Za-z0-9._+-]+$/.test(record.id)) return "ID may only contain letters, numbers, dot, underscore, + and -.";
+    return "";
+  }
+
+  function updateIndex(record) {
+    const entry = makeIndexEntry(record);
+    const pos = indexData.items.findIndex(item => String(item.id) === String(record.id));
+    if (pos >= 0) indexData.items[pos] = entry;
+    else indexData.items.push(entry);
+    indexData.items.sort((a,b) => String(a.name || a.id || "").localeCompare(String(b.name || b.id || ""), undefined, {sensitivity:"base"}));
+    refreshLists();
+  }
+
+  function escapeHtml(value) {
+    return String(value || "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    })[c]);
+  }
+
+  function update() {
+    const record = buildRecord();
+    output.textContent = JSON.stringify(record,null,2);
+
+    document.getElementById("pDesignation").textContent = record.designation || record.id || "DESIGNATION";
+    document.getElementById("pName").textContent = record.name || "RECORD NAME";
+    document.getElementById("pBadges").innerHTML = [
+      vault.toUpperCase(), record.source, record.grade, record.scale, record.build_status || "wanted"
+    ].filter(Boolean).map(v => `<span class="badge">${escapeHtml(v)}</span>`).join("");
+
+    document.getElementById("pathBox").textContent =
+      `data/${vault}/${record.archive_folder}/${record.id || "RECORD-ID"}.json\n${record.image || ""}`;
+  }
+
+  function refreshLists() {
+    const items = indexData.items || [];
+    const fill = (id,values) => {
+      const list = document.getElementById(id);
+      list.innerHTML = "";
+      [...new Set(values.filter(Boolean).map(String))].sort().forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        list.appendChild(option);
+      });
+    };
+    fill("franchiseList",items.map(x=>x.franchise));
+    fill("seriesList",items.map(x=>x.series));
+    fill("subseriesList",items.map(x=>x.subseries));
+    fill("familyList",items.map(x=>x.family));
+    fill("brandList",items.map(x=>x.brand));
+    dbState.textContent = items.length ? `${items.length} ${vault.toUpperCase()} RECORD${items.length===1?"":"S"} LOADED` : "NO INDEX LOADED";
+  }
+
+  function setVault(next,reset=true) {
+    vault = next;
+    document.body.dataset.vault = next;
+    vaultButtons.forEach(button => button.classList.toggle("active",button.dataset.vault === next));
+    document.getElementById("previewVault").textContent = next.toUpperCase();
+
+    const labels = {
+      digimon:["Series / World","Subseries / Line","Universe / Digital World"],
+      mecha:["Series","Line / Variant","Universe / Setting"],
+      fantasy:["Series / World","Subseries / Line","Universe / Realm"]
+    }[next];
+
+    document.getElementById("seriesLabel").childNodes[0].nodeValue = labels[0] + "\n";
+    document.getElementById("subseriesLabel").childNodes[0].nodeValue = labels[1] + "\n";
+    document.getElementById("universeLabel").childNodes[0].nodeValue = labels[2] + "\n";
+
+    if (reset) {
+      indexData = {category:next,version:1,items:[]};
+      form.reset();
+      $("source").value = "bandai";
+      $("paint").value = "None";
+      clearImage();
+    }
+    refreshLists();
+    update();
+  }
+
+  function loadRecord(record) {
+    const recordVault = record.category || vault;
+    if (["digimon","mecha","fantasy"].includes(recordVault) && recordVault !== vault) {
+      setVault(recordVault,false);
+    }
+
+    const mapping = {
+      id:record.id,designation:record.designation,name:record.name,summary:record.summary,
+      franchise:record.franchise,series:record.series,subseries:record.subseries,line:record.line,
+      family:record.family,universe:record.universe,form_stage:record.form_stage,brand:record.brand,
+      source:record.source,grade:record.grade,scale:record.scale,release_date:record.release_date,
+      build_date:record.build_date,build_status:record.build_status,archive_folder:record.archive_folder || folderFromFile(record.file),
+      image:record.image,paint:record.specs?.["Paint"] || "None",top_coat:record.specs?.["Top coat"] || "",
+      future_work:record.specs?.["Future work"] || "",notes:record.notes || record.description || ""
+    };
+    Object.entries(mapping).forEach(([name,value]) => {
+      if ($(name)) $(name).value = value ?? "";
+    });
+    $("custom").checked = Boolean(record.custom);
+    update();
+  }
+
+  function folderFromFile(file) {
+    const path = String(file || "").replace(/\\/g,"/");
+    return path.includes("/") ? path.split("/").slice(0,-1).join("/") : "";
+  }
+
+  function show(message,error=false) {
+    status.textContent = message;
+    status.classList.toggle("error",error);
+  }
+
+  function clearImage() {
+    selectedImage = null;
+    if (selectedImageUrl) URL.revokeObjectURL(selectedImageUrl);
+    selectedImageUrl = "";
+    previewImage.hidden = true;
+    previewImage.removeAttribute("src");
+    previewFallback.hidden = false;
+  }
+
+  function downloadJson(data,filename) {
+    const blob = new Blob([JSON.stringify(data,null,2)+"\n"],{type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
+  vaultButtons.forEach(button => button.addEventListener("click",() => setVault(button.dataset.vault,true)));
+  form.addEventListener("input",update);
+  form.addEventListener("change",update);
+
+  document.getElementById("indexInput").addEventListener("change",async event => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      const parsed = JSON.parse(await file.text());
+      if (!Array.isArray(parsed.items)) throw new Error("No items array found.");
+      const category = parsed.category;
+      if (category && !["digimon","mecha","fantasy"].includes(category)) {
+        throw new Error(`This index is for "${category}". Use the Gundam builder for Gundam.`);
+      }
+      if (category && category !== vault) setVault(category,false);
+      indexData = {category:vault,version:Number(parsed.version)||1,items:parsed.items};
+      refreshLists();
+      update();
+      show(`Loaded ${parsed.items.length} ${vault} index record(s).`);
+    } catch (error) {
+      show(`Could not load index.json: ${error.message}`,true);
+    }
+    event.target.value = "";
+  });
+
+  document.getElementById("recordInput").addEventListener("change",async event => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      const record = JSON.parse(await file.text());
+      if (!record.id) throw new Error("Record has no ID.");
+      if (record.category === "gundam") throw new Error("Use the Gundam builder for Gundam records.");
+      loadRecord(record);
+      show(`Loaded ${record.name || record.id} for editing.`);
+    } catch (error) {
+      show(`Could not load record: ${error.message}`,true);
+    }
+    event.target.value = "";
+  });
+
+  document.getElementById("imageInput").addEventListener("change",event => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    selectedImage = file;
+    if (selectedImageUrl) URL.revokeObjectURL(selectedImageUrl);
+    selectedImageUrl = URL.createObjectURL(file);
+    previewImage.src = selectedImageUrl;
+    previewImage.hidden = false;
+    previewFallback.hidden = true;
+    show(`Preview image selected: ${file.name}`);
+    event.target.value = "";
+  });
+
+  document.getElementById("newIndex").addEventListener("click",() => {
+    indexData = {category:vault,version:1,items:[]};
+    refreshLists();
+    show(`Started an empty ${vault} index.`);
+  });
+
+  document.getElementById("downloadRecord").addEventListener("click",() => {
+    const record = buildRecord();
+    const error = validate(record);
+    if (error) return show(error,true);
+    updateIndex(record);
+    downloadJson(record,`${record.id}.json`);
+    show(`Downloaded ${record.id}.json. Target: data/${vault}/${record.archive_folder}/`);
+  });
+
+  document.getElementById("downloadIndex").addEventListener("click",() => {
+    const record = buildRecord();
+    const error = validate(record);
+    if (error) return show(error,true);
+    updateIndex(record);
+    downloadJson(indexData,"index.json");
+    show(`Downloaded updated data/${vault}/index.json.`);
+  });
+
+  document.getElementById("downloadImage").addEventListener("click",() => {
+    if (!selectedImage) return show("Select an image first.",true);
+    const record = buildRecord();
+    const error = validate(record);
+    if (error) return show(error,true);
+    const ext = selectedImage.name.match(/\.[^.]+$/)?.[0]?.toLowerCase() || ".png";
+    const url = URL.createObjectURL(selectedImage);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${record.id}${ext}`;
+    link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    show(`Downloaded image copy as ${record.id}${ext}.`);
+  });
+
+  document.getElementById("clear").addEventListener("click",() => {
+    form.reset();
+    $("source").value = "bandai";
+    $("paint").value = "None";
+    clearImage();
+    update();
+    show("Form cleared.");
+  });
+
+  setVault("digimon",false);
+})();
+</script>
+</body>
+</html>

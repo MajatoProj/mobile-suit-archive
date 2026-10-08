@@ -35,6 +35,37 @@
       color:#b8d9c9;
     }
     .top-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+
+    .builder-switch{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin:0 0 18px;
+      padding:7px;
+      border:1px solid rgba(127,199,255,.16);
+      background:rgba(255,255,255,.018);
+    }
+    .builder-switch a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:.68rem .85rem;
+      border:1px solid rgba(127,199,255,.22);
+      color:#9eb6c4;
+      text-decoration:none;
+      font-size:.68rem;
+      letter-spacing:.09em;
+    }
+    .builder-switch a:hover{
+      border-color:var(--accent);
+      color:var(--text);
+    }
+    .builder-switch a.active{
+      border-color:var(--accent);
+      background:rgba(48,106,145,.20);
+      color:var(--text);
+    }
+
     .layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:18px}
     .panel{border:1px solid var(--line);background:rgba(7,16,26,.86)}
     .panel-head{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
@@ -269,6 +300,12 @@
 </head>
 <body>
 <main>
+
+  <nav class="builder-switch" aria-label="Switch builder">
+    <a class="active" href="gundam-entry-builder-local.html">GUNDAM BUILDER</a>
+    <a href="other-archive-entry-builder-local.html">DIGIMON / MECHA / FANTASY</a>
+  </nav>
+
   <div class="eyebrow">LOCAL-ONLY TOOL</div>
   <h1>GUNDAM ENTRY BUILDER</h1>
   <p class="lead">This file is meant to stay on your computer. It does not connect to GitHub and cannot publish anything by itself.</p>
