@@ -129,7 +129,7 @@ function applyAutomaticImagePalette(imageBox, img) {
 
 function extractImagePalette(img) {
   const canvas = document.createElement("canvas");
-  const size = 96;
+  const size = 112;
   canvas.width = size;
   canvas.height = size;
 
@@ -141,11 +141,9 @@ function extractImagePalette(img) {
 
   const pixels = context.getImageData(0, 0, size, size).data;
 
-  const hueBins = Array.from({ length: 24 }, () => ({
-    weight: 0,
-    r: 0,
-    g: 0,
-    b: 0
+  const binCount = 12;
+  const hueBins = Array.from({ length: binCount }, () => ({
+    weight: 0, r: 0, g: 0, b: 0
   }));
 
   const neutrals = {
@@ -166,19 +164,16 @@ function extractImagePalette(img) {
     if (alpha < 0.25) continue;
 
     opaqueWeight += alpha;
-
     const hsv = rgbToHsv(r, g, b);
 
-    // White, gray and black now contribute, but at reduced strength.
-    if (hsv.s < 0.18) {
+    if (hsv.s < 0.16) {
       let bucket;
-
       if (hsv.v >= 0.72) bucket = neutrals.light;
       else if (hsv.v <= 0.28) bucket = neutrals.dark;
       else bucket = neutrals.mid;
 
       const neutralWeight =
-        alpha * (hsv.v >= 0.72 || hsv.v <= 0.28 ? 0.55 : 0.28);
+        alpha * (hsv.v >= 0.72 || hsv.v <= 0.28 ? 0.58 : 0.34);
 
       bucket.weight += neutralWeight;
       bucket.r += r * neutralWeight;
@@ -187,15 +182,12 @@ function extractImagePalette(img) {
       continue;
     }
 
-    const brightnessWeight =
-      0.35 + 0.65 * Math.min(hsv.v, 0.85) / 0.85;
+    // Coverage-first: colour area matters far more than saturation.
+    const saturationFactor = 0.82 + Math.min(hsv.s, 1) * 0.18;
+    const brightnessFactor = 0.88 + Math.min(hsv.v, 1) * 0.12;
+    const weight = alpha * saturationFactor * brightnessFactor;
 
-    const weight =
-      Math.pow(hsv.s, 1.6) *
-      brightnessWeight *
-      alpha;
-
-    const binIndex = Math.floor(hsv.h * hueBins.length) % hueBins.length;
+    const binIndex = Math.floor(hsv.h * binCount) % binCount;
     const bin = hueBins[binIndex];
 
     bin.weight += weight;
@@ -207,18 +199,12 @@ function extractImagePalette(img) {
 
   if (opaqueWeight < 2) return null;
 
-  const ranked = hueBins
-    .map((bin, index) => ({ ...bin, index }))
-    .filter(bin => bin.weight > 0)
-    .sort((a, b) => b.weight - a.weight);
-
   const neutralBuckets = Object.values(neutrals)
     .filter(bucket => bucket.weight > 0)
     .sort((a, b) => b.weight - a.weight);
 
   const totalNeutralWeight = neutralBuckets.reduce(
-    (sum, bucket) => sum + bucket.weight,
-    0
+    (sum, bucket) => sum + bucket.weight, 0
   );
 
   const dominantNeutral = neutralBuckets[0]
@@ -227,11 +213,22 @@ function extractImagePalette(img) {
 
   const neutralShare = Math.min(
     1,
-    totalNeutralWeight / Math.max(opaqueWeight * 0.55, 0.0001)
+    totalNeutralWeight / Math.max(opaqueWeight * 0.58, 0.0001)
   );
 
-  // Mostly-white, mostly-black, or mostly-gray suits still get their own
-  // automatically generated palette.
+  // Smooth neighboring hue bins so one colour isn't split unfairly.
+  const ranked = hueBins
+    .map((bin, index) => {
+      const prev = hueBins[(index - 1 + binCount) % binCount];
+      const next = hueBins[(index + 1) % binCount];
+      return {
+        index,
+        score: bin.weight + prev.weight * 0.42 + next.weight * 0.42
+      };
+    })
+    .filter(entry => entry.score > 0)
+    .sort((a, b) => b.score - a.score);
+
   if (!ranked.length || chromaticWeight < 0.75) {
     const lightWeight = neutrals.light.weight;
     const darkWeight = neutrals.dark.weight;
@@ -251,40 +248,37 @@ function extractImagePalette(img) {
     }
 
     return {
-      primary,
-      secondary,
+      primary, secondary,
       neutral: dominantNeutral,
       neutralStrength: 0.10
     };
   }
 
-  const primaryBin = ranked[0];
-  let primary = averageBinRgb(primaryBin);
-  const primaryHue = binHueDegrees(primaryBin.index, hueBins.length);
+  const primaryIndex = ranked[0].index;
+  let primary = averageHueClusterRgb(hueBins, primaryIndex);
+  const primaryHue = binHueDegrees(primaryIndex, binCount);
 
   let secondary = null;
-
   for (const candidate of ranked.slice(1)) {
-    const candidateHue = binHueDegrees(candidate.index, hueBins.length);
+    const candidateHue = binHueDegrees(candidate.index, binCount);
     const hueDistance = circularHueDistance(primaryHue, candidateHue);
 
-    if (hueDistance >= 35 && candidate.weight >= primaryBin.weight * 0.08) {
-      secondary = averageBinRgb(candidate);
+    if (hueDistance >= 55 && candidate.score >= ranked[0].score * 0.12) {
+      secondary = averageHueClusterRgb(hueBins, candidate.index);
       break;
     }
   }
 
-  // Neutral armour affects the palette gently rather than being ignored.
-  const neutralMix = Math.min(0.22, neutralShare * 0.20);
+  const neutralMix = Math.min(0.18, neutralShare * 0.16);
   primary = blendRgb(primary, dominantNeutral, neutralMix);
 
   if (secondary) {
-    secondary = blendRgb(secondary, dominantNeutral, neutralMix * 0.55);
+    secondary = blendRgb(secondary, dominantNeutral, neutralMix * 0.45);
   } else {
     secondary = blendRgb(
       primary,
       dominantNeutral,
-      Math.min(0.26, neutralShare * 0.22)
+      Math.min(0.22, neutralShare * 0.18)
     );
   }
 
@@ -292,8 +286,38 @@ function extractImagePalette(img) {
     primary,
     secondary,
     neutral: dominantNeutral,
-    neutralStrength: 0.025 + neutralShare * 0.075
+    neutralStrength: 0.02 + neutralShare * 0.065
   };
+}
+
+function averageHueClusterRgb(bins, centerIndex) {
+  const count = bins.length;
+  const indices = [
+    (centerIndex - 1 + count) % count,
+    centerIndex,
+    (centerIndex + 1) % count
+  ];
+
+  let weight = 0, r = 0, g = 0, b = 0;
+
+  indices.forEach((index, position) => {
+    const bin = bins[index];
+    const multiplier = position === 1 ? 1 : 0.42;
+    const w = bin.weight * multiplier;
+
+    weight += w;
+    r += bin.r * multiplier;
+    g += bin.g * multiplier;
+    b += bin.b * multiplier;
+  });
+
+  if (weight <= 0.0001) return [120, 145, 165];
+
+  return [
+    Math.round(r / weight),
+    Math.round(g / weight),
+    Math.round(b / weight)
+  ];
 }
 
 function averageBinRgb(bin) {
@@ -509,20 +533,21 @@ function isOnlyStructuredDescription(description, data) {
 
 function getBuildStatusInfo(value) {
   const map = {
-    backlog: { label: "Backlog", percent: 10 },
-    assembly: { label: "Assembly", percent: 35 },
-    detailing: { label: "Detailing", percent: 65 },
-    finishing: { label: "Finishing", percent: 85 },
-    completed: { label: "Completed", percent: 100 }
+    backlog: { label: "Backlog", percent: 10, hideProgress: false },
+    assembly: { label: "Assembly", percent: 35, hideProgress: false },
+    detailing: { label: "Detailing", percent: 65, hideProgress: false },
+    finishing: { label: "Finishing", percent: 85, hideProgress: false },
+    completed: { label: "Completed", percent: 100, hideProgress: false },
+    faulted: { label: "Faulted", percent: null, hideProgress: true }
   };
 
   const key = String(value || "").trim().toLowerCase();
 
   if (!key) {
-    return { key: "unassigned", label: "Wanted", percent: 0 };
+    return { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
   }
 
-  return map[key] ? { key, ...map[key] } : { key: "unassigned", label: "Wanted", percent: 0 };
+  return map[key] || { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
 }
 
 function renderSpecs(item) {
@@ -619,9 +644,111 @@ function appendSpecSection(container, title, rows, linkRows = [], statusInfo = n
 }
 
 
+
+function getBuildStatusVisual(statusKey) {
+  const key = String(statusKey || "").trim().toLowerCase();
+
+  const map = {
+    unassigned: { icon: "search", title: "Wanted / looking for" },
+    backlog: { icon: "clock", title: "Backlog" },
+    assembly: { icon: "nipper", title: "Assembly" },
+    detailing: { icon: "brush", title: "Detailing" },
+    finishing: { icon: "spark", title: "Finishing" },
+    completed: { icon: "crown", title: "Completed" },
+    faulted: { icon: "vault", title: "Faulted / stored away" }
+  };
+
+  return map[key] || map.unassigned;
+}
+
+function getStatusIconSvg(name) {
+  const icons = {
+    search: `
+      <svg class="status-svg status-svg-search" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="icon-glass" cx="10.2" cy="10.2" r="5.5"></circle>
+        <path class="icon-metal" d="m14.3 14.3 5.1 5.1"></path>
+      </svg>
+    `,
+    clock: `
+      <svg class="status-svg status-svg-clock" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="icon-clock-case" cx="12" cy="12" r="8.5"></circle>
+        <circle class="icon-clock-face" cx="12" cy="12" r="6.7"></circle>
+        <path class="icon-clock-hands" d="M12 7.7v4.7l3 1.9"></path>
+      </svg>
+    `,
+    brush: `
+      <svg class="status-svg status-svg-brush" viewBox="0 0 24 24" aria-hidden="true">
+        <path class="icon-brush-handle" d="M14.9 4.6 19.4 9.1"></path>
+        <path class="icon-brush-ferrule" d="m11.8 8 4.2 4.2"></path>
+        <path class="icon-brush-bristles" d="M12.1 11.7c-1.1 1.1-1.8 2.5-2.1 4-.4 1.8-1.5 3-3.1 3.5-1.3.4-2.7.1-3.8-.7 1.4-.3 2.5-1 3.3-1.9 1-1 1.6-2.3 1.9-3.8l3.8-1.1Z"></path>
+        <path class="icon-brush-paint" d="M4.2 18.4c1.4-.2 2.5-.8 3.4-1.7"></path>
+      </svg>
+    `,
+    nipper: `
+      <svg class="status-svg status-svg-nipper" viewBox="0 0 24 24" aria-hidden="true">
+        <path class="icon-nipper-metal" d="M10.4 10.3 6.1 5.9"></path>
+        <path class="icon-nipper-metal" d="M13.6 10.3 17.9 5.9"></path>
+        <circle class="icon-nipper-pivot" cx="12" cy="11.2" r="1.4"></circle>
+        <path class="icon-nipper-handle-red" d="M10.8 11.2 7.2 18"></path>
+        <path class="icon-nipper-handle-blue" d="M13.2 11.2 16.8 18"></path>
+      </svg>
+    `,
+    spark: `
+      <svg class="status-svg status-svg-spark" viewBox="0 0 24 24" aria-hidden="true">
+        <path class="icon-spark-main" d="M12 3.8 13.9 9l5.3 1.9-5.3 1.9-1.9 5.4-1.9-5.4-5.3-1.9L10.1 9 12 3.8Z"></path>
+        <circle class="icon-spark-dot" cx="18.4" cy="5.6" r="1.1"></circle>
+      </svg>
+    `,
+    crown: `
+      <svg class="status-svg status-svg-crown" viewBox="0 0 24 24" aria-hidden="true">
+        <path class="icon-crown-body" d="M5 17.5 3.8 8.3l4.3 3.2L12 6.4l3.9 5.1 4.3-3.2-1.2 9.2Z"></path>
+        <path class="icon-crown-base" d="M5.2 17.5h13.6"></path>
+      </svg>
+    `,
+    vault: `
+      <svg class="status-svg status-svg-vault" viewBox="0 0 24 24" aria-hidden="true">
+        <rect class="icon-vault-door" x="4.2" y="4.2" width="15.6" height="15.6" rx="1.6"></rect>
+        <circle class="icon-vault-wheel" cx="12" cy="12" r="3.4"></circle>
+        <path class="icon-vault-wheel" d="M12 8.6v6.8"></path>
+        <path class="icon-vault-wheel" d="M8.6 12h6.8"></path>
+      </svg>
+    `
+  };
+
+  return icons[name] || icons.search;
+}
+
+function makeStatusIconMarkup(statusKey) {
+  const visual = getBuildStatusVisual(statusKey);
+  return `
+    <span
+      class="mini-state-icon icon-${statusKey}"
+      title="${escapeHtml(visual.title)}"
+      aria-label="${escapeHtml(visual.title)}"
+    >
+      ${getStatusIconSvg(visual.icon)}
+    </span>
+  `;
+}
+
 function makeBuildStatusBlock(statusInfo) {
   const block = document.createElement("div");
   block.className = `build-status-block status-${statusInfo.key}`;
+  const statusIcon = makeStatusIconMarkup(statusInfo.key);
+
+  if (statusInfo.hideProgress) {
+    block.innerHTML = `
+      <div class="build-status-header build-status-header-no-progress">
+        <div class="build-status-copy">
+          <span class="build-status-kicker">BUILD STATUS</span>
+          <strong>${escapeHtml(statusInfo.label)}</strong>
+        </div>
+        <div class="build-status-symbol-wrap">${statusIcon}</div>
+      </div>
+    `;
+    return block;
+  }
+
   block.innerHTML = `
     <div class="build-status-header">
       <div class="build-status-circle">
@@ -631,6 +758,7 @@ function makeBuildStatusBlock(statusInfo) {
         <span class="build-status-kicker">BUILD STATUS</span>
         <strong>${escapeHtml(statusInfo.label)}</strong>
       </div>
+      <div class="build-status-symbol-wrap">${statusIcon}</div>
     </div>
     <div class="build-status-bar" aria-hidden="true">
       <span class="build-status-fill" style="width:${statusInfo.percent}%"></span>

@@ -18,3 +18,11 @@ TIMELINE ORDER
 - timeline_position orders the series/story stage.
 - timeline_order orders Gundams inside the same series.
 - Example: Rising Freedom = 1; Mighty Strike Freedom = 2.
+
+
+RELATIONSHIPS v16
+- Design Origin remains backward-compatible in design_origins[].
+- Additional typed links are stored in relationships[].
+- Supported types: successor, variant, upgrade, equipment-pack.
+- Successor/Upgrade render current -> linked record.
+- Variant/Equipment-Pack render current <-> linked record.

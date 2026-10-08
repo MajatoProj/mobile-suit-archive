@@ -1823,3 +1823,513 @@ body.theme-fantasy {
     transform-origin: initial;
   }
 }
+
+
+/* ============================================================
+   CATEGORY STATUS DISPLAY FIX v26
+   ============================================================ */
+.gundam-record .build-status-compact {
+  display: flex;
+  visibility: visible;
+  opacity: 1;
+  min-height: 24px;
+}
+
+.gundam-record .status-meter {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}
+
+.gundam-record .status-meter-fill.status-completed {
+  width: 100%;
+}
+
+
+/* ============================================================
+   REALISTIC STATUS ICON COLOURS v27
+   ============================================================ */
+.mini-state-icon {
+  color: #c8d2d8;
+  border-color: rgba(185, 198, 207, .22);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+}
+
+.mini-state-icon svg {
+  overflow: visible;
+}
+
+/* WANTED — magnifying glass: steel rim + pale glass */
+.icon-unassigned {
+  border-color: rgba(155, 183, 202, .26);
+  background: rgba(103, 143, 168, .055);
+}
+.icon-unassigned .icon-glass {
+  fill: rgba(127, 193, 225, .18);
+  stroke: #a8c8da;
+  stroke-width: 1.7;
+}
+.icon-unassigned .icon-metal {
+  fill: none;
+  stroke: #c5ccd0;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+/* BACKLOG — ordinary steel clock */
+.icon-backlog {
+  border-color: rgba(172, 180, 187, .24);
+  background: rgba(146, 154, 162, .05);
+}
+.icon-backlog .icon-clock-case {
+  fill: #5f6970;
+  stroke: #b8c0c5;
+  stroke-width: 1.4;
+}
+.icon-backlog .icon-clock-face {
+  fill: #20272c;
+  stroke: #7f898f;
+  stroke-width: 1;
+}
+.icon-backlog .icon-clock-hands {
+  fill: none;
+  stroke: #e2e5e7;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ASSEMBLY — silver jaws, colored rubber grips */
+.icon-assembly {
+  border-color: rgba(159, 170, 180, .26);
+  background: rgba(132, 142, 151, .05);
+}
+.icon-assembly .icon-nipper-metal,
+.icon-assembly .icon-nipper-pivot {
+  fill: none;
+  stroke: #cbd1d5;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon-assembly .icon-nipper-pivot {
+  fill: #7f898f;
+}
+.icon-assembly .icon-nipper-handle-red {
+  fill: none;
+  stroke: #d55353;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+.icon-assembly .icon-nipper-handle-blue {
+  fill: none;
+  stroke: #477fb8;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+/* DETAILING — wooden handle, metal ferrule, paint on the bristles */
+.icon-detailing {
+  border-color: rgba(173, 153, 131, .26);
+  background: rgba(145, 107, 74, .045);
+}
+.icon-detailing .icon-brush-handle {
+  fill: none;
+  stroke: #9a6339;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+.icon-detailing .icon-brush-ferrule {
+  fill: none;
+  stroke: #c6ccd0;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+.icon-detailing .icon-brush-bristles {
+  fill: #73513c;
+  stroke: #9f795d;
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+.icon-detailing .icon-brush-paint {
+  fill: none;
+  stroke: #4aa8d8;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+/* FINISHING — clean white polish/sparkle */
+.icon-finishing {
+  border-color: rgba(232, 238, 242, .28);
+  background: rgba(238, 244, 248, .05);
+}
+.icon-finishing .icon-spark-main {
+  fill: rgba(255,255,255,.88);
+  stroke: #ffffff;
+  stroke-width: .7;
+}
+.icon-finishing .icon-spark-dot {
+  fill: #dcecff;
+  stroke: none;
+}
+
+/* COMPLETED — gold crown */
+.icon-completed {
+  border-color: rgba(212, 170, 67, .34);
+  background: rgba(191, 143, 35, .07);
+}
+.icon-completed .icon-crown-body {
+  fill: #d7aa3a;
+  stroke: #f2d578;
+  stroke-width: 1.05;
+  stroke-linejoin: round;
+}
+.icon-completed .icon-crown-base {
+  fill: none;
+  stroke: #f2d578;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+/* FAULTED — muted gunmetal vault */
+.icon-faulted {
+  border-color: rgba(145, 151, 158, .28);
+  background: rgba(112, 119, 126, .06);
+}
+.icon-faulted .icon-vault-door {
+  fill: #4d555b;
+  stroke: #a7afb5;
+  stroke-width: 1.4;
+}
+.icon-faulted .icon-vault-wheel {
+  fill: none;
+  stroke: #c0c5c9;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+
+/* ============================================================
+   ARCHIVE CONTROLS + STATISTICS + RELATIONSHIPS v28
+   ============================================================ */
+.category-intro {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.category-intro .filter-status-cell strong {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.gundam-toolbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.archive-action-button {
+  min-height: 39px;
+  padding: .66rem .9rem;
+  border: 1px solid rgba(127,199,255,.20);
+  background: rgba(255,255,255,.018);
+  color: #83a2b5;
+  font: inherit;
+  font-size: .62rem;
+  letter-spacing: .11em;
+  cursor: pointer;
+}
+
+.archive-action-button:hover,
+.archive-action-button.active {
+  color: #d9f3ff;
+  border-color: rgba(127,199,255,.48);
+  background: rgba(61,131,178,.15);
+}
+
+.gundam-search-row {
+  min-width: 0;
+}
+
+.archive-search {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.archive-search-field {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  border: 1px solid rgba(127,199,255,.18);
+  background: rgba(0,0,0,.18);
+}
+
+.archive-search-symbol {
+  display: grid;
+  place-items: center;
+  color: #6fa7c9;
+  border-right: 1px solid rgba(127,199,255,.12);
+  font-size: 1rem;
+}
+
+.archive-search input {
+  min-width: 0;
+  width: 100%;
+  padding: .72rem .8rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #d7ebf6;
+  font: inherit;
+  font-size: .72rem;
+}
+
+.archive-search input::placeholder {
+  color: #536d7d;
+}
+
+.archive-search-field:focus-within {
+  border-color: rgba(127,199,255,.48);
+  box-shadow: inset 0 -1px #6db7e5;
+}
+
+.status-filter-strip {
+  align-items: center;
+}
+
+.status-filter-button {
+  min-width: 36px;
+  min-height: 34px;
+  padding: 4px 6px;
+  display: inline-grid;
+  place-items: center;
+}
+
+.status-filter-button .mini-state-icon {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.status-filter-button.active {
+  box-shadow: inset 0 -2px rgba(127,199,255,.82);
+}
+
+.status-filter-all {
+  min-width: 48px;
+  color: #7894a6;
+  letter-spacing: .10em;
+}
+
+.archive-statistics {
+  border-top: 1px solid rgba(127,199,255,.14);
+  padding-top: 13px;
+}
+
+.archive-statistics[hidden] {
+  display: none;
+}
+
+.statistics-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+
+.statistics-total {
+  color: #64859a;
+  font-size: .58rem;
+  letter-spacing: .11em;
+}
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border: 1px solid rgba(127,199,255,.13);
+  background: rgba(127,199,255,.13);
+  gap: 1px;
+}
+
+.statistics-cell {
+  display: grid;
+  gap: 5px;
+  padding: 11px 12px;
+  background: rgba(4,12,22,.88);
+}
+
+.statistics-cell span {
+  color: #6e8b9d;
+  font-size: .55rem;
+  letter-spacing: .10em;
+}
+
+.statistics-cell strong {
+  color: #d7ecf7;
+  font-size: 1rem;
+  font-weight: 570;
+}
+
+.family-heading-meta {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.family-completion-label {
+  color: #89a9bb;
+  font-size: .58rem;
+  letter-spacing: .10em;
+  white-space: nowrap;
+}
+
+.family-completion-meter {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 5px;
+  margin-top: 9px;
+  border: 1px solid rgba(127,199,255,.12);
+  background: rgba(255,255,255,.025);
+  overflow: hidden;
+}
+
+.family-completion-meter > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(85,149,188,.48), rgba(127,199,255,.92));
+}
+
+.relationship-note {
+  margin: 0 18px 16px;
+  padding: 12px;
+  border-left: 1px solid rgba(127,199,255,.42);
+  background: rgba(32,78,108,.055);
+}
+
+.relationship-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.relationship-row {
+  display: grid;
+  grid-template-columns: 126px minmax(150px, .8fr) minmax(0, 1.4fr);
+  align-items: start;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(127,199,255,.12);
+  background: rgba(0,0,0,.10);
+  font-size: .64rem;
+}
+
+.relationship-type-chip {
+  width: fit-content;
+  padding: .26rem .4rem;
+  border: 1px solid rgba(127,199,255,.18);
+  color: #759aaf;
+  font-size: .52rem;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+
+.relationship-type-chip.type-successor { color: #9fcce3; }
+.relationship-type-chip.type-variant { color: #c2aee5; }
+.relationship-type-chip.type-upgrade { color: #d4c08a; }
+.relationship-type-chip.type-equipment-pack { color: #99c9b5; }
+
+.relationship-source,
+.relationship-target {
+  color: #b9d3e2;
+  text-decoration: none;
+  font-weight: 540;
+}
+
+.relationship-source:hover,
+.relationship-target:hover {
+  color: #f0fbff;
+}
+
+.relationship-targets {
+  display: grid;
+  gap: 5px;
+}
+
+.relationship-target-row {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 7px;
+  align-items: baseline;
+}
+
+.relationship-arrow {
+  color: #67a8cf;
+  text-align: center;
+}
+
+@media (max-width: 920px) {
+  .statistics-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .relationship-row { grid-template-columns: 110px minmax(120px,.8fr) minmax(0,1.4fr); }
+}
+
+@media (max-width: 760px) {
+  .category-intro { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .archive-search { grid-template-columns: 1fr; gap: 6px; }
+  .gundam-toolbar-top { align-items: stretch; flex-direction: column; }
+  .archive-action-button { width: fit-content; }
+  .family-heading-meta { margin-left: 0; width: 100%; justify-content: space-between; }
+  .relationship-row { grid-template-columns: 1fr; gap: 7px; }
+  .relationship-target-row { grid-template-columns: 18px minmax(0,1fr); }
+}
+
+@media (max-width: 520px) {
+  .statistics-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+
+/* v28 family heading layout overrides */
+.family-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: 18px;
+}
+
+.family-heading > .panel-label {
+  grid-column: 1 / -1;
+}
+
+.family-heading h2 {
+  grid-column: 1;
+}
+
+.family-heading .family-count {
+  position: static;
+  top: auto;
+  right: auto;
+}
+
+.family-heading-meta {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.family-completion-meter {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 760px) {
+  .family-heading { grid-template-columns: 1fr; }
+  .family-heading h2,
+  .family-heading-meta,
+  .family-completion-meter { grid-column: 1; }
+  .family-heading-meta { grid-row: auto; }
+}

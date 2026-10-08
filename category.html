@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Collection Category</title>
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/themes.css?v=24">
+  <link rel="stylesheet" href="css/themes.css?v=28">
 </head>
 <body class="category-page">
   <div class="theme-background" aria-hidden="true">
@@ -56,15 +56,32 @@
       </div>
       <div>
         <span class="panel-label">DISPLAY MODE</span>
-        <strong>ARCHIVE</strong>
+        <strong id="displayModeValue">ARCHIVE</strong>
+      </div>
+      <div class="filter-status-cell">
+        <span class="panel-label">FILTER</span>
+        <strong id="activeFilterValue" title="Current archive filters">ALL</strong>
       </div>
     </section>
 
     <section class="gundam-explorer" id="gundamExplorer" hidden>
       <div class="gundam-toolbar">
-        <div class="gundam-view-switch" role="group" aria-label="Gundam archive view">
-          <button class="view-button active" type="button" data-gundam-view="timeline">TIMELINE</button>
-          <button class="view-button" type="button" data-gundam-view="families">FAMILIES</button>
+        <div class="gundam-toolbar-top">
+          <div class="gundam-view-switch" role="group" aria-label="Gundam archive view">
+            <button class="view-button active" type="button" data-gundam-view="timeline">TIMELINE</button>
+            <button class="view-button" type="button" data-gundam-view="families">FAMILIES</button>
+          </div>
+          <button class="archive-action-button" type="button" id="statisticsButton" aria-expanded="false" aria-controls="statisticsPanel">STATISTICS</button>
+        </div>
+
+        <div class="gundam-search-row">
+          <label class="archive-search" for="gundamSearch">
+            <span class="panel-label">SEARCH DATABASE</span>
+            <span class="archive-search-field">
+              <span class="archive-search-symbol" aria-hidden="true">⌕</span>
+              <input id="gundamSearch" type="search" autocomplete="off" placeholder="Name, designation, pilot, series, family, grade...">
+            </span>
+          </label>
         </div>
 
         <div class="gundam-filter-row">
@@ -76,6 +93,18 @@
           <span class="panel-label">GRADE</span>
           <div class="filter-strip" id="gradeFilters"></div>
         </div>
+
+        <div class="gundam-filter-row">
+          <span class="panel-label">STATUS</span>
+          <div class="filter-strip status-filter-strip" id="statusFilters" aria-label="Build status filters"></div>
+        </div>
+
+        <div class="gundam-filter-row">
+          <span class="panel-label">ORDER</span>
+          <div class="filter-strip" id="sortControls" aria-label="Archive sort order"></div>
+        </div>
+
+        <div class="archive-statistics" id="statisticsPanel" hidden></div>
       </div>
 
       <div class="gundam-view" id="gundamTimelineView"></div>
@@ -92,6 +121,6 @@
   </main>
 
   <script src="js/shared.js"></script>
-  <script src="js/category.js?v=24"></script>
+  <script src="js/category.js?v=29"></script>
 </body>
 </html>

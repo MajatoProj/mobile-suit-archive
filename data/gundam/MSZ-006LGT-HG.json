@@ -1,0 +1,44 @@
+{
+  "category": "gundam",
+  "id": "MSZ-006LGT-HG",
+  "designation": "MSZ-006LGT",
+  "name": "Lightning Zeta Gundam",
+  "summary": "Build Series / Gundam Build Fighters Try",
+  "description": "Old build from 2015. Faulted and stored away. Panel lined. Needs cleaning, restoration or repair before display.",
+  "continuity": "Build Series",
+  "series": "Gundam Build Fighters Try",
+  "timeline_position": 2,
+  "timeline_lane": "main",
+  "timeline_label": "Gundam Build Fighters Try",
+  "timeline_parent": "Gundam Build Fighters",
+  "family": "Zeta Family",
+  "family_order": 2,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Yuuma Kousaka",
+    "height": "19.8 m",
+    "weight": "60.1 t",
+    "armament": [
+      "Beam Blade ×2",
+      "Beam Rifle",
+      "Shield"
+    ],
+    "features": [
+      "Phoenix Burst System",
+      "Back Binder configuration",
+      "Cannon configuration"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "faulted",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/MSZ-006LGT-HG.png",
+  "specs": {
+    "Release date": "2015-07-18",
+    "Build date": "2015-01-01",
+    "Paint": "Panel Line"
+  }
+}

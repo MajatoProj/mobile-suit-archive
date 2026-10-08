@@ -218,6 +218,21 @@
       padding:.65rem .7rem;
       font-size:.66rem;
     }
+    .relationship-picker{
+      display:grid;
+      grid-template-columns:150px minmax(0,1fr) 120px;
+      gap:7px;
+    }
+    .relationship-picker button{
+      padding:.65rem .7rem;
+      font-size:.66rem;
+    }
+    .relationship-type-tag{
+      color:#83abc2;
+      font-size:.56rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
     .origin-chips{
       display:flex;
       flex-wrap:wrap;
@@ -245,7 +260,7 @@
       line-height:1;
     }
     @media(max-width:520px){
-      .origin-picker{grid-template-columns:1fr}
+      .origin-picker,.relationship-picker{grid-template-columns:1fr}
     }
 
     @media(max-width:850px){.layout{grid-template-columns:1fr}}
@@ -359,8 +374,25 @@
             </select>
             <button type="button" id="addOrigin">ADD ORIGIN</button>
           </span>
-          <span class="normalize-note">Only Gundams already loaded into the local library can be linked. Multiple origins are supported.</span>
+          <span class="normalize-note">The selected Gundam is treated as a design origin of this record. Multiple origins are supported.</span>
           <span class="origin-chips" id="originChips"></span>
+        </label>
+
+        <label class="full">Additional relationships
+          <span class="relationship-picker">
+            <select id="relationshipType" aria-label="Relationship type">
+              <option value="successor">Successor</option>
+              <option value="variant">Variant</option>
+              <option value="upgrade">Upgrade</option>
+              <option value="equipment-pack">Equipment / Pack</option>
+            </select>
+            <select id="relationshipSelect" aria-label="Choose an existing Gundam for this relationship">
+              <option value="">LOAD PREVIOUS GUNDAM JSON(S) FIRST...</option>
+            </select>
+            <button type="button" id="addRelationship">ADD LINK</button>
+          </span>
+          <span class="normalize-note">Successor/Upgrade draw current → selected. Variant and Equipment/Pack draw a two-way ↔ link.</span>
+          <span class="origin-chips" id="relationshipChips"></span>
         </label>
 
         <div class="full builder-section-label">MOBILE SUIT DATA</div>
@@ -497,7 +529,7 @@
           2. Use <strong>LOAD / EDIT GUNDAM JSON</strong> to reopen a Gundam you are still working on.<br>
           3. Fill in or edit the Gundam.<br>
           4. Use <strong>SELECT PREVIEW IMAGE</strong> to preview a local PNG/JPG without changing the saved Image Path.<br>
-          5. Design Origin can only link to Gundams already present in the loaded library/index.<br>
+          5. Design Origin and typed relationship links can only point to Gundams already present in the loaded library/index.<br>
           6. Download the Gundam JSON when you want to save that individual record.<br>
           7. Download the updated <code>index.json</code> when you want the archive list refreshed.
         </div>
@@ -516,6 +548,7 @@
   let previewImageObjectUrl = "";
   let libraryRecords = new Map();
   let selectedOrigins = [];
+  let selectedRelationships = [];
 
   let canonicalValues = {
     continuity: new Map(),
@@ -529,6 +562,9 @@
   const dbState = document.getElementById("dbState");
   const originSelect = document.getElementById("originSelect");
   const originChips = document.getElementById("originChips");
+  const relationshipType = document.getElementById("relationshipType");
+  const relationshipSelect = document.getElementById("relationshipSelect");
+  const relationshipChips = document.getElementById("relationshipChips");
   const previewLocalImage = document.getElementById("previewLocalImage");
   const previewImageFallback = document.getElementById("previewImageFallback");
 
@@ -677,6 +713,7 @@
 
     libraryRecords = new Map();
     selectedOrigins = [];
+    selectedRelationships = [];
     refreshLibraryUI();
     show("Started with an empty Gundam index.", false);
   });
@@ -701,6 +738,8 @@
     fillDatalist("series", comboValues("series"));
     renderOriginSelect();
     renderOriginChips();
+    renderRelationshipSelect();
+    renderRelationshipChips();
 
     dbState.textContent = records.length
       ? `${records.length} GUNDAM RECORD${records.length === 1 ? "" : "S"} LOADED`
@@ -805,6 +844,116 @@
       }));
   }
 
+
+  const relationshipLabels = {
+    "successor":"Successor",
+    "variant":"Variant",
+    "upgrade":"Upgrade",
+    "equipment-pack":"Equipment / Pack"
+  };
+
+  document.getElementById("addRelationship").addEventListener("click", () => {
+    const type = String(relationshipType.value || "").trim();
+    const id = String(relationshipSelect.value || "").trim();
+    if (!type || !id) return;
+
+    if (!libraryRecords.has(id)) {
+      return show("That relationship target is not present in the loaded library.", true);
+    }
+
+    const currentId = String(form.elements.id.value || "").trim();
+    if (id === currentId) {
+      return show("A Gundam cannot link to itself.", true);
+    }
+
+    const exists = selectedRelationships.some(link => link.type === type && link.id === id);
+    if (!exists) selectedRelationships.push({ type, id });
+
+    renderRelationshipSelect();
+    renderRelationshipChips();
+    update();
+  });
+
+  function renderRelationshipSelect() {
+    const currentId = String(form.elements.id.value || "").trim();
+    const type = String(relationshipType.value || "successor");
+
+    const available = [...libraryRecords.values()]
+      .filter(item => item.id && String(item.id) !== currentId)
+      .filter(item => !selectedRelationships.some(link => link.type === type && link.id === String(item.id)))
+      .sort((a,b) => originDisplay(a).localeCompare(originDisplay(b)));
+
+    relationshipSelect.innerHTML = "";
+    const first = document.createElement("option");
+    first.value = "";
+    first.textContent = available.length ? "SELECT EXISTING GUNDAM..." : "NO AVAILABLE RECORDS";
+    relationshipSelect.appendChild(first);
+
+    available.forEach(item => {
+      const option = document.createElement("option");
+      option.value = String(item.id);
+      option.textContent = originDisplay(item);
+      relationshipSelect.appendChild(option);
+    });
+  }
+
+  relationshipType.addEventListener("change", renderRelationshipSelect);
+
+  function renderRelationshipChips() {
+    relationshipChips.innerHTML = "";
+    selectedRelationships = selectedRelationships.filter(link => libraryRecords.has(link.id));
+
+    selectedRelationships.forEach(link => {
+      const item = libraryRecords.get(link.id);
+      const chip = document.createElement("span");
+      chip.className = "origin-chip";
+
+      const typeTag = document.createElement("span");
+      typeTag.className = "relationship-type-tag";
+      typeTag.textContent = relationshipLabels[link.type] || link.type;
+
+      const text = document.createElement("span");
+      text.textContent = originDisplay(item);
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.setAttribute("aria-label", `Remove ${relationshipLabels[link.type] || link.type} link to ${item.name || link.id}`);
+      remove.textContent = "×";
+      remove.addEventListener("click", () => {
+        selectedRelationships = selectedRelationships.filter(value => !(value.type === link.type && value.id === link.id));
+        renderRelationshipSelect();
+        renderRelationshipChips();
+        update();
+      });
+
+      chip.append(typeTag, text, remove);
+      relationshipChips.appendChild(chip);
+    });
+  }
+
+  function buildRelationshipLinks() {
+    return selectedRelationships
+      .map(link => ({ link, item: libraryRecords.get(link.id) }))
+      .filter(entry => entry.item)
+      .map(({ link, item }) => ({
+        type: String(link.type || ""),
+        id: String(item.id),
+        designation: String(item.designation || ""),
+        name: String(item.name || "")
+      }));
+  }
+
+  function resolveLoadedRelationships(item) {
+    if (!Array.isArray(item.relationships)) return [];
+
+    return item.relationships
+      .map(rel => ({
+        type: String(rel && rel.type || "").trim(),
+        id: String(rel && rel.id || "").trim()
+      }))
+      .filter(rel => relationshipLabels[rel.type] && rel.id && libraryRecords.has(rel.id) && rel.id !== String(item.id));
+  }
+
   // ------------------------------------------------------------
   // Load/edit form
   // ------------------------------------------------------------
@@ -847,9 +996,12 @@
     setValue("paint", paintValue(specs["Paint"]));
 
     selectedOrigins = resolveLoadedOrigins(item);
+    selectedRelationships = resolveLoadedRelationships(item);
 
     renderOriginSelect();
     renderOriginChips();
+    renderRelationshipSelect();
+    renderRelationshipChips();
     update();
   }
 
@@ -949,6 +1101,7 @@
     // immediately jump back to "SELECT EXISTING GUNDAM...".
     if (event.target === form.elements.id) {
       renderOriginSelect();
+      renderRelationshipSelect();
     }
 
     update();
@@ -959,6 +1112,7 @@
   document.getElementById("clear").addEventListener("click", () => {
     form.reset();
     selectedOrigins = [];
+    selectedRelationships = [];
 
     if (previewImageObjectUrl) {
       URL.revokeObjectURL(previewImageObjectUrl);
@@ -971,6 +1125,8 @@
 
     renderOriginSelect();
     renderOriginChips();
+    renderRelationshipSelect();
+    renderRelationshipChips();
     update();
   });
 
@@ -1062,6 +1218,15 @@
             id: String(origin.id || ""),
             designation: String(origin.designation || ""),
             name: String(origin.name || "")
+          }))
+        : [],
+
+      relationships: Array.isArray(item.relationships)
+        ? item.relationships.map(rel => ({
+            type: String(rel.type || ""),
+            id: String(rel.id || ""),
+            designation: String(rel.designation || ""),
+            name: String(rel.name || "")
           }))
         : [],
 
@@ -1168,6 +1333,7 @@
       family_order:familyOrder ? Number(familyOrder) : null,
 
       design_origins:buildOriginLinks(),
+      relationships:buildRelationshipLinks(),
 
       mobile_suit_data: mobileSuitData,
 
@@ -1249,6 +1415,10 @@
 
     if (item.design_origins.some(origin => origin.id === item.id)) {
       return "A Gundam cannot be its own Design Origin.";
+    }
+
+    if (Array.isArray(item.relationships) && item.relationships.some(rel => rel.id === item.id)) {
+      return "A Gundam cannot link to itself.";
     }
 
     return "";
