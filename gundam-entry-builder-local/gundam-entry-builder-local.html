@@ -1,0 +1,1389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local Gundam Entry Builder</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#050914;
+      --panel:#08111b;
+      --line:rgba(127,199,255,.24);
+      --text:#e7f4fb;
+      --muted:#809aaa;
+      --accent:#7fc7ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 80% 10%,rgba(50,100,150,.12),transparent 30%),
+        var(--bg);
+      color:var(--text);
+      font-family:Segoe UI,Arial,sans-serif;
+    }
+    main{max-width:1150px;margin:0 auto;padding:28px 20px 60px}
+    .eyebrow{color:var(--muted);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase}
+    h1{margin:.35rem 0 .6rem;letter-spacing:.08em;font-weight:560}
+    .lead{max-width:70ch;color:#91a8b6;line-height:1.6}
+    .privacy{
+      margin:18px 0;
+      padding:13px 15px;
+      border-left:3px solid #77cfa9;
+      background:rgba(70,140,110,.08);
+      color:#b8d9c9;
+    }
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+    .layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:18px}
+    .panel{border:1px solid var(--line);background:rgba(7,16,26,.86)}
+    .panel-head{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .panel-head strong{letter-spacing:.1em;font-size:.8rem}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:15px}
+    label{display:grid;gap:6px;color:#8ca4b4;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+    .full{grid-column:1/-1}
+    .builder-section-label{
+      margin-top:8px;
+      padding:10px 0 3px;
+      border-top:1px solid rgba(127,199,255,.15);
+      color:#7fa4b8;
+      font-size:.68rem;
+      font-weight:600;
+      letter-spacing:.14em;
+    }
+    input,select,textarea{
+      width:100%;padding:.8rem;border:1px solid rgba(127,199,255,.18);
+      background:#06101a;color:var(--text);font:inherit
+    }
+    textarea{min-height:90px;resize:vertical}
+    .check{display:flex;align-items:center;gap:10px}
+    .check input{width:auto}
+    button,.file-label{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:.75rem .95rem;border:1px solid rgba(127,199,255,.34);
+      background:rgba(48,106,145,.14);color:var(--text);cursor:pointer;
+      font:inherit;font-size:.72rem;letter-spacing:.08em;text-decoration:none
+    }
+    button:hover,.file-label:hover{border-color:var(--accent);background:rgba(48,106,145,.24)}
+    .secondary{background:rgba(255,255,255,.025);color:#abc0cd}
+    #libraryInput,#editInput,#previewImageInput{display:none}
+    .actions{padding:0 15px 15px;display:flex;gap:9px;flex-wrap:wrap}
+    .status{padding:0 15px 15px;color:#7892a2;font-size:.8rem;line-height:1.5}
+    pre{
+      margin:0;max-height:520px;overflow:auto;padding:15px;background:#040a10;
+      color:#cfe6f3;font: .72rem/1.55 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere
+    }
+    .preview{padding:15px}
+    .card{border:1px solid var(--line);background:#050d16}
+    .visual{
+      height:180px;
+      position:relative;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 72% 35%,rgba(100,180,230,.15),transparent 22%),
+        linear-gradient(145deg,#0a2233,#05101b)
+    }
+    .visual img{
+      width:92%;
+      height:92%;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 12px rgba(0,0,0,.4))
+    }
+    .visual span{
+      color:#587487;
+      font-size:.62rem;
+      letter-spacing:.12em
+    }
+    .preview-status{
+      margin-top:12px;
+      display:grid;
+      gap:6px;
+    }
+    .preview-status-topline{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-size:.62rem;
+      letter-spacing:.12em;
+      color:#8fb0c1;
+    }
+    .preview-status-meter{
+      position:relative;
+      height:8px;
+      border:1px solid rgba(127,199,255,.18);
+      background:rgba(255,255,255,.04);
+      overflow:hidden;
+    }
+    .preview-status-meter span{
+      display:block;
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, rgba(127,199,255,.55), rgba(127,199,255,.95));
+    }
+    .card.is-backlog .visual img{
+      filter:grayscale(1) contrast(.92) brightness(.93) drop-shadow(0 10px 12px rgba(0,0,0,.4));
+    }
+    .card.is-backlog{
+      opacity:.92;
+    }
+    .card-body{padding:14px}
+    .designation{color:#7895a7;font:.68rem Consolas,monospace}
+    .card h3{margin:.45rem 0 .7rem}
+    .badges{display:flex;gap:6px;flex-wrap:wrap}
+    .badge{padding:.32rem .45rem;border:1px solid var(--line);font-size:.6rem;color:#bdd5e2}
+    .help{padding:15px;color:#819aa9;line-height:1.6;font-size:.8rem}
+
+    .combo{
+      position:relative;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 38px;
+    }
+    .combo input{
+      border-right:0;
+    }
+    .combo-toggle{
+      padding:0;
+      min-width:38px;
+      border:1px solid rgba(127,199,255,.18);
+      background:#08131f;
+      color:#a9c4d3;
+      font-size:.8rem;
+    }
+    .combo-toggle:hover{
+      border-color:var(--accent);
+      background:#0b1825;
+    }
+    .combo-menu{
+      position:absolute;
+      z-index:30;
+      left:0;
+      right:0;
+      top:calc(100% + 4px);
+      max-height:210px;
+      overflow:auto;
+      border:1px solid rgba(127,199,255,.28);
+      background:#07111b;
+      box-shadow:0 12px 28px rgba(0,0,0,.32);
+    }
+    .combo-menu[hidden]{display:none}
+    .combo-option{
+      display:block;
+      width:100%;
+      padding:.72rem .8rem;
+      border:0;
+      border-bottom:1px solid rgba(127,199,255,.08);
+      background:transparent;
+      color:#c8ddea;
+      text-align:left;
+      font:inherit;
+      font-size:.75rem;
+      letter-spacing:.02em;
+    }
+    .combo-option:hover,
+    .combo-option:focus{
+      background:rgba(66,126,167,.17);
+      color:#edf8ff;
+    }
+    .combo-empty{
+      padding:.72rem .8rem;
+      color:#6f8b9c;
+      font-size:.72rem;
+    }
+    .normalize-note{
+      color:#6f8b9c;
+      font-size:.6rem;
+      letter-spacing:.03em;
+      text-transform:none;
+      line-height:1.35;
+    }
+
+
+    .origin-picker{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 120px;
+      gap:7px;
+    }
+    .origin-picker button{
+      padding:.65rem .7rem;
+      font-size:.66rem;
+    }
+    .origin-chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      min-height:8px;
+    }
+    .origin-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:.45rem .55rem;
+      border:1px solid rgba(127,199,255,.24);
+      background:rgba(55,110,150,.10);
+      color:#c7dce8;
+      font-size:.66rem;
+      letter-spacing:0;
+      text-transform:none;
+    }
+    .origin-chip button{
+      border:0;
+      padding:0 .15rem;
+      background:transparent;
+      color:#8faaba;
+      font-size:.9rem;
+      line-height:1;
+    }
+    @media(max-width:520px){
+      .origin-picker{grid-template-columns:1fr}
+    }
+
+    @media(max-width:850px){.layout{grid-template-columns:1fr}}
+    @media(max-width:600px){.form-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">LOCAL-ONLY TOOL</div>
+  <h1>GUNDAM ENTRY BUILDER</h1>
+  <p class="lead">This file is meant to stay on your computer. It does not connect to GitHub and cannot publish anything by itself.</p>
+
+  <div class="privacy"><strong>Nothing is uploaded anywhere.</strong> Load your current Gundam <code>index.json</code> or individual Gundam JSON files, edit/build records, then download the updated files to your computer.</div>
+
+  <div class="top-actions">
+    <label class="file-label" for="libraryInput">LOAD GUNDAM INDEX / LIBRARY</label>
+    <input id="libraryInput" type="file" accept=".json,application/json" multiple>
+
+    <label class="file-label" for="editInput">LOAD / EDIT GUNDAM JSON</label>
+    <input id="editInput" type="file" accept=".json,application/json">
+
+    <label class="file-label" for="previewImageInput">SELECT PREVIEW IMAGE</label>
+    <input id="previewImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+
+    <button class="secondary" type="button" id="newDatabase">START WITHOUT LIBRARY</button>
+  </div>
+
+  <div class="layout">
+    <section class="panel">
+      <div class="panel-head">
+        <strong>ENTRY DATA</strong>
+        <span id="dbState" class="eyebrow">NO DATABASE LOADED</span>
+      </div>
+
+      <form id="form" class="form-grid">
+        <label>ID *
+          <input name="id" required placeholder="ZGMF-X10A">
+        </label>
+        <label>Designation
+          <input name="designation" placeholder="ZGMF-X10A">
+        </label>
+        <label class="full">Name *
+          <input name="name" required placeholder="Freedom Gundam">
+        </label>
+        <label>Continuity
+          <span class="combo" data-combo="continuity">
+            <input name="continuity" id="continuityInput" autocomplete="off" placeholder="UC or Cosmic Era">
+            <button class="combo-toggle" type="button" aria-label="Show previously used continuities">⌄</button>
+            <span class="combo-menu" id="continuityMenu" hidden></span>
+          </span>
+          <span class="normalize-note">Type a new value or choose one already used.</span>
+        </label>
+
+        <label>Series
+          <span class="combo" data-combo="series">
+            <input name="series" id="seriesInput" autocomplete="off" placeholder="SEED">
+            <button class="combo-toggle" type="button" aria-label="Show previously used series">⌄</button>
+            <span class="combo-menu" id="seriesMenu" hidden></span>
+          </span>
+          <span class="normalize-note">Existing matches use the saved canonical spelling.</span>
+        </label>
+        <datalist id="series"></datalist>
+
+        <label>Timeline position
+          <input name="timeline_position" type="number" min="1" step="1" placeholder="2">
+          <span class="normalize-note">Main horizontal position. Parallel series can share the same number.</span>
+        </label>
+
+        <label>Timeline lane
+          <select name="timeline_lane">
+            <option value="">Unassigned</option>
+            <option value="main">Main</option>
+            <option value="parallel">Parallel</option>
+            <option value="side-story">Side Story</option>
+            <option value="alternate">Alternate</option>
+          </select>
+          <span class="normalize-note">Used later to draw branches instead of forcing one straight timeline.</span>
+        </label>
+
+        <label>Timeline label
+          <input name="timeline_label" placeholder="C.E. 73">
+          <span class="normalize-note">Optional era/year label shown near the series.</span>
+        </label>
+
+        <label>Timeline parent / connects to
+          <input name="timeline_parent" list="series" placeholder="Mobile Suit Gundam SEED Destiny">
+          <span class="normalize-note">For a branch such as Stargazer, choose the series it branches from.</span>
+        </label>
+
+        <label>Family
+          <span class="combo" data-combo="family">
+            <input name="family" id="familyInput" autocomplete="off" placeholder="Freedom Family">
+            <button class="combo-toggle" type="button" aria-label="Show previously used families">⌄</button>
+            <span class="combo-menu" id="familyMenu" hidden></span>
+          </span>
+          <span class="normalize-note">Case, spaces and punctuation are normalized when matching.</span>
+        </label>
+
+        <label>Family order
+          <input name="family_order" type="number" min="1" step="1" placeholder="1">
+        </label>
+        <label class="full">Design origin
+          <span class="origin-picker">
+            <select id="originSelect" aria-label="Choose an existing Gundam as a design origin">
+              <option value="">LOAD PREVIOUS GUNDAM JSON(S) FIRST...</option>
+            </select>
+            <button type="button" id="addOrigin">ADD ORIGIN</button>
+          </span>
+          <span class="normalize-note">Only Gundams already loaded into the local library can be linked. Multiple origins are supported.</span>
+          <span class="origin-chips" id="originChips"></span>
+        </label>
+
+        <div class="full builder-section-label">MOBILE SUIT DATA</div>
+
+        <label>Pilot
+          <input name="pilot" placeholder="Kira Yamato">
+        </label>
+        <label>Height
+          <input name="height" placeholder="18.03 m">
+        </label>
+        <label>Weight
+          <input name="weight" placeholder="71.5 t">
+        </label>
+        <label class="full">Armament
+          <textarea name="armament" placeholder="One weapon per line"></textarea>
+          <span class="normalize-note">Use one armament entry per line.</span>
+        </label>
+        <label class="full">Features
+          <textarea name="features" placeholder="One feature per line"></textarea>
+          <span class="normalize-note">Use one feature per line.</span>
+        </label>
+
+        <div class="full builder-section-label">KIT / BUILD DATA</div>
+
+        <label>Source
+          <select name="source">
+            <option value="bandai">Bandai</option>
+            <option value="p-bandai">P-Bandai</option>
+            <option value="base">Gundam Base / Exclusive</option>
+            <option value="3rd-party">3rd Party</option>
+          </select>
+        </label>
+        <label>Grade
+          <input name="grade" placeholder="HGCE">
+        </label>
+        <label>Grade family
+          <select name="grade_family">
+            <option value="">Unassigned</option>
+            <option>HG</option><option>RG</option><option>MG</option><option>PG</option>
+          </select>
+        </label>
+        <label>Scale
+          <input name="scale" placeholder="1/144">
+        </label>
+        <label>Image path
+          <input name="image" placeholder="assets/images/gundam/freedom.jpg">
+        </label>
+        <label>Release date
+          <input name="release_date" type="date">
+        </label>
+        <label>Build date
+          <input name="build_date" type="date">
+        </label>
+        <label>Build status
+          <select name="build_status">
+            <option value="">Unassigned</option>
+            <option value="backlog">Backlog</option>
+            <option value="assembly">Assembly</option>
+            <option value="detailing">Detailing</option>
+            <option value="finishing">Finishing</option>
+            <option value="completed">Completed</option>
+          </select>
+        </label>
+        <label>Paint
+          <select name="paint">
+            <option value="none">None</option>
+            <option value="panel-line">Panel Line</option>
+            <option value="details">Details</option>
+            <option value="custom">Custom</option>
+          </select>
+          <span class="normalize-note">How much painting was done on this build.</span>
+        </label>
+        <label>Top coat
+          <input name="top_coat" placeholder="Matte / gloss / none">
+        </label>
+        <label class="full">Additional notes
+          <textarea name="description" placeholder="Only notes that do not fit the structured fields above"></textarea>
+        </label>
+        <label class="check">
+          <input name="custom" type="checkbox">
+          <span>Custom build</span>
+        </label>
+      </form>
+
+      <p class="status" id="status">Load the current Gundam index or previous Gundam JSON files to reuse values and create Design Origin links.</p>
+
+      <div class="actions">
+        <button type="button" id="downloadEntry">DOWNLOAD GUNDAM JSON</button>
+        <button type="button" id="downloadUpdated">DOWNLOAD UPDATED index.json</button>
+        <button type="button" class="secondary" id="clear">CLEAR FORM</button>
+      </div>
+    </section>
+
+    <aside style="display:grid;gap:18px">
+      <section class="panel">
+        <div class="panel-head"><strong>LIVE PREVIEW</strong><span class="eyebrow">CARD</span></div>
+        <div class="preview">
+          <div class="card">
+            <div class="visual" id="previewVisual">
+              <img id="previewLocalImage" alt="" hidden>
+              <span id="previewImageFallback">NO LOCAL PREVIEW IMAGE</span>
+            </div>
+            <div class="card-body">
+              <div class="designation" id="pDesignation">UNIT-DESIGNATION</div>
+              <h3 id="pName">GUNDAM NAME</h3>
+              <div class="badges">
+                <span class="badge" id="pSource">BANDAI</span>
+                <span class="badge" id="pGrade">GRADE</span>
+                <span class="badge" id="pScale">SCALE</span>
+                <span class="badge" id="pCustom" hidden>CUSTOM</span>
+              </div>
+              <div class="preview-status" id="previewStatus" hidden>
+                <div class="preview-status-topline">
+                  <span class="preview-status-label" id="pBuildStatus">BUILD STATUS</span>
+                  <span class="preview-status-percent" id="pBuildPercent">0%</span>
+                </div>
+                <div class="preview-status-meter"><span id="pBuildMeter"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><strong>JSON PREVIEW</strong></div>
+        <pre id="output">{}</pre>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><strong>WORKFLOW</strong></div>
+        <div class="help">
+          1. Load your current <code>data/gundam/index.json</code> or previously made Gundam JSON files.<br>
+          2. Use <strong>LOAD / EDIT GUNDAM JSON</strong> to reopen a Gundam you are still working on.<br>
+          3. Fill in or edit the Gundam.<br>
+          4. Use <strong>SELECT PREVIEW IMAGE</strong> to preview a local PNG/JPG without changing the saved Image Path.<br>
+          5. Design Origin can only link to Gundams already present in the loaded library/index.<br>
+          6. Download the Gundam JSON when you want to save that individual record.<br>
+          7. Download the updated <code>index.json</code> when you want the archive list refreshed.
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<script>
+  let indexData = {
+    category: "gundam",
+    version: 1,
+    items: []
+  };
+
+  let previewImageObjectUrl = "";
+  let libraryRecords = new Map();
+  let selectedOrigins = [];
+
+  let canonicalValues = {
+    continuity: new Map(),
+    series: new Map(),
+    family: new Map()
+  };
+
+  const form = document.getElementById("form");
+  const output = document.getElementById("output");
+  const status = document.getElementById("status");
+  const dbState = document.getElementById("dbState");
+  const originSelect = document.getElementById("originSelect");
+  const originChips = document.getElementById("originChips");
+  const previewLocalImage = document.getElementById("previewLocalImage");
+  const previewImageFallback = document.getElementById("previewImageFallback");
+
+  const sourceLabels = {
+    "bandai":"BANDAI",
+    "p-bandai":"P-BANDAI",
+    "base":"BASE EXCLUSIVE",
+    "3rd-party":"3RD PARTY"
+  };
+
+  // ------------------------------------------------------------
+  // Load an existing gundam/index.json or individual Gundam JSONs.
+  // ------------------------------------------------------------
+  document.getElementById("libraryInput").addEventListener("change", async event => {
+    const files = [...(event.target.files || [])];
+    if (!files.length) return;
+
+    let loaded = 0;
+    let failed = 0;
+
+    for (const file of files) {
+      try {
+        const parsed = JSON.parse(await file.text());
+
+        // New category index format.
+        if (
+          parsed &&
+          parsed.category === "gundam" &&
+          Array.isArray(parsed.items)
+        ) {
+          indexData = {
+            category: "gundam",
+            version: Number(parsed.version) || 1,
+            items: parsed.items
+          };
+
+          parsed.items
+            .filter(item => item && item.id)
+            .forEach(addRecordToLibrary);
+
+          loaded += parsed.items.length;
+          continue;
+        }
+
+        // Legacy items.json support for easy migration.
+        if (parsed && Array.isArray(parsed.items)) {
+          const gundams = parsed.items.filter(
+            item => item && item.category === "gundam" && item.id
+          );
+
+          indexData = {
+            category: "gundam",
+            version: 1,
+            items: gundams.map(makeIndexRecord)
+          };
+
+          gundams.forEach(addRecordToLibrary);
+          loaded += gundams.length;
+          continue;
+        }
+
+        // Individual Gundam JSON.
+        if (parsed && parsed.category === "gundam" && parsed.id) {
+          addRecordToLibrary(parsed);
+          upsertIndexRecord(parsed);
+          loaded += 1;
+          continue;
+        }
+
+        failed += 1;
+      } catch {
+        failed += 1;
+      }
+    }
+
+    refreshLibraryUI();
+    event.target.value = "";
+
+    const suffix = failed ? ` ${failed} file(s) could not be used.` : "";
+    show(`${loaded} Gundam record(s) loaded.${suffix}`, failed > 0);
+  });
+
+  // ------------------------------------------------------------
+  // Load one full Gundam record into the form for editing.
+  // ------------------------------------------------------------
+  document.getElementById("editInput").addEventListener("change", async event => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    try {
+      const parsed = JSON.parse(await file.text());
+
+      if (!parsed || parsed.category !== "gundam" || !parsed.id) {
+        throw new Error("This is not a valid Gundam entry JSON.");
+      }
+
+      addRecordToLibrary(parsed);
+      upsertIndexRecord(parsed);
+      refreshLibraryUI();
+      loadEntryIntoForm(parsed);
+
+      show(
+        `Loaded ${parsed.designation || parsed.id} — ${parsed.name || "Gundam"} for editing.`,
+        false
+      );
+    } catch (error) {
+      show(`Could not load Gundam JSON: ${error.message}`, true);
+    }
+
+    event.target.value = "";
+  });
+
+  document.getElementById("previewImageInput").addEventListener("change", event => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      show("Selected preview file is not an image.", true);
+      event.target.value = "";
+      return;
+    }
+
+    if (previewImageObjectUrl) {
+      URL.revokeObjectURL(previewImageObjectUrl);
+    }
+
+    previewImageObjectUrl = URL.createObjectURL(file);
+    previewLocalImage.src = previewImageObjectUrl;
+    previewLocalImage.hidden = false;
+    previewImageFallback.hidden = true;
+
+    show(
+      `Local preview image loaded: ${file.name}. This does not change the saved Image Path.`,
+      false
+    );
+
+    event.target.value = "";
+  });
+
+  document.getElementById("newDatabase").addEventListener("click", () => {
+    indexData = {
+      category: "gundam",
+      version: 1,
+      items: []
+    };
+
+    libraryRecords = new Map();
+    selectedOrigins = [];
+    refreshLibraryUI();
+    show("Started with an empty Gundam index.", false);
+  });
+
+  function addRecordToLibrary(item) {
+    if (!item || !item.id) return;
+    libraryRecords.set(String(item.id), item);
+  }
+
+  function refreshLibraryUI() {
+    const records = [...libraryRecords.values()];
+
+    canonicalValues = {
+      continuity: buildCanonicalMap(records.map(x => x.continuity)),
+      series: buildCanonicalMap(records.map(x => x.series)),
+      family: buildCanonicalMap(records.map(x => x.family))
+    };
+
+    renderComboMenu("continuity");
+    renderComboMenu("series");
+    renderComboMenu("family");
+    fillDatalist("series", comboValues("series"));
+    renderOriginSelect();
+    renderOriginChips();
+
+    dbState.textContent = records.length
+      ? `${records.length} GUNDAM RECORD${records.length === 1 ? "" : "S"} LOADED`
+      : "NO LIBRARY LOADED";
+  }
+
+  // ------------------------------------------------------------
+  // Design Origin relationships
+  // ------------------------------------------------------------
+  document.getElementById("addOrigin").addEventListener("click", () => {
+    const id = originSelect.value;
+    if (!id) return;
+
+    if (!libraryRecords.has(id)) {
+      return show("That Design Origin is not present in the loaded library.", true);
+    }
+
+    const currentId = String(form.elements.id.value || "").trim();
+    if (id === currentId) {
+      return show("A Gundam cannot be its own Design Origin.", true);
+    }
+
+    if (!selectedOrigins.includes(id)) selectedOrigins.push(id);
+
+    renderOriginSelect();
+    renderOriginChips();
+    update();
+  });
+
+  function renderOriginSelect() {
+    const currentId = String(form.elements.id.value || "").trim();
+
+    const available = [...libraryRecords.values()]
+      .filter(item => item.id && String(item.id) !== currentId)
+      .filter(item => !selectedOrigins.includes(String(item.id)))
+      .sort((a,b) => originDisplay(a).localeCompare(originDisplay(b)));
+
+    originSelect.innerHTML = "";
+
+    const first = document.createElement("option");
+    first.value = "";
+    first.textContent = available.length
+      ? "SELECT EXISTING GUNDAM..."
+      : "NO AVAILABLE ORIGIN RECORDS";
+    originSelect.appendChild(first);
+
+    available.forEach(item => {
+      const option = document.createElement("option");
+      option.value = String(item.id);
+      option.textContent = originDisplay(item);
+      originSelect.appendChild(option);
+    });
+  }
+
+  function renderOriginChips() {
+    originChips.innerHTML = "";
+
+    selectedOrigins = selectedOrigins.filter(id => libraryRecords.has(id));
+
+    selectedOrigins.forEach(id => {
+      const item = libraryRecords.get(id);
+
+      const chip = document.createElement("span");
+      chip.className = "origin-chip";
+
+      const text = document.createElement("span");
+      text.textContent = originDisplay(item);
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.setAttribute("aria-label", `Remove ${item.name || id} as Design Origin`);
+      remove.textContent = "×";
+
+      remove.addEventListener("click", () => {
+        selectedOrigins = selectedOrigins.filter(value => value !== id);
+        renderOriginSelect();
+        renderOriginChips();
+        update();
+      });
+
+      chip.append(text, remove);
+      originChips.appendChild(chip);
+    });
+  }
+
+  function originDisplay(item) {
+    const designation = String(item.designation || item.id || "UNKNOWN").trim();
+    const name = String(item.name || "Unnamed Gundam").trim();
+    const kit = [item.grade, item.scale].filter(Boolean).join(" • ");
+
+    return `${designation} — ${name}${kit ? ` • ${kit}` : ""}`;
+  }
+
+  function buildOriginLinks() {
+    return selectedOrigins
+      .map(id => libraryRecords.get(id))
+      .filter(Boolean)
+      .map(item => ({
+        id: String(item.id),
+        designation: String(item.designation || ""),
+        name: String(item.name || "")
+      }));
+  }
+
+  // ------------------------------------------------------------
+  // Load/edit form
+  // ------------------------------------------------------------
+  function loadEntryIntoForm(item) {
+    form.reset();
+
+    setValue("id", item.id);
+    setValue("designation", item.designation);
+    setValue("name", item.name);
+    setValue("continuity", item.continuity);
+    setValue("series", item.series);
+    setValue("timeline_position", item.timeline_position);
+    setValue("timeline_lane", item.timeline_lane);
+    setValue("timeline_label", item.timeline_label);
+    setValue("timeline_parent", item.timeline_parent);
+    setValue("family", item.family);
+    setValue("family_order", item.family_order);
+    setValue("source", item.source || "bandai");
+    setValue("grade", item.grade);
+    setValue("grade_family", item.grade_family);
+    setValue("scale", item.scale);
+    setValue("image", item.image);
+
+    const suitData = normalizeLoadedSuitData(item);
+    setValue("pilot", suitData.pilot);
+    setValue("height", suitData.height);
+    setValue("weight", suitData.weight);
+    setValue("armament", suitData.armament.join("\n"));
+    setValue("features", suitData.features.join("\n"));
+    setValue("description", suitData.extraNotes);
+
+    form.elements.custom.checked = Boolean(item.custom);
+
+    const specs = item.specs || {};
+    setValue("release_date", specs["Release date"] || item.release_date || "");
+    setValue("build_date", specs["Build date"] || item.build_date || "");
+    setValue("build_status", item.build_status || "");
+    setValue("top_coat", specs["Top coat"] || "");
+    setValue("paint", paintValue(specs["Paint"]));
+
+    selectedOrigins = resolveLoadedOrigins(item);
+
+    renderOriginSelect();
+    renderOriginChips();
+    update();
+  }
+
+  function resolveLoadedOrigins(item) {
+    const ids = [];
+
+    if (Array.isArray(item.design_origins)) {
+      item.design_origins.forEach(origin => {
+        const id = typeof origin === "string" ? origin : origin && origin.id;
+        if (id && libraryRecords.has(String(id))) ids.push(String(id));
+      });
+    }
+
+    return [...new Set(ids)].filter(id => id !== String(item.id));
+  }
+
+  function normalizeLoadedSuitData(item) {
+    if (item.mobile_suit_data && typeof item.mobile_suit_data === "object") {
+      return {
+        pilot: String(item.mobile_suit_data.pilot || "").trim(),
+        height: String(item.mobile_suit_data.height || "").trim(),
+        weight: String(item.mobile_suit_data.weight || "").trim(),
+        armament: normalizeBuilderList(item.mobile_suit_data.armament),
+        features: normalizeBuilderList(item.mobile_suit_data.features),
+        extraNotes: String(item.description || "").trim()
+      };
+    }
+
+    return parseLegacyBuilderDescription(item.description || "");
+  }
+
+  function parseLegacyBuilderDescription(text) {
+    const source = String(text || "").trim();
+    const empty = {
+      pilot: "",
+      height: "",
+      weight: "",
+      armament: [],
+      features: [],
+      extraNotes: source
+    };
+
+    if (!source) return empty;
+
+    const matcher = /\b(PILOT|HEIGHT|WEIGHT|ARMAMENT|FEATURES)\b/gi;
+    const matches = [...source.matchAll(matcher)];
+    if (!matches.length) return empty;
+
+    const sections = {};
+
+    matches.forEach((match, index) => {
+      const heading = match[1].toUpperCase();
+      const start = (match.index || 0) + match[0].length;
+      const end =
+        index + 1 < matches.length
+          ? (matches[index + 1].index || source.length)
+          : source.length;
+
+      sections[heading] = source
+        .slice(start, end)
+        .replace(/^[\s:–—-]+/, "")
+        .trim();
+    });
+
+    const firstStart = matches[0].index || 0;
+
+    return {
+      pilot: sections.PILOT || "",
+      height: sections.HEIGHT || "",
+      weight: sections.WEIGHT || "",
+      armament: normalizeBuilderList(sections.ARMAMENT || ""),
+      features: normalizeBuilderList(sections.FEATURES || ""),
+      extraNotes: source.slice(0, firstStart).trim()
+    };
+  }
+
+  function normalizeBuilderList(value) {
+    if (Array.isArray(value)) {
+      return value.map(v => String(v).trim()).filter(Boolean);
+    }
+
+    return String(value || "")
+      .split(/\r?\n|;\s*/)
+      .map(v => v.trim())
+      .filter(Boolean);
+  }
+
+  function setValue(name, value) {
+    const field = form.elements[name];
+    if (!field) return;
+    field.value = value ?? "";
+  }
+
+  form.addEventListener("input", () => {
+    renderOriginSelect();
+    update();
+  });
+
+  form.addEventListener("change", update);
+
+  document.getElementById("clear").addEventListener("click", () => {
+    form.reset();
+    selectedOrigins = [];
+
+    if (previewImageObjectUrl) {
+      URL.revokeObjectURL(previewImageObjectUrl);
+      previewImageObjectUrl = "";
+    }
+
+    previewLocalImage.removeAttribute("src");
+    previewLocalImage.hidden = true;
+    previewImageFallback.hidden = false;
+
+    renderOriginSelect();
+    renderOriginChips();
+    update();
+  });
+
+  // ------------------------------------------------------------
+  // Downloads
+  // ------------------------------------------------------------
+  document.getElementById("downloadEntry").addEventListener("click", () => {
+    const item = buildEntry();
+    applyCanonicalValuesToForm(item);
+
+    const error = validate(item);
+    if (error) return show(error, true);
+
+    addRecordToLibrary(item);
+    upsertIndexRecord(item);
+    refreshLibraryUI();
+
+    download(item, fileNameFromId(item.id));
+
+    show(
+      `${item.designation || item.id} — ${item.name} downloaded as its own Gundam JSON file.`,
+      false
+    );
+  });
+
+  document.getElementById("downloadUpdated").addEventListener("click", () => {
+    const item = buildEntry();
+    applyCanonicalValuesToForm(item);
+
+    const error = validate(item);
+    if (error) return show(error, true);
+
+    addRecordToLibrary(item);
+    upsertIndexRecord(item);
+    refreshLibraryUI();
+
+    download(indexData, "index.json");
+    show(`Updated Gundam index.json downloaded with ${item.name}.`, false);
+  });
+
+  function upsertIndexRecord(item) {
+    const record = makeIndexRecord(item);
+    const index = indexData.items.findIndex(
+      existing => String(existing.id) === String(item.id)
+    );
+
+    if (index >= 0) indexData.items[index] = record;
+    else indexData.items.push(record);
+
+    indexData.items.sort((a,b) =>
+      String(a.name || a.id || "").localeCompare(
+        String(b.name || b.id || ""),
+        undefined,
+        { sensitivity: "base" }
+      )
+    );
+  }
+
+  function makeIndexRecord(item) {
+    return {
+      category: "gundam",
+      id: String(item.id || ""),
+      designation: String(item.designation || ""),
+      name: String(item.name || ""),
+      summary: String(item.summary || ""),
+
+      continuity: String(item.continuity || ""),
+      series: String(item.series || ""),
+      timeline_position:
+        item.timeline_position === null || item.timeline_position === undefined
+          ? null
+          : Number(item.timeline_position),
+      timeline_lane: String(item.timeline_lane || ""),
+      timeline_label: String(item.timeline_label || ""),
+      timeline_parent: String(item.timeline_parent || ""),
+
+      family: String(item.family || ""),
+      family_order:
+        item.family_order === null || item.family_order === undefined
+          ? null
+          : Number(item.family_order),
+
+      design_origins: Array.isArray(item.design_origins)
+        ? item.design_origins.map(origin => ({
+            id: String(origin.id || ""),
+            designation: String(origin.designation || ""),
+            name: String(origin.name || "")
+          }))
+        : [],
+
+      source: String(item.source || ""),
+      custom: Boolean(item.custom),
+      build_status: String(item.build_status || ""),
+      grade: String(item.grade || ""),
+      grade_family: String(item.grade_family || ""),
+      scale: String(item.scale || ""),
+      image: String(item.image || ""),
+
+      file: fileNameFromId(item.id)
+    };
+  }
+
+
+  function buildStatusInfo(value) {
+    const map = {
+      "backlog": { label: "Backlog", percent: 10 },
+      "assembly": { label: "Assembly", percent: 35 },
+      "detailing": { label: "Detailing", percent: 65 },
+      "finishing": { label: "Finishing", percent: 85 },
+      "completed": { label: "Completed", percent: 100 }
+    };
+
+    const key = String(value || "").trim().toLowerCase();
+    return map[key] ? { key, ...map[key] } : { key: "", label: "", percent: 0 };
+  }
+
+  function paintLabel(value) {
+    const labels = {
+      "none":"None",
+      "panel-line":"Panel Line",
+      "details":"Details",
+      "custom":"Custom"
+    };
+    return labels[String(value || "").trim()] || "";
+  }
+
+  function paintValue(label) {
+    const key = normalizationKey(label);
+
+    if (key === "panelline") return "panel-line";
+    if (key === "details") return "details";
+    if (key === "custom") return "custom";
+
+    return "none";
+  }
+
+  function buildEntry() {
+    const fd = new FormData(form);
+
+    const familyOrder = String(fd.get("family_order") || "").trim();
+    const timelinePosition = String(fd.get("timeline_position") || "").trim();
+
+    const continuity = canonicalizeValue("continuity", fd.get("continuity"));
+    const series = canonicalizeValue("series", fd.get("series"));
+    const family = canonicalizeValue("family", fd.get("family"));
+    const timelineParent = canonicalizeValue("series", fd.get("timeline_parent"));
+
+    const specs = {
+      "Release date": String(fd.get("release_date") || "").trim(),
+      "Build date": String(fd.get("build_date") || "").trim(),
+      "Paint": paintLabel(fd.get("paint")),
+      "Top coat": String(fd.get("top_coat") || "").trim()
+    };
+
+    const mobileSuitData = {
+      pilot: String(fd.get("pilot") || "").trim(),
+      height: String(fd.get("height") || "").trim(),
+      weight: String(fd.get("weight") || "").trim(),
+      armament: normalizeBuilderList(fd.get("armament")),
+      features: normalizeBuilderList(fd.get("features"))
+    };
+
+    Object.keys(specs).forEach(key => {
+      if (!specs[key]) delete specs[key];
+    });
+
+    return {
+      category:"gundam",
+      id:String(fd.get("id") || "").trim(),
+      designation:String(fd.get("designation") || "").trim(),
+      name:String(fd.get("name") || "").trim(),
+      summary:[continuity,series].filter(Boolean).join(" / "),
+      description:String(fd.get("description") || "").trim(),
+
+      continuity,
+      series,
+      timeline_position:timelinePosition ? Number(timelinePosition) : null,
+      timeline_lane:String(fd.get("timeline_lane") || "").trim(),
+      timeline_label:String(fd.get("timeline_label") || "").trim(),
+      timeline_parent:timelineParent,
+
+      family,
+      family_order:familyOrder ? Number(familyOrder) : null,
+
+      design_origins:buildOriginLinks(),
+
+      mobile_suit_data: mobileSuitData,
+
+      source:String(fd.get("source") || "").trim(),
+      custom:fd.get("custom") === "on",
+      build_status:String(fd.get("build_status") || "").trim(),
+      grade:String(fd.get("grade") || "").trim(),
+      grade_family:String(fd.get("grade_family") || "").trim(),
+      scale:String(fd.get("scale") || "").trim(),
+      image:String(fd.get("image") || "").trim(),
+
+      specs
+    };
+  }
+
+  function update() {
+    const item = buildEntry();
+
+    output.textContent = JSON.stringify(item,null,2);
+
+    document.getElementById("pDesignation").textContent =
+      item.designation || item.id || "UNIT-DESIGNATION";
+
+    document.getElementById("pName").textContent =
+      item.name || "GUNDAM NAME";
+
+    document.getElementById("pSource").textContent =
+      sourceLabels[item.source] || "SOURCE";
+
+    document.getElementById("pGrade").textContent =
+      item.grade || item.grade_family || "GRADE";
+
+    document.getElementById("pScale").textContent =
+      item.scale || "SCALE";
+
+    document.getElementById("pCustom").hidden = !item.custom;
+
+    const statusInfo = buildStatusInfo(item.build_status);
+    const statusWrap = document.getElementById("previewStatus");
+    const previewCard = document.querySelector(".card");
+    previewCard.classList.toggle("is-backlog", statusInfo.key === "backlog");
+
+    if (statusInfo.key) {
+      statusWrap.hidden = false;
+      document.getElementById("pBuildStatus").textContent = statusInfo.label.toUpperCase();
+      document.getElementById("pBuildPercent").textContent = `${statusInfo.percent}%`;
+      document.getElementById("pBuildMeter").style.width = `${statusInfo.percent}%`;
+    } else {
+      statusWrap.hidden = true;
+      document.getElementById("pBuildMeter").style.width = "0%";
+    }
+  }
+
+  function applyCanonicalValuesToForm(item) {
+    document.getElementById("continuityInput").value = item.continuity || "";
+    document.getElementById("seriesInput").value = item.series || "";
+    document.getElementById("familyInput").value = item.family || "";
+    update();
+  }
+
+  function validate(item) {
+    if (!item.id) return "ID is required.";
+    if (!item.name) return "Name is required.";
+
+    if (item.design_origins.some(origin => origin.id === item.id)) {
+      return "A Gundam cannot be its own Design Origin.";
+    }
+
+    return "";
+  }
+
+  // ------------------------------------------------------------
+  // Reusable Continuity / Series / Family comboboxes
+  // ------------------------------------------------------------
+  function comboValues(field) {
+    return [...canonicalValues[field].values()]
+      .sort((a,b) => a.localeCompare(b));
+  }
+
+  function renderComboMenu(field, filterText = "") {
+    const menu = document.getElementById(field + "Menu");
+    if (!menu) return;
+
+    const values = comboValues(field);
+    const key = normalizationKey(filterText);
+
+    const filtered = key
+      ? values.filter(value => normalizationKey(value).includes(key))
+      : values;
+
+    menu.innerHTML = "";
+
+    if (!filtered.length) {
+      const empty = document.createElement("div");
+      empty.className = "combo-empty";
+      empty.textContent = values.length ? "No saved matches" : "No saved values yet";
+      menu.appendChild(empty);
+      return;
+    }
+
+    filtered.forEach(value => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "combo-option";
+      button.textContent = value;
+
+      button.addEventListener("click", () => {
+        const input = document.getElementById(field + "Input");
+        input.value = value;
+        menu.hidden = true;
+        update();
+        input.focus();
+      });
+
+      menu.appendChild(button);
+    });
+  }
+
+  function setupCombos() {
+    ["continuity","series","family"].forEach(field => {
+      const combo = document.querySelector(`[data-combo="${field}"]`);
+      const input = document.getElementById(field + "Input");
+      const menu = document.getElementById(field + "Menu");
+      const toggle = combo && combo.querySelector(".combo-toggle");
+
+      if (!combo || !input || !menu || !toggle) return;
+
+      toggle.addEventListener("click", () => {
+        const opening = menu.hidden;
+        closeAllCombos(field);
+        renderComboMenu(field, input.value);
+        menu.hidden = !opening;
+        if (opening) input.focus();
+      });
+
+      input.addEventListener("focus", () => {
+        renderComboMenu(field, input.value);
+      });
+
+      input.addEventListener("input", () => {
+        renderComboMenu(field, input.value);
+        menu.hidden = false;
+      });
+    });
+
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".combo")) closeAllCombos();
+    });
+  }
+
+  function closeAllCombos(exceptField = "") {
+    ["continuity","series","family"].forEach(field => {
+      if (field === exceptField) return;
+
+      const menu = document.getElementById(field + "Menu");
+      if (menu) menu.hidden = true;
+    });
+  }
+
+  function normalizationKey(value) {
+    return String(value || "")
+      .normalize("NFKC")
+      .toLocaleLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, "");
+  }
+
+  function cleanNewValue(value) {
+    return String(value || "")
+      .normalize("NFKC")
+      .trim()
+      .replace(/\s+/g, " ");
+  }
+
+  function buildCanonicalMap(values) {
+    const map = new Map();
+
+    values.forEach(value => {
+      const cleaned = cleanNewValue(value);
+      if (!cleaned) return;
+
+      const key = normalizationKey(cleaned);
+      if (key && !map.has(key)) map.set(key, cleaned);
+    });
+
+    return map;
+  }
+
+  function canonicalizeValue(field, value) {
+    const cleaned = cleanNewValue(value);
+    if (!cleaned) return "";
+
+    const key = normalizationKey(cleaned);
+    const existing =
+      canonicalValues[field] && canonicalValues[field].get(key);
+
+    return existing || cleaned;
+  }
+
+  function fillDatalist(id, values) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.innerHTML = "";
+
+    values.forEach(value => {
+      const option = document.createElement("option");
+      option.value = value;
+      el.appendChild(option);
+    });
+  }
+
+  // ------------------------------------------------------------
+  // Download helpers
+  // ------------------------------------------------------------
+  function download(value, filename) {
+    const blob = new Blob(
+      [JSON.stringify(value,null,2)],
+      {type:"application/json"}
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function fileNameFromId(id) {
+    const cleaned = String(id || "GUNDAM-ENTRY")
+      .trim()
+      .replace(/[^a-z0-9._-]+/gi,"-")
+      .replace(/^-+|-+$/g,"");
+
+    return `${cleaned || "GUNDAM-ENTRY"}.json`;
+  }
+
+  function show(message, error) {
+    status.textContent = message;
+    status.style.color = error ? "#e59b9b" : "#8bcfaf";
+  }
+
+  setupCombos();
+  refreshLibraryUI();
+  update();
+</script>
+</body>
+</html>
