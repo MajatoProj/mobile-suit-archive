@@ -1,0 +1,63 @@
+{
+  "category": "gundam",
+  "id": "ZGMF-X42S-REVOLUTION-HGGS",
+  "designation": "ZGMF-X42S-REVOLUTION",
+  "name": "Destiny Gundam (Heine Westenfluss Custom)",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny",
+  "description": "Originally included with the T.M.R. × GUNDAM SEED SPECIAL PROJECT\n“X42S-REVOLUTION” First Press Limited Edition Type A box set,\nreleased for Gunpla's 30th Anniversary. The set included the HG 1/144\nDestiny Gundam (Heine Westenfluss Custom), the X42S-REVOLUTION CD\nfeaturing “Imaginary Ark”, a special sticker sheet, and a Gundam SEED\nHG box-art book.",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED Destiny",
+  "timeline_position": 2,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 73",
+  "timeline_parent": "Mobile Suit Gundam SEED",
+  "family": "Destiny Family",
+  "family_order": 2,
+  "design_origins": [
+    {
+      "id": "ZGMF-X42S-HGCE",
+      "designation": "ZGMF-X42S",
+      "name": "Destiny Gundam"
+    }
+  ],
+  "relationships": [
+    {
+      "type": "variant",
+      "id": "ZGMF-X42S-HGCE",
+      "designation": "ZGMF-X42S",
+      "name": "Destiny Gundam"
+    }
+  ],
+  "mobile_suit_data": {
+    "pilot": "Heine Westenfluss",
+    "height": "18.08 m",
+    "weight": "79.44 t",
+    "armament": [
+      "MA-BAR73/S High-Energy Beam Rifle",
+      "RQM60F Flash-Edge 2 Beam Boomerang ×2",
+      "MX2351 Solidus Fulgor Beam Shield",
+      "M2000GX High-Energy Long-Range Beam Cannon",
+      "Arondight Beam Sword",
+      "MMI-X340 Palma Fiocina Palm Beam Cannon ×2"
+    ],
+    "features": [
+      "Variable Phase Shift Armor",
+      "Wings of Light",
+      "Heine Westenfluss custom colors"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "completed",
+  "grade": "HGGS",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X42S-REVOLUTION-HGGS.png",
+  "specs": {
+    "Release date": "2010-03-24",
+    "Build date": "2026-08-07",
+    "Paint": "Panel Line",
+    "Top coat": "None",
+    "Edition": "T.M.R. × GUNDAM SEED SPECIAL PROJECT “X42S-REVOLUTION” First Press Limited Edition Type A"
+  }
+}

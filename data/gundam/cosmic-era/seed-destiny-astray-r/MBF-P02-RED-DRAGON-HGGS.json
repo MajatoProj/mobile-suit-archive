@@ -1,0 +1,37 @@
+{
+  "category": "gundam",
+  "id": "MBF-P02-RED-DRAGON-HGGS",
+  "designation": "MBF-P02",
+  "name": "Gundam Astray Red Dragon",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny Astray R",
+  "description": "The Gundam Base limited release.",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED Destiny Astray R",
+  "timeline_position": 2,
+  "timeline_lane": "side-story",
+  "timeline_label": "SEED Destiny era",
+  "timeline_parent": "Mobile Suit Gundam SEED Destiny",
+  "family": "Astray Red Frame Family",
+  "design_origins": [
+    {
+      "id": "MBF-P02-HG",
+      "designation": "MBF-P02",
+      "name": "Gundam Astray Red Frame"
+    }
+  ],
+  "mobile_suit_data": {
+    "pilot": "Lowe Guele",
+    "height": "17.53 m"
+  },
+  "source": "gundambase",
+  "custom": false,
+  "build_status": "backlog",
+  "grade": "HGGS",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/cosmic-era/seed-destiny-astray-r/MBF-P02-RED-DRAGON-HGGS.png",
+  "specs": {
+    "Release date": "2022-10-08"
+  },
+  "family_order": 2
+}

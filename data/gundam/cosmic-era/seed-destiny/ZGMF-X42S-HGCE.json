@@ -1,0 +1,32 @@
+{
+  "category": "gundam",
+  "id": "ZGMF-X42S-HGCE",
+  "designation": "ZGMF-X42S",
+  "name": "Destiny Gundam",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED Destiny",
+  "timeline_position": 2,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 74",
+  "timeline_parent": "Mobile Suit Gundam SEED",
+  "family": "Destiny Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Shinn Asuka",
+    "height": "18.08 m",
+    "weight": "79.44 t"
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "assembly",
+  "grade": "HGCE",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X42S-HGCE.png",
+  "specs": {
+    "Release date": "2019-05-31",
+    "Paint": "Panel Line"
+  },
+  "family_order": 1
+}

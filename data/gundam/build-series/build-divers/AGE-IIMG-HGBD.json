@@ -1,0 +1,32 @@
+{
+  "category": "gundam",
+  "id": "AGE-IIMG-HGBD",
+  "designation": "AGE-IIMG",
+  "name": "Gundam AGEII Magnum",
+  "summary": "Build Series / Gundam Build Divers",
+  "description": "Built by Esmée. No panel lining and no top coat. Planned for a future revamp; Esmée or the owner may customize it later.",
+  "continuity": "Build Series",
+  "series": "Gundam Build Divers",
+  "timeline_position": 6,
+  "timeline_lane": "main",
+  "family": "AGE-2 Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Kyoya Kujo",
+    "height": "18.5 m",
+    "weight": "29.2 t"
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "completed",
+  "grade": "HGBD",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/build-series/build-divers/AGE-IIMG-HGBD.png",
+  "specs": {
+    "Release date": "2018-03-10",
+    "Paint": "None",
+    "Top coat": "None",
+    "Build date": "2026-06-26"
+  }
+}

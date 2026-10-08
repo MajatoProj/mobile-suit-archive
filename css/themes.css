@@ -3092,3 +3092,67 @@ body.theme-fantasy {
 .theme-fantasy .category-intro {
   --hud-accent: rgba(212, 190, 120, .66);
 }
+
+
+/* ============================================================
+   FAMILY BRANCH CONNECTOR FIX v36
+   Connects the first/last branch cards cleanly for any branch count.
+   ============================================================ */
+
+/* The old percentage-based rail only lined up reliably for two cards. */
+.family-stage.is-branch .family-stage-stack::before {
+  display: none;
+}
+
+/* Keep the horizontal arm into every child card. */
+.family-stage.is-branch .family-branch-row::before {
+  left: -18px;
+  width: 18px;
+}
+
+/*
+  Build the vertical rail from row segments instead:
+  - first row: center -> gap below
+  - middle rows: gap above -> gap below
+  - last row: gap above -> center
+  This remains connected even when card heights differ slightly.
+*/
+.family-stage.is-branch .family-branch-row::after {
+  content: "";
+  position: absolute;
+  left: -18px;
+  border-left: 1px solid rgba(127,199,255,.42);
+  pointer-events: none;
+}
+
+.family-stage.is-branch .family-branch-row:first-child:not(:last-child)::after {
+  top: 50%;
+  bottom: -14px;
+}
+
+.family-stage.is-branch .family-branch-row:not(:first-child):not(:last-child)::after {
+  top: -14px;
+  bottom: -14px;
+}
+
+.family-stage.is-branch .family-branch-row:last-child:not(:first-child)::after {
+  top: -14px;
+  bottom: 50%;
+}
+
+/* Incoming line from the previous family generation meets the branch rail. */
+.family-stage.is-branch::before {
+  left: 0;
+  width: 16px;
+}
+
+@media (max-width: 760px) {
+  .family-stage.is-branch .family-branch-row::before {
+    left: -15px;
+    width: 15px;
+  }
+
+  .family-stage.is-branch .family-branch-row::after {
+    left: -15px;
+  }
+}

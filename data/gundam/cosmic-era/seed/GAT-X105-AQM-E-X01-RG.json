@@ -1,0 +1,31 @@
+{
+  "category": "gundam",
+  "id": "GAT-X105-AQM-E-X01-RG",
+  "designation": "GAT-X105+AQM/E-X01",
+  "name": "Aile Strike Gundam",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED",
+  "timeline_position": 1,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 71",
+  "family": "Strike Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Kira Yamato / Mu La Flaga",
+    "height": "17.72 m",
+    "weight": "85.1 t"
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "backlog",
+  "grade": "RG",
+  "grade_family": "RG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/cosmic-era/seed/GAT-X105-AQM-E-X01-RG.png",
+  "specs": {
+    "Release date": "2011-04-30"
+  },
+  "family_order": 1,
+  "description": "Archive lineage note: Aile Strike Gundam is the GAT-X105 Strike Gundam equipped with the AQM/E-X01 Aile Striker pack. In the Strike Family view, this record represents the base Strike Gundam at family order 1; later Strike-derived machines branch from it."
+}
