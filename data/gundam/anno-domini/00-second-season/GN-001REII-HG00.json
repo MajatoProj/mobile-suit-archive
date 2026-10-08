@@ -1,0 +1,29 @@
+{
+  "category": "gundam",
+  "id": "GN-001REII-HG00",
+  "designation": "GN-001REII",
+  "name": "Gundam Exia Repair II",
+  "summary": "Anno Domini / Mobile Suit Gundam 00 Second Season",
+  "continuity": "Anno Domini",
+  "series": "Mobile Suit Gundam 00 Second Season",
+  "timeline_position": 2,
+  "timeline_lane": "main",
+  "timeline_label": "A.D. 2312",
+  "family": "Exia Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Setsuna F. Seiei",
+    "height": "18.3 m",
+    "weight": "56.9 t"
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "backlog",
+  "grade": "HG00",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/anno-domini/00-second-season/GN-001REII-HG00.png",
+  "specs": {
+    "Release date": "2009-06"
+  }
+}

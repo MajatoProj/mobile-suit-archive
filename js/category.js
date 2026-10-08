@@ -874,6 +874,35 @@ function collectRelationshipLinks(items) {
   const links = [];
   const seen = new Set();
 
+  const endpointKey = (id, name) => normalizeSearchText(id || name || "unknown");
+  const pairKey = (aId, aName, bId, bName) => [
+    endpointKey(aId, aName),
+    endpointKey(bId, bName)
+  ].sort().join("|");
+
+  /*
+    Typed VARIANT links are more specific than the legacy design-origin link.
+    Only suppress a design-origin when the exact same pair is explicitly
+    represented as a variant. Other origins and relationship types remain
+    untouched.
+  */
+  const variantPairs = new Set();
+
+  items.forEach(item => {
+    if (!Array.isArray(item.relationships)) return;
+
+    item.relationships.forEach(rel => {
+      if (!rel || String(rel.type || "").trim().toLowerCase() !== "variant") return;
+
+      variantPairs.add(pairKey(
+        item.id || "",
+        item.name || item.designation || item.id || "",
+        rel.id || "",
+        rel.name || rel.designation || rel.id || ""
+      ));
+    });
+  });
+
   const add = link => {
     const sourceKey = link.sourceId || link.sourceName;
     const targetKey = link.targetId || link.targetName;
@@ -894,6 +923,16 @@ function collectRelationshipLinks(items) {
     if (Array.isArray(item.design_origins)) {
       item.design_origins.forEach(origin => {
         if (!origin) return;
+
+        const samePairIsVariant = variantPairs.has(pairKey(
+          origin.id || "",
+          origin.name || origin.designation || origin.id || "",
+          item.id || "",
+          item.name || item.designation || item.id || ""
+        ));
+
+        if (samePairIsVariant) return;
+
         add({
           type: "design-origin",
           arrow: "→",
@@ -904,14 +943,23 @@ function collectRelationshipLinks(items) {
         });
       });
     } else if (item.design_origin) {
-      add({
-        type: "design-origin",
-        arrow: "→",
-        sourceId: "",
-        sourceName: item.design_origin,
-        targetId: item.id || "",
-        targetName: item.name || item.designation || item.id || "Unknown"
-      });
+      const samePairIsVariant = variantPairs.has(pairKey(
+        "",
+        item.design_origin,
+        item.id || "",
+        item.name || item.designation || item.id || ""
+      ));
+
+      if (!samePairIsVariant) {
+        add({
+          type: "design-origin",
+          arrow: "→",
+          sourceId: "",
+          sourceName: item.design_origin,
+          targetId: item.id || "",
+          targetName: item.name || item.designation || item.id || "Unknown"
+        });
+      }
     }
 
     if (Array.isArray(item.relationships)) {

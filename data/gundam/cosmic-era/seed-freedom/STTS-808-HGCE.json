@@ -1,0 +1,30 @@
+{
+  "category": "gundam",
+  "id": "STTS-808-HGCE",
+  "designation": "STTS-808",
+  "name": "Immortal Justice Gundam",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED Freedom",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED Freedom",
+  "timeline_position": 3,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 75",
+  "timeline_parent": "Mobile Suit Gundam SEED Destiny",
+  "family": "Justice Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Shinn Asuka",
+    "height": "18.50 m",
+    "weight": "71.62 t"
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "backlog",
+  "grade": "HGCE",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/cosmic-era/seed-freedom/STTS-808-HGCE.png",
+  "specs": {
+    "Release date": "2024-01-26"
+  }
+}

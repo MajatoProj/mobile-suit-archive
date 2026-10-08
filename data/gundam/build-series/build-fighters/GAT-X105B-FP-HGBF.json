@@ -1,0 +1,29 @@
+{
+  "category": "gundam",
+  "id": "GAT-X105B-FP-HGBF",
+  "designation": "GAT-X105B/FP",
+  "name": "Build Strike Gundam Full Package",
+  "summary": "Build Series / Gundam Build Fighters",
+  "continuity": "Build Series",
+  "series": "Gundam Build Fighters",
+  "timeline_position": 1,
+  "timeline_lane": "main",
+  "family": "Strike Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Sei Iori / Reiji",
+    "height": "17.7 m",
+    "weight": "96.3 t"
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "backlog",
+  "grade": "HGBF",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/build-series/build-fighters/GAT-X105B-FP-HGBF.png",
+  "specs": {
+    "Release date": "2013-10-05"
+  },
+  "family_order": 2
+}

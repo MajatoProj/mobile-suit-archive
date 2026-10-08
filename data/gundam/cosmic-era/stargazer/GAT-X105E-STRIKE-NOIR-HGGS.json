@@ -1,0 +1,31 @@
+{
+  "category": "gundam",
+  "id": "GAT-X105E-STRIKE-NOIR-HGGS",
+  "designation": "GAT-X105E",
+  "name": "Strike Noir Gundam",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED C.E. 73: Stargazer",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED C.E. 73: Stargazer",
+  "timeline_position": 2,
+  "timeline_lane": "side-story",
+  "timeline_label": "C.E. 73",
+  "timeline_parent": "Mobile Suit Gundam SEED Destiny",
+  "family": "Strike Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Sven Cal Bayang",
+    "height": "17.72 m",
+    "weight": "90.51 t"
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "backlog",
+  "grade": "HGGS",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/cosmic-era/stargazer/GAT-X105E-STRIKE-NOIR-HGGS.png",
+  "specs": {
+    "Release date": "2006-06-30"
+  },
+  "family_order": 2
+}

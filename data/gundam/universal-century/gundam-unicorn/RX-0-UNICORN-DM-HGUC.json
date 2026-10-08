@@ -1,0 +1,29 @@
+{
+  "category": "gundam",
+  "id": "RX-0-UNICORN-DM-HGUC",
+  "designation": "RX-0",
+  "name": "Unicorn Gundam (Destroy Mode)",
+  "summary": "Universal Century / Mobile Suit Gundam Unicorn",
+  "continuity": "Universal Century",
+  "series": "Mobile Suit Gundam Unicorn",
+  "timeline_position": 3,
+  "timeline_lane": "main",
+  "timeline_label": "U.C. 0096",
+  "family": "Unicorn Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Banagher Links",
+    "height": "21.7 m (Destroy Mode)",
+    "weight": "23.7 t empty / 42.7 t max"
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "backlog",
+  "grade": "HGUC",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/universal-century/gundam-unicorn/RX-0-UNICORN-DM-HGUC.png",
+  "specs": {
+    "Release date": "2009-11-19"
+  }
+}
