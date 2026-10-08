@@ -1,0 +1,48 @@
+{
+  "category": "gundam",
+  "id": "MBF-P03-SECOND-L-HG",
+  "designation": "MBF-P03 second L",
+  "name": "Gundam Astray Blue Frame Second L",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED Astray",
+  "description": "Old build from 2014. Faulted and stored away. Unpainted and not panel lined. Needs cleaning, restoration or repair before display.",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED Astray",
+  "timeline_position": 1,
+  "timeline_lane": "side-story",
+  "timeline_label": "C.E. 71",
+  "timeline_parent": "Mobile Suit Gundam SEED",
+  "family": "Astray Blue Frame Family",
+  "family_order": 2,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Gai Murakumo",
+    "height": "17.78 m",
+    "weight": "64.4 t",
+    "armament": [
+      "Igelstellung 75mm CIWS ×2",
+      "Armor Schneider ×6",
+      "Tactical Arms",
+      "Beam Rifle",
+      "Beam Saber ×2",
+      "Anti-Beam Shield"
+    ],
+    "features": [
+      "Tactical Arms Sword Form",
+      "Tactical Arms Flight Form",
+      "Tactical Arms Gatling Form",
+      "Trans Phase Armor (cockpit)"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "faulted",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/cosmic-era/seed-astray/MBF-P03-SECOND-L-HG.png",
+  "specs": {
+    "Release date": "2013-05-25",
+    "Build date": "2014-01-01",
+    "Paint": "None"
+  }
+}

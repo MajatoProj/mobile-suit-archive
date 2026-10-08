@@ -27,7 +27,7 @@ const themes = {
     className: "theme-fantasy",
     eyebrow: "EXTERNAL ARCHIVES // FANTASY BRANCH",
     title: "FANTASY ARCHIVE",
-    subtitle: "Fate and fantasy plamo presented as relics, legends and scenic medieval records.",
+    subtitle: "Legends, servants and fantasy builds preserved as relic-class records.",
     back: "external.html"
   }
 };
@@ -55,6 +55,21 @@ const sortControls = document.getElementById("sortControls");
 const searchInput = document.getElementById("gundamSearch");
 const statisticsButton = document.getElementById("statisticsButton");
 const statisticsPanel = document.getElementById("statisticsPanel");
+
+const genericExplorer = document.getElementById("genericExplorer");
+const genericExplorerLabel = document.getElementById("genericExplorerLabel");
+const genericSearch = document.getElementById("genericSearch");
+const genericGroupRow = document.getElementById("genericGroupRow");
+const genericGroupLabel = document.getElementById("genericGroupLabel");
+const genericGroupFilters = document.getElementById("genericGroupFilters");
+const genericSourceRow = document.getElementById("genericSourceRow");
+const genericSourceFilters = document.getElementById("genericSourceFilters");
+const genericStatusRow = document.getElementById("genericStatusRow");
+const genericStatusFilters = document.getElementById("genericStatusFilters");
+const genericSortControls = document.getElementById("genericSortControls");
+const genericStatisticsButton = document.getElementById("genericStatisticsButton");
+const genericStatisticsPanel = document.getElementById("genericStatisticsPanel");
+
 
 const SOURCE_LABELS = {
   all: "ALL",
@@ -103,6 +118,14 @@ let activeView = "timeline";
 let searchQuery = "";
 let detailsHydrated = false;
 
+let genericSearchQuery = "";
+let activeGenericGroup = "all";
+let activeGenericSource = "all";
+let activeGenericStatus = "all";
+let activeGenericSort = "name";
+let genericDetailsHydrated = false;
+
+
 fetch(`data/${type}/index.json`, { cache: "no-store" })
   .then(response => {
     if (!response.ok) throw new Error(`Could not load ${type} index.`);
@@ -126,7 +149,9 @@ fetch(`data/${type}/index.json`, { cache: "no-store" })
       return;
     }
 
-    renderGenericItems(allItems);
+    setupGenericArchive();
+    renderGenericArchive();
+    hydrateGenericDetails();
   })
   .catch(() => {
     empty.hidden = false;
@@ -1156,16 +1181,438 @@ function makeGundamCard(item) {
   return link;
 }
 
+function setupGenericArchive() {
+  if (!genericExplorer) return;
+
+  genericExplorer.hidden = false;
+  grid.hidden = false;
+  if (displayModeValue) displayModeValue.textContent = "CATALOG";
+
+  const labels = {
+    digimon: { explorer: "DIGITAL COLLECTION", group: "SERIES / WORLD" },
+    mecha: { explorer: "PROTOTYPE CATALOG", group: "FRANCHISE / LINE" },
+    fantasy: { explorer: "RELIC CATALOG", group: "FRANCHISE / REALM" }
+  };
+  const current = labels[type] || { explorer: "ARCHIVE CATALOG", group: "GROUP" };
+  if (genericExplorerLabel) genericExplorerLabel.textContent = current.explorer;
+  if (genericGroupLabel) genericGroupLabel.textContent = current.group;
+
+  renderGenericControls();
+
+  if (genericSearch) {
+    let timer = null;
+    genericSearch.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        genericSearchQuery = String(genericSearch.value || "").trim();
+        renderGenericArchive();
+      }, 90);
+    });
+  }
+
+  if (genericStatisticsButton && genericStatisticsPanel) {
+    genericStatisticsButton.addEventListener("click", () => {
+      const open = genericStatisticsPanel.hidden;
+      genericStatisticsPanel.hidden = !open;
+      genericStatisticsButton.classList.toggle("active", open);
+      genericStatisticsButton.setAttribute("aria-expanded", String(open));
+    });
+  }
+}
+
+function genericGroupValue(item) {
+  const candidates = type === "digimon"
+    ? [item.series, item.franchise, item.universe, item.family, item.line]
+    : type === "mecha"
+      ? [item.franchise, item.brand, item.manufacturer, item.series, item.line]
+      : [item.franchise, item.universe, item.collection, item.series, item.family];
+
+  const value = candidates.find(entry => String(entry || "").trim());
+  return String(value || "UNSORTED / UNASSIGNED").trim();
+}
+
+function renderGenericControls() {
+  if (!genericGroupFilters) return;
+
+  const groups = uniqueValues(allItems.map(genericGroupValue))
+    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+
+  genericGroupFilters.innerHTML = "";
+  ["all", ...groups].forEach(value => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "filter-button";
+    button.dataset.group = value;
+    button.textContent = value === "all" ? "ALL" : value.toUpperCase();
+    button.classList.toggle("active", value === activeGenericGroup);
+    button.addEventListener("click", () => {
+      activeGenericGroup = value;
+      genericGroupFilters.querySelectorAll(".filter-button").forEach(b => {
+        b.classList.toggle("active", b.dataset.group === value);
+      });
+      renderGenericArchive();
+    });
+    genericGroupFilters.appendChild(button);
+  });
+  if (genericGroupRow) genericGroupRow.hidden = groups.length <= 1;
+
+  const sources = uniqueValues(
+    allItems.map(item => String(item.source || "").trim()).filter(Boolean)
+  ).sort();
+  genericSourceFilters.innerHTML = "";
+  ["all", ...sources].forEach(value => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "filter-button";
+    button.dataset.source = value;
+    button.textContent = value === "all"
+      ? "ALL"
+      : (SOURCE_LABELS[value] || value.toUpperCase());
+    button.classList.toggle("active", value === activeGenericSource);
+    button.addEventListener("click", () => {
+      activeGenericSource = value;
+      genericSourceFilters.querySelectorAll(".filter-button").forEach(b => {
+        b.classList.toggle("active", b.dataset.source === value);
+      });
+      renderGenericArchive();
+    });
+    genericSourceFilters.appendChild(button);
+  });
+  if (genericSourceRow) genericSourceRow.hidden = sources.length === 0;
+
+  const tracksStatus = allItems.some(item =>
+    item.build_status !== undefined ||
+    item.buildStatus !== undefined ||
+    item.status !== undefined
+  );
+
+  genericStatusFilters.innerHTML = "";
+  if (genericStatusRow) genericStatusRow.hidden = !tracksStatus;
+
+  if (tracksStatus) {
+    STATUS_FILTERS.forEach(entry => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.status = entry.value;
+      button.className = `filter-button status-filter-button${entry.value === "all" ? " status-filter-all" : ""}`;
+      button.classList.toggle("active", entry.value === activeGenericStatus);
+      button.title = entry.label;
+      button.setAttribute("aria-label", entry.label);
+      button.innerHTML = entry.value === "all" ? "ALL" : makeStatusIconMarkup(entry.value);
+      button.addEventListener("click", () => {
+        activeGenericStatus = entry.value;
+        genericStatusFilters.querySelectorAll(".status-filter-button").forEach(b => {
+          b.classList.toggle("active", b.dataset.status === entry.value);
+        });
+        renderGenericArchive();
+      });
+      genericStatusFilters.appendChild(button);
+    });
+  } else {
+    activeGenericStatus = "all";
+  }
+
+  const genericSorts = [
+    ["name", "NAME"],
+    ["release-date", "RELEASE DATE"],
+    ["build-date", "BUILD DATE"],
+    ["status", "STATUS"]
+  ];
+
+  genericSortControls.innerHTML = "";
+  genericSorts.forEach(([value, label]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "filter-button sort-button";
+    button.dataset.sort = value;
+    button.textContent = label;
+    button.classList.toggle("active", value === activeGenericSort);
+    button.addEventListener("click", () => {
+      activeGenericSort = value;
+      genericSortControls.querySelectorAll(".sort-button").forEach(b => {
+        b.classList.toggle("active", b.dataset.sort === value);
+      });
+      renderGenericArchive();
+    });
+    genericSortControls.appendChild(button);
+  });
+}
+
+function genericSearchText(item) {
+  const values = [];
+
+  const walk = value => {
+    if (value === null || value === undefined) return;
+    if (Array.isArray(value)) {
+      value.forEach(walk);
+      return;
+    }
+    if (typeof value === "object") {
+      Object.values(value).forEach(walk);
+      return;
+    }
+    values.push(String(value));
+  };
+
+  walk(item);
+  return normalizeSearchText(values.join(" "));
+}
+
+function filteredGenericItems() {
+  const terms = normalizeSearchText(genericSearchQuery).split(/\s+/).filter(Boolean);
+
+  return allItems.filter(item => {
+    const groupMatch =
+      activeGenericGroup === "all" ||
+      genericGroupValue(item) === activeGenericGroup;
+
+    const sourceMatch =
+      activeGenericSource === "all" ||
+      String(item.source || "") === activeGenericSource;
+
+    const rawStatus = item.build_status ?? item.buildStatus ?? item.status;
+    const status = getBuildStatusInfo(rawStatus);
+    const statusMatch =
+      activeGenericStatus === "all" ||
+      status.key === activeGenericStatus;
+
+    const searchable = genericSearchText(item);
+    const searchMatch = !terms.length || terms.every(term => searchable.includes(term));
+
+    return groupMatch && sourceMatch && statusMatch && searchMatch;
+  });
+}
+
+function compareGenericItems(a, b) {
+  if (activeGenericSort === "release-date") {
+    return compareDateFields(a, b, "Release date") || compareItemsByName(a, b);
+  }
+
+  if (activeGenericSort === "build-date") {
+    return compareDateFields(a, b, "Build date") || compareItemsByName(a, b);
+  }
+
+  if (activeGenericSort === "status") {
+    const rank = {
+      unassigned: 0,
+      backlog: 1,
+      assembly: 2,
+      detailing: 3,
+      finishing: 4,
+      completed: 5,
+      faulted: 6
+    };
+    const as = getBuildStatusInfo(a.build_status ?? a.buildStatus ?? a.status).key;
+    const bs = getBuildStatusInfo(b.build_status ?? b.buildStatus ?? b.status).key;
+    return (rank[as] ?? 99) - (rank[bs] ?? 99) || compareItemsByName(a, b);
+  }
+
+  return compareItemsByName(a, b);
+}
+
+function renderGenericArchive() {
+  const items = filteredGenericItems().slice().sort(compareGenericItems);
+  renderGenericSummary(items);
+  renderGenericStatistics();
+  renderGenericItems(items);
+}
+
+function renderGenericSummary(items) {
+  const total = allItems.length;
+  const visible = items.length;
+  const hasFilters =
+    activeGenericGroup !== "all" ||
+    activeGenericSource !== "all" ||
+    activeGenericStatus !== "all" ||
+    Boolean(genericSearchQuery.trim());
+
+  count.textContent = hasFilters ? `${visible} / ${total}` : String(total);
+
+  const labels = [];
+  if (activeGenericGroup !== "all") labels.push(activeGenericGroup.toUpperCase());
+  if (activeGenericSource !== "all") labels.push((SOURCE_LABELS[activeGenericSource] || activeGenericSource).toUpperCase());
+  if (activeGenericStatus !== "all") {
+    const match = STATUS_FILTERS.find(entry => entry.value === activeGenericStatus);
+    labels.push((match?.label || activeGenericStatus).toUpperCase());
+  }
+  if (genericSearchQuery.trim()) labels.push(`“${genericSearchQuery.trim()}”`);
+
+  if (activeFilterValue) {
+    activeFilterValue.textContent = labels.length ? labels.join(" / ") : "ALL";
+    activeFilterValue.title = labels.length ? labels.join(" / ") : "No filters active";
+  }
+}
+
+function renderGenericStatistics() {
+  if (!genericStatisticsPanel) return;
+
+  const tracksStatus = allItems.some(item =>
+    item.build_status !== undefined ||
+    item.buildStatus !== undefined ||
+    item.status !== undefined
+  );
+
+  if (tracksStatus) {
+    const counts = {
+      owned: 0,
+      completed: 0,
+      inBuild: 0,
+      backlog: 0,
+      wanted: 0,
+      faulted: 0
+    };
+
+    allItems.forEach(item => {
+      const key = getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status).key;
+      if (key === "unassigned") counts.wanted += 1;
+      else counts.owned += 1;
+      if (key === "completed") counts.completed += 1;
+      if (["assembly", "detailing", "finishing"].includes(key)) counts.inBuild += 1;
+      if (key === "backlog") counts.backlog += 1;
+      if (key === "faulted") counts.faulted += 1;
+    });
+
+    genericStatisticsPanel.innerHTML = makeStatisticsMarkup([
+      ["OWNED", counts.owned],
+      ["COMPLETED", counts.completed],
+      ["IN BUILD", counts.inBuild],
+      ["BACKLOG", counts.backlog],
+      ["WANTED", counts.wanted],
+      ["FAULTED", counts.faulted]
+    ], allItems.length);
+    return;
+  }
+
+  const groups = uniqueValues(allItems.map(genericGroupValue)).length;
+  const sources = uniqueValues(allItems.map(item => item.source).filter(Boolean)).length;
+  const withImage = allItems.filter(item => item.image).length;
+
+  genericStatisticsPanel.innerHTML = makeStatisticsMarkup([
+    ["RECORDS", allItems.length],
+    ["GROUPS", groups],
+    ["SOURCES", sources],
+    ["WITH IMAGE", withImage]
+  ], allItems.length);
+}
+
+function makeStatisticsMarkup(rows, total) {
+  return `
+    <div class="statistics-head">
+      <span class="panel-label">COLLECTION STATUS</span>
+      <span class="statistics-total">${total} TOTAL RECORDS</span>
+    </div>
+    <div class="statistics-grid">
+      ${rows.map(([label, value]) => `
+        <div class="statistics-cell">
+          <span>${escapeHtml(label)}</span>
+          <strong>${value}</strong>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+async function hydrateGenericDetails() {
+  if (type === "gundam" || !allItems.length || genericDetailsHydrated) return;
+
+  const hydrated = await Promise.all(allItems.map(async meta => {
+    if (!meta.file) return meta;
+    try {
+      const response = await fetch(`data/${type}/${meta.file}`, { cache: "no-store" });
+      if (!response.ok) return meta;
+      const record = await response.json();
+      return { ...meta, ...record, file: meta.file };
+    } catch {
+      return meta;
+    }
+  }));
+
+  allItems = hydrated;
+  genericDetailsHydrated = true;
+  renderGenericControls();
+  renderGenericArchive();
+}
+
 function renderGenericItems(items) {
+  grid.innerHTML = "";
+
+  if (!items.length) {
+    grid.innerHTML = `<div class="generic-no-results">NO RECORDS MATCH THE CURRENT FILTERS.</div>`;
+    return;
+  }
+
+  const tracksStatus = allItems.some(item =>
+    item.build_status !== undefined ||
+    item.buildStatus !== undefined ||
+    item.status !== undefined
+  );
+
   items.forEach(item => {
     const link = document.createElement("a");
-    link.className = "item-card";
+    link.className = `archive-record archive-record-${escapeClass(type)}`;
     link.href = `item.html?category=${encodeURIComponent(type)}&id=${encodeURIComponent(item.id)}`;
+
+    const source = String(item.source || "").trim();
+    const sourceLabel = SOURCE_LABELS[source] || source.toUpperCase();
+    const group = genericGroupValue(item);
+    const status = getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status);
+
+    const imageMarkup = item.image
+      ? `<img class="archive-record-image" src="${escapeHtml(item.image)}" alt="" loading="lazy">`
+      : `<span class="archive-record-placeholder">${escapeHtml((item.designation || item.id || "?").slice(0, 10))}</span>`;
+
+    const statusIcon = tracksStatus ? makeStatusIconMarkup(status.key) : "";
+    const statusMarkup = tracksStatus
+      ? `
+        <div class="build-status-compact">
+          <span class="status-chip status-${escapeClass(status.key)}">${escapeHtml(status.label)}</span>
+          ${status.hideProgress ? "" : `<span class="status-percent">${status.percent}%</span>`}
+        </div>
+        ${status.hideProgress ? "" : `
+          <div class="status-meter" aria-hidden="true">
+            <span class="status-meter-fill status-${escapeClass(status.key)}" style="width:${status.percent}%"></span>
+          </div>
+        `}
+      `
+      : "";
+
+    const buildYear = String(item.build_date || item.buildDate || "").match(/^\d{4}/)?.[0] || "";
+    const metaCandidates = type === "fantasy"
+      ? [
+          item.subseries || item.line || item.grade,
+          item.franchise || item.series || (group !== "UNSORTED / UNASSIGNED" ? group : ""),
+          item.scale,
+          buildYear ? `BUILT ${buildYear}` : ""
+        ]
+      : [
+          item.grade,
+          item.scale,
+          group !== "UNSORTED / UNASSIGNED" ? group : ""
+        ];
+
+    const meta = [...new Set(
+      metaCandidates
+        .map(value => String(value || "").trim())
+        .filter(Boolean)
+    )];
+
     link.innerHTML = `
-      <span class="panel-label">${escapeHtml(item.designation || item.id)}</span>
-      <h2>${escapeHtml(item.name)}</h2>
-      <p>${escapeHtml(item.summary || "")}</p>
+      <div class="archive-record-visual">
+        ${imageMarkup}
+      </div>
+      <div class="archive-record-topline">
+        <span class="archive-record-source">${escapeHtml(sourceLabel || type.toUpperCase())}</span>
+        ${statusIcon}
+      </div>
+      <span class="archive-record-designation">${escapeHtml(item.designation || item.id || "")}</span>
+      <h2>${escapeHtml(item.name || item.id || "Untitled record")}</h2>
+      <p>${escapeHtml(item.summary || item.description || "")}</p>
+      <div class="archive-record-meta">
+        ${meta.map(value => `<span>${escapeHtml(value)}</span>`).join("")}
+      </div>
+      ${statusMarkup}
     `;
+
     grid.appendChild(link);
   });
 }

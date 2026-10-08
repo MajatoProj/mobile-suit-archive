@@ -1,0 +1,45 @@
+{
+  "category": "gundam",
+  "id": "ASW-G-08-6TH-HG",
+  "designation": "ASW-G-08",
+  "name": "Gundam Barbatos 6th Form",
+  "summary": "Post Disaster / Mobile Suit Gundam IRON-BLOODED ORPHANS",
+  "description": "Old build from 2016. Faulted and stored away. Includes the swap parts kept with the kit. No panel lining. Needs cleaning, restoration or repair before display.",
+  "continuity": "Post Disaster",
+  "series": "Mobile Suit Gundam IRON-BLOODED ORPHANS",
+  "timeline_position": 1,
+  "timeline_lane": "main",
+  "timeline_label": "P.D. 323",
+  "timeline_parent": "",
+  "family": "Barbatos Family",
+  "family_order": 1,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Mikazuki Augus",
+    "height": "18.8 m",
+    "weight": "30.5 t",
+    "armament": [
+      "170mm Autocannon ×2",
+      "Arm Mortar ×4",
+      "Long Sword",
+      "Large Special Mace"
+    ],
+    "features": [
+      "Alaya-Vijnana System",
+      "Nanolaminate Armor",
+      "Ahab Reactor ×2"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "faulted",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/post-disaster/ibo/ASW-G-08-6TH-HG.png",
+  "specs": {
+    "Release date": "2016-02-27",
+    "Build date": "2016-01-01",
+    "Paint": "None"
+  }
+}

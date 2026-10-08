@@ -1,0 +1,49 @@
+{
+  "category": "gundam",
+  "id": "GN-0000-GNR-010-HG-DC",
+  "designation": "GN-0000+GNR-010",
+  "name": "00 Raiser Designer's Color Ver.",
+  "summary": "Anno Domini / Mobile Suit Gundam 00 Second Season",
+  "description": "Old build from 2014. Faulted and stored away. Cleanup needed; should be cleaned and restored before display.",
+  "continuity": "Anno Domini",
+  "series": "Mobile Suit Gundam 00 Second Season",
+  "timeline_position": 2,
+  "timeline_lane": "main",
+  "timeline_label": "A.D. 2312",
+  "timeline_parent": "Mobile Suit Gundam 00",
+  "family": "00 Family",
+  "family_order": 2,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Setsuna F. Seiei / Saji Crossroad",
+    "height": "18.3 m",
+    "weight": "75.1 t",
+    "armament": [
+      "GN Sword II ×2",
+      "GN Beam Saber ×2",
+      "GN Shield ×2",
+      "GN Beam Machine Gun ×2",
+      "GN Micro Missile ×8"
+    ],
+    "features": [
+      "Twin Drive System",
+      "Raiser System",
+      "Trans-Am System",
+      "Trans-Am Burst",
+      "GN Field"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "faulted",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/anno-domini/00-second-season/GN-0000-GNR-010-HG-DC.png",
+  "specs": {
+    "Release date": "2009-02-14",
+    "Build date": "2014-01-01",
+    "Lineup": "HG00 No. 38",
+    "Bandai item": "55731"
+  }
+}

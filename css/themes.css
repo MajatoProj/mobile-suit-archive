@@ -1604,33 +1604,40 @@ body.theme-fantasy {
 
 
 /* ============================================================
-   FAULTED BUILD STATUS v22
+   FAULTED BUILD STATUS v33 — SEMI GRAY
    Owned kits that are stored away / retired / used for parts.
    No percentage or progress meter is shown.
    ============================================================ */
 .gundam-record.is-faulted {
-  border-color: rgba(135, 143, 151, .18);
+  border-color: rgba(147, 158, 168, .22);
   background:
     repeating-linear-gradient(
       135deg,
-      rgba(255,255,255,.018) 0 10px,
-      transparent 10px 22px
+      rgba(255,255,255,.012) 0 10px,
+      transparent 10px 24px
     ),
-    linear-gradient(180deg, rgba(11,14,17,.96), rgba(6,9,12,.99));
+    linear-gradient(180deg, rgba(12,17,21,.95), rgba(7,11,15,.98));
 }
 
+/*
+  Faulted sits visually between Backlog and an active/normal kit:
+  still muted, but enough original colour remains to identify the model.
+*/
 .gundam-record.is-faulted .gundam-record-image {
   filter:
-    grayscale(.82)
-    saturate(.38)
-    brightness(.72)
-    contrast(.96)
-    drop-shadow(0 8px 10px rgba(0,0,0,.42));
+    grayscale(.52)
+    saturate(.68)
+    brightness(.88)
+    contrast(.98)
+    drop-shadow(0 8px 10px rgba(0,0,0,.40));
 }
 
-.gundam-record.is-faulted .unit-ghost,
+.gundam-record.is-faulted .unit-ghost {
+  opacity: .20;
+}
+
 .gundam-record.is-faulted .unit-crosshair {
-  opacity: .12;
+  opacity: .30;
 }
 
 .status-chip.status-faulted {
@@ -2332,4 +2339,756 @@ body.theme-fantasy {
   .family-heading-meta,
   .family-completion-meter { grid-column: 1; }
   .family-heading-meta { grid-row: auto; }
+}
+
+
+/* ============================================================
+   MULTI-VAULT ARCHIVE PARITY v32
+   ============================================================ */
+.generic-explorer[hidden] {
+  display: none !important;
+}
+
+.archive-generic-toolbar {
+  margin-bottom: 18px;
+}
+
+.archive-record {
+  --record-accent: #7fc7ff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100%;
+  padding: 11px;
+  border: 1px solid color-mix(in srgb, var(--record-accent), transparent 78%);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--record-accent), transparent 95%), transparent 34%),
+    rgba(7, 12, 17, .88);
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.archive-record:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--record-accent), transparent 48%);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--record-accent), transparent 91%), transparent 38%),
+    rgba(8, 14, 20, .96);
+}
+
+.theme-digimon .archive-record { --record-accent: #6ed6b9; }
+.theme-mecha .archive-record { --record-accent: #dba35e; }
+.theme-fantasy .archive-record { --record-accent: #cbb879; }
+
+.archive-record-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--record-accent), transparent 84%);
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--record-accent), transparent 88%), transparent 42%),
+    linear-gradient(180deg, rgba(255,255,255,.018), rgba(0,0,0,.12));
+}
+
+.archive-record-visual::before,
+.archive-record-visual::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.archive-record-visual::before {
+  inset: 8px;
+  border: 1px solid color-mix(in srgb, var(--record-accent), transparent 91%);
+}
+
+.archive-record-visual::after {
+  width: 46%;
+  height: 1px;
+  background: color-mix(in srgb, var(--record-accent), transparent 72%);
+  box-shadow: 0 8px 0 color-mix(in srgb, var(--record-accent), transparent 91%);
+}
+
+.archive-record-image {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 12px rgba(0,0,0,.42));
+}
+
+.archive-record-placeholder {
+  position: relative;
+  z-index: 1;
+  color: color-mix(in srgb, var(--record-accent), white 18%);
+  font: .66rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .14em;
+}
+
+.archive-record-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.archive-record-source {
+  display: inline-flex;
+  max-width: calc(100% - 32px);
+  padding: .27rem .43rem;
+  border: 1px solid color-mix(in srgb, var(--record-accent), transparent 72%);
+  background: color-mix(in srgb, var(--record-accent), transparent 94%);
+  color: color-mix(in srgb, var(--record-accent), white 30%);
+  font-size: .52rem;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.archive-record-designation {
+  display: block;
+  margin-top: 9px;
+  color: color-mix(in srgb, var(--record-accent), #a8b7c0 52%);
+  font: .58rem/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .08em;
+}
+
+.archive-record h2 {
+  margin: .35rem 0 .45rem;
+  font-size: .94rem;
+  line-height: 1.18;
+  font-weight: 590;
+  letter-spacing: .02em;
+}
+
+.archive-record p {
+  min-height: 2.8em;
+  margin: 0 0 .72rem;
+  color: #879ba7;
+  font-size: .68rem;
+  line-height: 1.4;
+}
+
+.archive-record-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: auto;
+}
+
+.archive-record-meta > span {
+  padding: .27rem .39rem;
+  border: 1px solid color-mix(in srgb, var(--record-accent), transparent 84%);
+  color: #a8bac4;
+  font-size: .54rem;
+  letter-spacing: .06em;
+}
+
+.generic-no-results {
+  grid-column: 1 / -1;
+  padding: 32px 18px;
+  border: 1px solid rgba(127,199,255,.12);
+  color: #7892a2;
+  text-align: center;
+  font-size: .68rem;
+  letter-spacing: .12em;
+}
+
+.theme-digimon .archive-record-visual {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(87, 218, 176, .13), transparent 38%),
+    linear-gradient(180deg, rgba(13, 50, 43, .28), rgba(4, 18, 19, .18));
+}
+
+.theme-fantasy .archive-record-visual {
+  background:
+    radial-gradient(circle at 50% 34%, rgba(213, 194, 126, .13), transparent 40%),
+    linear-gradient(180deg, rgba(58, 54, 31, .22), rgba(13, 17, 12, .18));
+}
+
+.theme-mecha .archive-record-visual {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(219, 154, 81, .12), transparent 39%),
+    linear-gradient(180deg, rgba(56, 37, 22, .23), rgba(15, 13, 12, .16));
+}
+
+@media (max-width: 680px) {
+  .archive-record p {
+    min-height: 0;
+  }
+}
+
+
+/* ============================================================
+   FANTASY SHOWCASE + INTERACTION PASS v34
+   ============================================================ */
+
+/* 1 / 5 — stronger Fantasy header identity */
+.theme-fantasy .category-header > div:first-child {
+  position: relative;
+  isolation: isolate;
+}
+
+.theme-fantasy .category-header > div:first-child::after {
+  content: "✦";
+  position: absolute;
+  z-index: -1;
+  width: 122px;
+  height: 122px;
+  right: -148px;
+  top: 3px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(229, 207, 142, .22);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 9px rgba(229, 207, 142, .035),
+    inset 0 0 28px rgba(229, 207, 142, .05);
+  color: rgba(241, 224, 171, .18);
+  font-size: 2.2rem;
+  transform: rotate(14deg);
+  pointer-events: none;
+}
+
+.theme-fantasy .category-header h1 {
+  position: relative;
+  width: max-content;
+  max-width: 100%;
+  text-shadow: 0 1px 18px rgba(236, 216, 155, .09);
+}
+
+.theme-fantasy .category-header h1::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: min(260px, 62%);
+  height: 1px;
+  background: linear-gradient(90deg, #d8c58d, rgba(216,197,141,0));
+  box-shadow: 0 0 12px rgba(216,197,141,.24);
+}
+
+/* The open lower portion of short Fantasy collections now has a deliberate
+   relic-watermark rather than reading as an unfinished empty region. */
+.theme-fantasy .category-content {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: 34px;
+}
+
+.theme-fantasy .category-content::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  width: min(34vw, 430px);
+  aspect-ratio: 1;
+  right: 7vw;
+  bottom: -9vw;
+  border: 1px solid rgba(226, 207, 151, .075);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 28px rgba(226, 207, 151, .016),
+    0 0 0 58px rgba(226, 207, 151, .010);
+  background:
+    linear-gradient(45deg, transparent 49.75%, rgba(226,207,151,.05) 50%, transparent 50.25%),
+    linear-gradient(-45deg, transparent 49.75%, rgba(226,207,151,.05) 50%, transparent 50.25%);
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+/* 2 / 3 — relic-display cards with enough visual mass for small collections */
+.theme-fantasy .items-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 430px), 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+.theme-fantasy .archive-record {
+  min-height: 286px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(185px, 40%);
+  grid-template-rows: auto auto auto 1fr auto auto auto;
+  grid-template-areas:
+    "top visual"
+    "designation visual"
+    "title visual"
+    "summary visual"
+    "meta visual"
+    "status visual"
+    "meter visual";
+  column-gap: 17px;
+  row-gap: 0;
+  border-color: rgba(210, 191, 132, .28);
+  background:
+    linear-gradient(145deg, rgba(216,197,141,.055), transparent 34%),
+    linear-gradient(180deg, rgba(21, 29, 24, .94), rgba(12, 20, 16, .96));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.012),
+    0 16px 34px rgba(0,0,0,.10);
+  transition:
+    transform .26s ease,
+    border-color .26s ease,
+    background .26s ease,
+    box-shadow .26s ease;
+}
+
+.theme-fantasy .archive-record::before,
+.theme-fantasy .archive-record::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  opacity: .65;
+  transition: opacity .26s ease, transform .26s ease;
+}
+
+.theme-fantasy .archive-record::before {
+  top: 7px;
+  left: 7px;
+  border-top: 1px solid rgba(235,217,160,.50);
+  border-left: 1px solid rgba(235,217,160,.50);
+}
+
+.theme-fantasy .archive-record::after {
+  right: 7px;
+  bottom: 7px;
+  border-right: 1px solid rgba(235,217,160,.50);
+  border-bottom: 1px solid rgba(235,217,160,.50);
+}
+
+.theme-fantasy .archive-record-visual {
+  grid-area: visual;
+  align-self: stretch;
+  min-height: 250px;
+  margin: 0;
+  aspect-ratio: auto;
+  isolation: isolate;
+  border-color: rgba(216,197,141,.20);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(223, 199, 128, .16), transparent 35%),
+    radial-gradient(circle at 50% 50%, transparent 0 32%, rgba(223,199,128,.075) 32.5% 33%, transparent 33.5%),
+    linear-gradient(180deg, rgba(65, 68, 43, .18), rgba(8, 17, 13, .15));
+}
+
+.theme-fantasy .archive-record-visual::before {
+  inset: 14px;
+  border: 1px solid rgba(228,208,147,.13);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 12px rgba(228,208,147,.018),
+    inset 0 0 38px rgba(228,208,147,.025);
+  transform: rotate(12deg);
+  transition: transform .45s ease, opacity .3s ease;
+}
+
+.theme-fantasy .archive-record-visual::after {
+  width: 82px;
+  height: 82px;
+  border: 1px solid rgba(228,208,147,.11);
+  border-radius: 50%;
+  background:
+    linear-gradient(45deg, transparent 49%, rgba(228,208,147,.08) 49.5% 50.5%, transparent 51%),
+    linear-gradient(-45deg, transparent 49%, rgba(228,208,147,.08) 49.5% 50.5%, transparent 51%);
+  box-shadow: none;
+  transition: transform .5s ease, opacity .3s ease;
+}
+
+.theme-fantasy .archive-record-image {
+  width: 96%;
+  height: 96%;
+  filter:
+    drop-shadow(0 17px 18px rgba(0,0,0,.35))
+    drop-shadow(0 0 12px rgba(221,199,135,.035));
+  transition: transform .34s ease, filter .34s ease;
+}
+
+.theme-fantasy .archive-record-topline { grid-area: top; }
+.theme-fantasy .archive-record-designation { grid-area: designation; }
+.theme-fantasy .archive-record h2 { grid-area: title; }
+.theme-fantasy .archive-record p { grid-area: summary; }
+.theme-fantasy .archive-record-meta { grid-area: meta; }
+.theme-fantasy .archive-record > .build-status-compact { grid-area: status; margin-top: 11px; }
+.theme-fantasy .archive-record > .status-meter { grid-area: meter; }
+
+.theme-fantasy .archive-record h2 {
+  margin-top: .43rem;
+  color: #f0ead8;
+  font-size: clamp(1rem, 1.25vw, 1.18rem);
+  letter-spacing: .025em;
+}
+
+.theme-fantasy .archive-record p {
+  min-height: 0;
+  margin-top: .15rem;
+  color: #9eaa9d;
+}
+
+.theme-fantasy .archive-record-designation {
+  margin-top: 11px;
+  color: rgba(224, 207, 153, .72);
+}
+
+/* 4 — catalog chips read as a compact relic/status strip */
+.theme-fantasy .archive-record-meta {
+  margin-top: 12px;
+  align-self: end;
+}
+
+.theme-fantasy .archive-record-meta > span {
+  padding: .34rem .47rem;
+  border-color: rgba(216,197,141,.22);
+  background: rgba(216,197,141,.035);
+  color: #cfc9b4;
+}
+
+.theme-fantasy .archive-record-source {
+  border-color: rgba(216,197,141,.31);
+  background: rgba(216,197,141,.045);
+  color: #e4d6aa;
+}
+
+/* 6 — Fantasy hover: wake the relic display instead of just lifting the card */
+.theme-fantasy .archive-record:hover {
+  transform: translateY(-6px);
+  border-color: rgba(232, 213, 154, .58);
+  background:
+    linear-gradient(145deg, rgba(216,197,141,.09), transparent 36%),
+    linear-gradient(180deg, rgba(26, 36, 29, .98), rgba(13, 23, 18, .99));
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.20),
+    0 0 24px rgba(216,197,141,.055),
+    inset 0 0 0 1px rgba(246,230,180,.025);
+}
+
+.theme-fantasy .archive-record:hover::before {
+  opacity: 1;
+  transform: translate(-2px, -2px);
+}
+
+.theme-fantasy .archive-record:hover::after {
+  opacity: 1;
+  transform: translate(2px, 2px);
+}
+
+.theme-fantasy .archive-record:hover .archive-record-image {
+  transform: translateY(-3px) scale(1.055);
+  filter:
+    drop-shadow(0 20px 19px rgba(0,0,0,.42))
+    drop-shadow(0 0 16px rgba(222,201,139,.10));
+}
+
+.theme-fantasy .archive-record:hover .archive-record-visual::before {
+  opacity: .85;
+  transform: rotate(32deg) scale(1.025);
+}
+
+.theme-fantasy .archive-record:hover .archive-record-visual::after {
+  opacity: .9;
+  transform: rotate(-34deg) scale(1.08);
+}
+
+/* ============================================================
+   GUNDAM HOVER ENHANCEMENT v34
+   Same interaction language as Fantasy, but kept technical/HUD.
+   ============================================================ */
+.theme-gundam .gundam-record {
+  isolation: isolate;
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.theme-gundam .gundam-record::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  left: -38%;
+  top: -30%;
+  width: 24%;
+  height: 170%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(151, 220, 255, .095),
+    transparent
+  );
+  transform: skewX(-18deg) translateX(-160%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.theme-gundam .gundam-record:hover {
+  transform: translateY(-5px);
+  border-color: rgba(127,199,255,.62);
+  background:
+    linear-gradient(180deg, rgba(18, 47, 68, .32), transparent 48%),
+    rgba(7, 22, 35, .92);
+  box-shadow:
+    0 15px 28px rgba(0,0,0,.20),
+    0 0 20px rgba(87,171,224,.06);
+}
+
+.theme-gundam .gundam-record:hover::after {
+  opacity: 1;
+  animation: gundamCardSweep .62s ease-out both;
+}
+
+.theme-gundam .gundam-record:hover .gundam-record-image {
+  transform: translateY(-2px) scale(1.07);
+  filter:
+    drop-shadow(0 11px 12px rgba(0,0,0,.44))
+    drop-shadow(0 0 9px rgba(127,199,255,.08));
+}
+
+.theme-gundam .gundam-record .unit-crosshair {
+  transition:
+    transform .38s ease,
+    opacity .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.theme-gundam .gundam-record:hover .unit-crosshair {
+  opacity: .72;
+  transform: rotate(45deg) scale(1.06);
+  border-color: rgba(153,218,255,.40);
+  box-shadow: 0 0 14px rgba(91,179,230,.08);
+}
+
+.theme-gundam .gundam-record .unit-ghost {
+  transition: opacity .25s ease, color .25s ease;
+}
+
+.theme-gundam .gundam-record:hover .unit-ghost {
+  opacity: .34;
+  color: rgba(185,228,251,.26);
+}
+
+.theme-gundam .gundam-record:hover h4 {
+  color: #eefaff;
+}
+
+@keyframes gundamCardSweep {
+  from { transform: skewX(-18deg) translateX(-160%); }
+  to   { transform: skewX(-18deg) translateX(720%); }
+}
+
+@media (max-width: 780px) {
+  .theme-fantasy .category-header > div:first-child::after {
+    display: none;
+  }
+
+  .theme-fantasy .archive-record {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "visual"
+      "top"
+      "designation"
+      "title"
+      "summary"
+      "meta"
+      "status"
+      "meter";
+  }
+
+  .theme-fantasy .archive-record-visual {
+    min-height: 210px;
+    margin-bottom: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-fantasy .archive-record,
+  .theme-fantasy .archive-record-image,
+  .theme-fantasy .archive-record-visual::before,
+  .theme-fantasy .archive-record-visual::after,
+  .theme-gundam .gundam-record,
+  .theme-gundam .gundam-record-image,
+  .theme-gundam .unit-crosshair {
+    transition: none !important;
+  }
+
+  .theme-gundam .gundam-record:hover::after {
+    animation: none !important;
+  }
+}
+
+
+/* ============================================================
+   FANTASY WARM CONTROL PALETTE v35
+   Removes the inherited Gundam-blue UI from Fantasy.
+   ============================================================ */
+
+.theme-fantasy {
+  --fantasy-gold: #d4be78;
+  --fantasy-gold-soft: rgba(212, 190, 120, .22);
+  --fantasy-gold-faint: rgba(212, 190, 120, .08);
+  --fantasy-ivory: #e9e2c8;
+  --fantasy-olive: #314037;
+  --fantasy-panel: rgba(22, 31, 27, .94);
+  --fantasy-panel-2: rgba(27, 37, 31, .96);
+}
+
+/* Top database-status strip */
+.theme-fantasy .category-intro {
+  border-color: rgba(212, 190, 120, .30);
+  background:
+    linear-gradient(180deg, rgba(212,190,120,.025), transparent 50%),
+    rgba(28, 36, 31, .90);
+  box-shadow: inset 0 -1px 0 rgba(212,190,120,.18);
+}
+
+.theme-fantasy .category-intro > div {
+  border-color: rgba(212, 190, 120, .24);
+}
+
+.theme-fantasy .category-intro::before,
+.theme-fantasy .category-intro::after {
+  border-color: rgba(212, 190, 120, .42);
+}
+
+.theme-fantasy .category-intro .panel-label {
+  color: #b9b69d;
+}
+
+.theme-fantasy .category-intro strong {
+  color: #efe7c9;
+}
+
+/* Main catalog control panel */
+.theme-fantasy .archive-generic-toolbar,
+.theme-fantasy .generic-explorer .gundam-toolbar {
+  border-color: rgba(212, 190, 120, .24);
+  background:
+    radial-gradient(circle at 88% 0%, rgba(212,190,120,.045), transparent 28%),
+    linear-gradient(180deg, rgba(32, 43, 36, .97), rgba(20, 29, 25, .98));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.01),
+    0 14px 30px rgba(0,0,0,.09);
+}
+
+.theme-fantasy .generic-explorer .panel-label,
+.theme-fantasy .archive-generic-toolbar .panel-label {
+  color: #bdb99f;
+}
+
+/* Search */
+.theme-fantasy .archive-search-field {
+  border-color: rgba(212, 190, 120, .22);
+  background: rgba(11, 19, 16, .52);
+}
+
+.theme-fantasy .archive-search-field:focus-within {
+  border-color: rgba(220, 200, 136, .55);
+  box-shadow: 0 0 0 1px rgba(212,190,120,.08), 0 0 16px rgba(212,190,120,.05);
+}
+
+.theme-fantasy .archive-search-symbol {
+  color: #d1c187;
+}
+
+.theme-fantasy .archive-search input {
+  color: #e8e2ce;
+}
+
+.theme-fantasy .archive-search input::placeholder {
+  color: #7f8a80;
+}
+
+/* Filter + sort buttons */
+.theme-fantasy .generic-explorer .filter-button,
+.theme-fantasy .generic-explorer .sort-button,
+.theme-fantasy .generic-explorer .archive-action-button {
+  border-color: rgba(212, 190, 120, .22);
+  background: rgba(212, 190, 120, .025);
+  color: #9fa89f;
+  box-shadow: none;
+}
+
+.theme-fantasy .generic-explorer .filter-button:hover,
+.theme-fantasy .generic-explorer .sort-button:hover,
+.theme-fantasy .generic-explorer .archive-action-button:hover {
+  border-color: rgba(222, 202, 137, .48);
+  background: rgba(212, 190, 120, .065);
+  color: #e9e0c0;
+}
+
+.theme-fantasy .generic-explorer .filter-button.active,
+.theme-fantasy .generic-explorer .sort-button.active,
+.theme-fantasy .generic-explorer .archive-action-button.active {
+  border-color: rgba(228, 207, 142, .68);
+  background:
+    linear-gradient(180deg, rgba(212,190,120,.16), rgba(212,190,120,.075));
+  color: #fff0bf;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,240,191,.035),
+    0 0 12px rgba(212,190,120,.055);
+}
+
+/* Status-filter icons should stay material-colored, but lose the blue frame. */
+.theme-fantasy .generic-explorer .status-filter-button {
+  border-color: rgba(212, 190, 120, .19);
+  background: rgba(15, 24, 20, .54);
+}
+
+.theme-fantasy .generic-explorer .status-filter-button.active {
+  border-color: rgba(228, 207, 142, .68);
+  background: rgba(212, 190, 120, .10);
+}
+
+/* Statistics panel */
+.theme-fantasy .archive-statistics {
+  border-color: rgba(212, 190, 120, .22);
+  background: rgba(15, 23, 19, .56);
+}
+
+.theme-fantasy .statistics-head {
+  border-color: rgba(212, 190, 120, .16);
+}
+
+.theme-fantasy .statistics-total,
+.theme-fantasy .statistics-cell span {
+  color: #a8ad9e;
+}
+
+.theme-fantasy .statistics-cell {
+  border-color: rgba(212, 190, 120, .15);
+  background: rgba(212, 190, 120, .018);
+}
+
+.theme-fantasy .statistics-cell strong {
+  color: #eadfb8;
+}
+
+/* Small accent lines which otherwise remained cyan/blue */
+.theme-fantasy .gundam-filter-row,
+.theme-fantasy .gundam-search-row {
+  border-color: rgba(212, 190, 120, .10);
+}
+
+.theme-fantasy #activeFilterValue {
+  color: #efe4bd;
+}
+
+.theme-fantasy .category-intro {
+  --hud-accent: rgba(212, 190, 120, .66);
 }

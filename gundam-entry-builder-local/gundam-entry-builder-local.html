@@ -438,7 +438,8 @@
           <input name="scale" placeholder="1/144">
         </label>
         <label>Image path
-          <input name="image" placeholder="assets/images/gundam/freedom.jpg">
+          <input name="image" placeholder="Auto: assets/images/gundam/continuity/series/ID.png">
+          <span class="normalize-note">Leave blank for the automatic continuity / series folder path.</span>
         </label>
         <label>Release date
           <input name="release_date" type="date">
@@ -530,8 +531,9 @@
           3. Fill in or edit the Gundam.<br>
           4. Use <strong>SELECT PREVIEW IMAGE</strong> to preview a local PNG/JPG without changing the saved Image Path.<br>
           5. Design Origin and typed relationship links can only point to Gundams already present in the loaded library/index.<br>
-          6. Download the Gundam JSON when you want to save that individual record.<br>
-          7. Download the updated <code>index.json</code> when you want the archive list refreshed.
+          6. Download the Gundam JSON, then place it in the continuity / series folder shown in the status message.<br>
+          7. Download the updated <code>index.json</code> when you want the archive list refreshed.<br>
+          8. New records automatically use nested paths such as <code>cosmic-era/seed-freedom/ID.json</code> and matching image folders.
         </div>
       </section>
     </aside>
@@ -1147,7 +1149,7 @@
     download(item, fileNameFromId(item.id));
 
     show(
-      `${item.designation || item.id} — ${item.name} downloaded as its own Gundam JSON file.`,
+      `${item.designation || item.id} — ${item.name} downloaded. Place it in data/gundam/${archiveFolderForItem(item)}/`,
       false
     );
   });
@@ -1183,6 +1185,55 @@
         { sensitivity: "base" }
       )
     );
+  }
+
+  function slugifyArchivePart(value) {
+    return String(value || "unassigned")
+      .trim()
+      .toLowerCase()
+      .replace(/&/g, " and ")
+      .replace(/[’']/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "unassigned";
+  }
+
+  function archiveSeriesFolder(series) {
+    const key = String(series || "").trim().toLowerCase();
+    const aliases = {
+      "mobile suit gundam seed": "seed",
+      "mobile suit gundam seed destiny": "seed-destiny",
+      "mobile suit gundam seed freedom": "seed-freedom",
+      "mobile suit gundam seed astray": "seed-astray",
+      "mobile suit gundam 00 second season": "00-second-season",
+      "mobile suit gundam 00 the movie: a wakening of the trailblazer": "trailblazer",
+      "mobile suit gundam iron-blooded orphans": "ibo",
+      "mobile suit gundam iron-blooded orphans gekko": "gekko",
+      "gundam build fighters: gm's counterattack": "gm-counterattack",
+      "gundam build fighters try": "build-fighters-try",
+      "gundam build fighters honoo try": "honoo-try",
+      "gundam reconguista in g": "reconguista-in-g"
+    };
+
+    return aliases[key] || slugifyArchivePart(series);
+  }
+
+  function archiveFolderForItem(item) {
+    return `${slugifyArchivePart(item.continuity)}/${archiveSeriesFolder(item.series)}`;
+  }
+
+  function archiveRecordPath(item) {
+    return `${archiveFolderForItem(item)}/${fileNameFromId(item.id)}`;
+  }
+
+  function automaticImagePath(item) {
+    const id = String(item.id || "GUNDAM-ENTRY").trim() || "GUNDAM-ENTRY";
+    return `assets/images/gundam/${archiveFolderForItem(item)}/${id}.png`;
+  }
+
+  function shouldUseAutomaticImagePath(value) {
+    const path = String(value || "").trim();
+    if (!path) return true;
+    return /^assets\/images\/gundam\/[^/]+\.(png|jpe?g|webp|gif)$/i.test(path);
   }
 
   function makeIndexRecord(item) {
@@ -1238,7 +1289,7 @@
       scale: String(item.scale || ""),
       image: String(item.image || ""),
 
-      file: fileNameFromId(item.id)
+      file: archiveRecordPath(item)
     };
   }
 
@@ -1343,7 +1394,11 @@
       grade:String(fd.get("grade") || "").trim(),
       grade_family:String(fd.get("grade_family") || "").trim(),
       scale:String(fd.get("scale") || "").trim(),
-      image:String(fd.get("image") || "").trim(),
+      image:(() => {
+        const current = String(fd.get("image") || "").trim();
+        const pathItem = { id:String(fd.get("id") || "").trim(), continuity, series };
+        return shouldUseAutomaticImagePath(current) ? automaticImagePath(pathItem) : current;
+      })(),
 
       specs
     };

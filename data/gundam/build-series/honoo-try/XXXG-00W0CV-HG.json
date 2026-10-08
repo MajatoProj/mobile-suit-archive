@@ -1,0 +1,48 @@
+{
+  "category": "gundam",
+  "id": "XXXG-00W0CV-HG",
+  "designation": "XXXG-00W0CV",
+  "name": "Wing Gundam Zero Honoo",
+  "summary": "Build Series / Gundam Build Fighters Honoo Try",
+  "description": "Old build from 2015. Faulted and stored away. Detailed build; cleanup needed and should be cleaned, restored or repaired before display.",
+  "continuity": "Build Series",
+  "series": "Gundam Build Fighters Honoo Try",
+  "timeline_position": 3,
+  "timeline_lane": "side-story",
+  "timeline_label": "Build Fighters Try era",
+  "timeline_parent": "Gundam Build Fighters Try",
+  "family": "Wing Zero Family",
+  "family_order": 2,
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Yusei Kouen / Yuka Kouen",
+    "height": "17.0 m",
+    "weight": "9.1 t",
+    "armament": [
+      "Hyper Caletvwlch ×2",
+      "Beam Sword ×2",
+      "Wing Shield Honoo",
+      "Beam Saber",
+      "Twin Buster Rifle"
+    ],
+    "features": [
+      "Honoo System",
+      "Neo-Bird Mode Honoo",
+      "Customize Head"
+    ]
+  },
+  "source": "bandai",
+  "custom": false,
+  "build_status": "faulted",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "image": "assets/images/gundam/build-series/honoo-try/XXXG-00W0CV-HG.png",
+  "specs": {
+    "Release date": "2015-03-21",
+    "Build date": "2015-01-01",
+    "Paint": "Details",
+    "Lineup": "HGBF No. 033",
+    "Bandai item": "55440"
+  }
+}
