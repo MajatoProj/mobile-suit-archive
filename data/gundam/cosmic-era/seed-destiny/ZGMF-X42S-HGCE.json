@@ -4,6 +4,7 @@
   "designation": "ZGMF-X42S",
   "name": "Destiny Gundam",
   "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny",
+	"description": "Assembly complete. Detail painting added with Gundam Marker and panel lining completed. Water-slide decals still to be applied.",
   "continuity": "Cosmic Era",
   "series": "Mobile Suit Gundam SEED Destiny",
   "timeline_position": 2,
@@ -19,14 +20,14 @@
   },
   "source": "bandai",
   "custom": false,
-  "build_status": "assembly",
+  "build_status": "finishing",
   "grade": "HGCE",
   "grade_family": "HG",
   "scale": "1/144",
   "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X42S-HGCE.png",
   "specs": {
     "Release date": "2019-05-31",
-    "Paint": "Panel Line"
+    "Paint": "Details"
   },
   "family_order": 1
 }

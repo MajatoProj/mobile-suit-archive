@@ -3681,3 +3681,599 @@ body.theme-fantasy {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+
+
+/* ============================================================
+   ATTACHED SIDE-STORY BRANCHES v44
+   Branches live directly under their parent series. Connectors
+   start below the parent cards so they never run through content.
+   ============================================================ */
+
+.timeline-shelf-rail {
+  --timeline-stage-width: 360px;
+  --timeline-stage-gap: 30px;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(var(--timeline-columns), var(--timeline-stage-width));
+  column-gap: var(--timeline-stage-gap);
+  align-items: start;
+  width: max-content;
+  min-width: 100%;
+  padding: 0 18px 28px;
+}
+
+.timeline-shelf-rail::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 11px;
+  left: 18px;
+  right: 18px;
+  border-top: 2px solid rgba(127,199,255,.46);
+  pointer-events: none;
+}
+
+.timeline-shelf-main-stage {
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-shelf-main-stage .series-node-main {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  background: transparent;
+}
+
+.timeline-shelf-main-stage .series-marker {
+  position: relative;
+  z-index: 3;
+  width: 10px;
+  height: 10px;
+  border: 2px solid rgba(141,214,255,.86);
+  background: #06111d;
+  box-shadow: 0 0 0 5px rgba(127,199,255,.035);
+}
+
+.timeline-shelf-main-stage .series-heading {
+  min-height: 58px;
+}
+
+.timeline-shelf-main-stage .series-heading .panel-label {
+  color: rgba(141,214,255,.72);
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.timeline-shelf-main-stage .series-heading h3 {
+  color: #edf8fd;
+  font-size: .86rem;
+  line-height: 1.28;
+  font-weight: 620;
+}
+
+.timeline-shelf-main-stage .series-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: start;
+}
+
+.timeline-shelf-main-stage .gundam-record {
+  min-width: 0;
+}
+
+/* The branch starts AFTER the parent Gundam cards. */
+.series-branch-anchor {
+  position: relative;
+  z-index: 4;
+  width: 9px;
+  height: 9px;
+  margin: 18px auto 0;
+  border: 1px solid rgba(127,199,255,.68);
+  background: #06111d;
+  transform: rotate(45deg);
+}
+
+.timeline-branch-shelf {
+  position: relative;
+  z-index: 2;
+  margin-top: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.timeline-branch-shelf-label {
+  margin: 0 0 12px;
+  padding: 0 0 7px;
+  border-bottom: 1px solid rgba(127,199,255,.17);
+  color: rgba(127,199,255,.55);
+  font: .48rem/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .14em;
+}
+
+.timeline-branch-shelf-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+/* No box-within-a-box. The series is a heading + its Gundam cards. */
+.timeline-side-series {
+  position: relative;
+  min-width: 0;
+  padding: 12px 0 0;
+  border: 0;
+  border-top: 1px solid rgba(111,176,214,.26);
+  background: transparent;
+}
+
+.timeline-side-series.has-multiple-items {
+  grid-column: 1 / -1;
+}
+
+.side-story-series-marker {
+  position: absolute;
+  z-index: 4;
+  top: -5px;
+  left: 10px;
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgba(115,191,235,.76);
+  background: #06111d;
+  transform: rotate(45deg);
+}
+
+.side-story-series-heading {
+  min-height: 48px;
+  padding: 2px 5px 0;
+}
+
+.side-story-series-heading h4 {
+  margin: 0;
+  color: #cfe5ef;
+  font-size: .72rem;
+  line-height: 1.28;
+  letter-spacing: .025em;
+  font-weight: 600;
+}
+
+.side-story-series-items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.timeline-side-series.has-multiple-items .side-story-series-items {
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.side-story-series-items .gundam-record {
+  min-width: 0;
+  padding: 7px;
+}
+
+.timeline-shelf-overlay {
+  position: absolute;
+  z-index: 1;
+  inset: 0 auto auto 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.timeline-shelf-path {
+  vector-effect: non-scaling-stroke;
+  stroke: rgba(127,199,255,.43);
+  stroke-width: 1.5;
+  shape-rendering: geometricPrecision;
+}
+
+@media (max-width: 760px) {
+  .timeline-shelf-rail {
+    --timeline-stage-width: min(330px, calc(100vw - 56px));
+    --timeline-stage-gap: 22px;
+  }
+
+  .timeline-shelf-main-stage .series-items {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-branch-shelf-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-side-series.has-multiple-items {
+    grid-column: auto;
+  }
+
+  .timeline-side-series.has-multiple-items .side-story-series-items {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 430px) {
+  .timeline-side-series.has-multiple-items .side-story-series-items {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ============================================================
+   MOBILE USABILITY v45
+   Phone layout is a vertical document, not a desktop canvas.
+   No horizontal swiping is required for timeline/family browsing.
+   ============================================================ */
+
+.theme-background {
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  html,
+  body,
+  .category-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .category-page {
+    touch-action: pan-y;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .category-header {
+    width: 100%;
+    padding: 18px 14px 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .category-header h1 {
+    font-size: clamp(2rem, 15vw, 4rem);
+    overflow-wrap: anywhere;
+  }
+
+  .category-subtitle {
+    max-width: none;
+  }
+
+  .category-rotator {
+    width: 100%;
+    max-width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    overflow: visible !important;
+  }
+
+  .category-rotator .rotator-card {
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 44px;
+    padding-inline: 6px;
+  }
+
+  .category-content,
+  .item-layout {
+    width: 100%;
+    max-width: 100%;
+    padding: 22px 14px 48px;
+  }
+
+  .category-intro {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gundam-toolbar {
+    padding: 12px;
+    gap: 14px;
+  }
+
+  .gundam-toolbar-top {
+    width: 100%;
+  }
+
+  .gundam-view-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .view-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: .7rem .45rem;
+  }
+
+  .archive-action-button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .archive-search input {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .gundam-filter-row {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .filter-strip,
+  .status-filter-strip {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: visible;
+    gap: 7px;
+    padding: 0;
+  }
+
+  .filter-button,
+  .status-filter-button,
+  .sort-button {
+    min-height: 44px;
+    flex: 0 0 auto;
+  }
+
+  .status-filter-button {
+    min-width: 44px;
+  }
+
+  .continuity-block,
+  .family-block {
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .continuity-header {
+    padding: 14px;
+    gap: 11px;
+  }
+
+  .continuity-index {
+    font-size: 1.35rem;
+  }
+
+  .continuity-header h2,
+  .family-heading h2 {
+    font-size: 1.08rem;
+    line-height: 1.28;
+    overflow-wrap: anywhere;
+  }
+
+  .timeline-shelf-rail {
+    --timeline-stage-width: auto;
+    --timeline-stage-gap: 0;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 20px 14px 24px !important;
+  }
+
+  .timeline-shelf-rail::before {
+    display: none !important;
+  }
+
+  .timeline-shelf-overlay {
+    display: none !important;
+  }
+
+  .timeline-shelf-main-stage {
+    width: 100%;
+    min-width: 0;
+    margin: 0 0 30px;
+    padding: 0 0 0 19px;
+    border-left: 1px solid rgba(127,199,255,.30);
+  }
+
+  .timeline-shelf-main-stage:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-shelf-main-stage .series-marker {
+    margin-left: -25px;
+    background: #06111d;
+  }
+
+  .timeline-shelf-main-stage .series-heading {
+    min-height: 0;
+    margin-bottom: 13px;
+  }
+
+  .timeline-shelf-main-stage .series-heading h3 {
+    font-size: .92rem;
+    overflow-wrap: anywhere;
+  }
+
+  .timeline-shelf-main-stage .series-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .series-branch-anchor {
+    width: 9px;
+    height: 9px;
+    margin: 18px 0 0 -24px;
+  }
+
+  .timeline-branch-shelf {
+    margin: 0 0 0 -15px;
+    padding: 22px 0 0 21px;
+    border-left: 1.5px solid rgba(127,199,255,.43);
+  }
+
+  .timeline-branch-shelf-label {
+    margin-bottom: 14px;
+  }
+
+  .timeline-branch-shelf-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .timeline-side-series,
+  .timeline-side-series.has-multiple-items {
+    grid-column: auto;
+    width: 100%;
+    min-width: 0;
+    padding-top: 13px;
+  }
+
+  .side-story-series-marker {
+    left: -26px;
+  }
+
+  .side-story-series-heading {
+    min-height: 0;
+    margin-bottom: 10px;
+  }
+
+  .side-story-series-heading h4 {
+    font-size: .78rem;
+    overflow-wrap: anywhere;
+  }
+
+  .side-story-series-items,
+  .timeline-side-series.has-multiple-items .side-story-series-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .family-flow {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: visible;
+    padding: 14px;
+    gap: 0;
+  }
+
+  .family-stage {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .family-stage-stack {
+    width: 100%;
+  }
+
+  .family-stage .gundam-record {
+    width: 100%;
+    max-width: none;
+  }
+
+  .family-stage > .family-connector {
+    width: 100%;
+    height: 34px;
+    min-height: 34px;
+    align-self: auto;
+  }
+
+  .family-connector span {
+    width: 1px;
+    height: 27px;
+    border-top: 0;
+    border-left: 1px solid rgba(127,199,255,.35);
+  }
+
+  .family-connector span::after {
+    display: none;
+  }
+
+  .family-stage.is-branch {
+    padding-left: 0;
+  }
+
+  .family-stage.is-branch::before {
+    display: none;
+  }
+
+  .family-stage.is-branch .family-stage-stack {
+    padding-left: 20px;
+    border-left: 1px solid rgba(127,199,255,.32);
+  }
+
+  .family-stage.is-branch .family-branch-row::before {
+    left: -20px;
+    width: 20px;
+  }
+
+  .family-stage.is-branch .family-branch-row::after {
+    left: -20px;
+  }
+
+  .relationship-note,
+  .design-origin-note,
+  .archive-statistics,
+  .statistics-grid,
+  .relationship-row {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .relationship-row {
+    overflow-wrap: anywhere;
+  }
+
+  .items-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .archive-record,
+  .item-card {
+    min-width: 0;
+  }
+
+  .gundam-record:hover,
+  .archive-record:hover,
+  .item-card:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .category-intro {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .timeline-shelf-main-stage .series-items,
+  .side-story-series-items,
+  .timeline-side-series.has-multiple-items .side-story-series-items,
+  .items-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .statistics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 360px) {
+  .category-intro,
+  .statistics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-rotator {
+    grid-template-columns: 1fr;
+  }
+}
