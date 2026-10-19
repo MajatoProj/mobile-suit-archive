@@ -4,97 +4,77 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="theme-color" content="#030910">
+  <meta name="theme-color" content="#050b12">
   <title>Collection Archive // Identification</title>
-  <link rel="stylesheet" href="css/scan.css?v=1">
+  <link rel="stylesheet" href="css/scan.css?v=3">
 </head>
 <body class="scan-page">
-  <div class="scan-atmosphere" aria-hidden="true">
-    <div class="scan-grid"></div>
-    <div class="scan-noise"></div>
-    <div class="scan-vignette"></div>
-  </div>
-
   <main class="scan-shell">
-    <section class="scan-terminal" id="scanTerminal" aria-live="polite">
-      <header class="scan-header">
+    <section class="gp-terminal" id="scanTerminal" aria-live="polite">
+      <header class="gp-header">
         <div>
-          <p class="scan-eyebrow">COLLECTION ARCHIVE</p>
-          <h1>IDENTIFICATION SYSTEM</h1>
+          <p class="gp-kicker">GUNPLA ARCHIVE // IDENTIFICATION</p>
+          <h1>GP BASE TERMINAL</h1>
         </div>
-        <div class="scan-header-id">
-          <span>ACCESS // CARD</span>
-          <span id="scanClock">--:--:--</span>
-        </div>
+        <div class="gp-clock" id="scanClock">--:--:--</div>
       </header>
 
-      <div class="scan-status-strip">
-        <span class="scan-status-mark" id="statusMark">CARD LINK</span>
-        <span id="statusText">ESTABLISHING IDENTIFICATION CHANNEL...</span>
+      <div class="gp-status" id="statusStrip">
+        <span class="gp-status-light" aria-hidden="true"></span>
+        <span id="statusText">CARD LINK ESTABLISHING...</span>
       </div>
 
-      <div class="scan-layout">
-        <section class="scan-visual" aria-label="Identification image">
-          <div class="target-ring ring-a" aria-hidden="true"></div>
-          <div class="target-ring ring-b" aria-hidden="true"></div>
+      <div class="gp-content">
+        <section class="unit-visual">
+          <div class="unit-frame" aria-hidden="true">
+            <span class="corner tl"></span>
+            <span class="corner tr"></span>
+            <span class="corner bl"></span>
+            <span class="corner br"></span>
+          </div>
 
-          <div class="target-frame" id="targetFrame">
-            <span class="target-corner tl"></span>
-            <span class="target-corner tr"></span>
-            <span class="target-corner bl"></span>
-            <span class="target-corner br"></span>
-
+          <div class="unit-image-wrap" id="unitImageWrap">
             <img id="recordImage" alt="" hidden>
-            <div class="target-placeholder" id="targetPlaceholder">
-              <span>IDENTIFICATION</span>
-              <strong>AWAITING DATA</strong>
+            <div class="unit-placeholder" id="targetPlaceholder">
+              <span>VISUAL LINK</span>
+              <strong>AWAITING UNIT</strong>
             </div>
-
-            <div class="scan-line" id="scanLine" aria-hidden="true"></div>
-            <div class="scan-crosshair" aria-hidden="true"><span></span><i></i></div>
+            <div class="scan-beam" aria-hidden="true"></div>
           </div>
 
-          <div class="visual-footer">
-            <span id="visualCode">CARD // ----</span>
-            <span id="visualCategory">ARCHIVE DIVISION // --</span>
-          </div>
+          <div class="unit-code" id="visualCode">CARD // ----</div>
         </section>
 
-        <section class="scan-data">
-          <div class="data-phase">
-            <span class="micro-label">IDENTIFICATION CARD</span>
-            <strong id="phaseLabel">CARD DETECTED</strong>
-          </div>
+        <section class="identity-panel">
+          <span class="micro-label">ARCHIVE UNIT</span>
+          <p class="designation" id="designation">--------</p>
+          <h2 id="recordName">READING CARD...</h2>
+          <p class="series" id="recordSeries">Connecting to archive index.</p>
 
-          <div class="identity-block">
-            <p class="designation scrambled" id="designation">--------</p>
-            <h2 id="recordName">READING CARD...</h2>
-            <p class="record-summary" id="recordSummary">Waiting for archive index response.</p>
+          <div class="card-id-row">
+            <span>CARD ID</span>
+            <strong id="recordCardId">----</strong>
           </div>
-
-          <div class="identity-meta">
-            <div><span>CONTINUITY</span><strong id="recordContinuity">--</strong></div>
-            <div><span>GRADE</span><strong id="recordGrade">--</strong></div>
-            <div><span>SCALE</span><strong id="recordScale">--</strong></div>
-            <div><span>STATUS</span><strong id="recordStatus">--</strong></div>
-          </div>
-
-          <div class="terminal-log" id="terminalLog" aria-label="Identification log"></div>
 
           <div class="scan-progress">
             <div class="progress-meta">
               <span id="progressLabel">READING IDENTIFICATION</span>
               <span id="progressPercent">0%</span>
             </div>
-            <div class="progress-segments" id="progressSegments" aria-hidden="true">
-              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
             </div>
           </div>
 
           <div class="confirmation" id="confirmation" hidden>
-            <span class="confirmation-diamond">◇</span>
-            <div><small>IDENTIFICATION STATUS</small><strong>IDENTITY CONFIRMED</strong></div>
+            <span class="confirm-mark">◆</span>
+            <div>
+              <small>IDENTIFICATION STATUS</small>
+              <strong>IDENTITY CONFIRMED</strong>
+            </div>
           </div>
+
+          <div class="redirect-note" id="redirectNote" hidden></div>
 
           <div class="scan-actions" id="scanActions" hidden>
             <a class="scan-action primary" id="openRecord" href="#">OPEN ARCHIVE RECORD</a>
@@ -103,14 +83,13 @@
         </section>
       </div>
 
-      <footer class="scan-footer">
-        <span>IDENTIFICATION GATEWAY // GUNDAM ARCHIVE</span>
+      <footer class="gp-footer">
+        <span>IDENTIFICATION GATEWAY</span>
         <span id="footerStatus">STANDBY</span>
       </footer>
     </section>
   </main>
 
-  <noscript><div class="scan-noscript">JavaScript is required for Identification Cards. <a href="archive.html">Return to archive.</a></div></noscript>
-  <script src="js/scan.js?v=1"></script>
+  <script src="js/scan.js?v=3"></script>
 </body>
 </html>
