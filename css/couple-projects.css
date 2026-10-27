@@ -322,3 +322,24 @@
     min-height: 72px !important;
   }
 }
+
+/* v58 — same padding and bottom rhythm as a normal Gundam card, so the
+   status row, meter and card bottom line up exactly (was 6px short). */
+.series-items > .couple-project-record {
+  padding: 9px !important;
+}
+
+.couple-project-record .gundam-record-meta {
+  margin-bottom: 6.5px !important;
+}
+
+.couple-project-record .couple-status-meter {
+  margin-top: 6px !important;
+}
+
+@media (max-width: 760px) {
+  .couple-project-record .couple-record-visual {
+    height: 74px !important;
+    min-height: 74px !important;
+  }
+}
