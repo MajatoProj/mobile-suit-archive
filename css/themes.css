@@ -3502,3 +3502,174 @@ body.theme-fantasy {
 .series-node-main.is-filtered-empty {
   opacity: .45;
 }
+
+/* ============================================================
+   EXTERNAL VAULTS MATCH GUNDAM v49
+   Digimon, Mecha and Fantasy use the Gundam card (makeGundamCard)
+   and the same control panel, tinted with each vault's own accent.
+   ============================================================ */
+
+.theme-digimon { --vault-rgb: 99, 227, 209;  --vault-text: #c9f6ef; --vault-panel: rgba(6, 24, 25, .94); }
+.theme-mecha   { --vault-rgb: 226, 163, 78;  --vault-text: #f3dcb8; --vault-panel: rgba(24, 22, 19, .94); }
+.theme-fantasy { --vault-rgb: 212, 190, 120; --vault-text: #efe7c9; --vault-panel: rgba(22, 31, 27, .94); }
+
+/* Status strip and control panel (Fantasy already has these from v35) */
+:is(.theme-digimon, .theme-mecha) .category-intro {
+  --hud-accent: rgba(var(--vault-rgb), .66);
+  border-color: rgba(var(--vault-rgb), .30);
+  background:
+    linear-gradient(180deg, rgba(var(--vault-rgb), .025), transparent 50%),
+    var(--vault-panel);
+  box-shadow: inset 0 -1px 0 rgba(var(--vault-rgb), .18);
+}
+
+:is(.theme-digimon, .theme-mecha) .category-intro > div {
+  border-color: rgba(var(--vault-rgb), .24);
+}
+
+:is(.theme-digimon, .theme-mecha) .category-intro::before,
+:is(.theme-digimon, .theme-mecha) .category-intro::after {
+  border-color: rgba(var(--vault-rgb), .42);
+}
+
+:is(.theme-digimon, .theme-mecha) .category-intro strong,
+:is(.theme-digimon, .theme-mecha) #activeFilterValue {
+  color: var(--vault-text);
+}
+
+:is(.theme-digimon, .theme-mecha) .generic-explorer .gundam-toolbar {
+  border-color: rgba(var(--vault-rgb), .24);
+  background:
+    radial-gradient(circle at 88% 0%, rgba(var(--vault-rgb), .045), transparent 28%),
+    var(--vault-panel);
+}
+
+:is(.theme-digimon, .theme-mecha) .gundam-filter-row,
+:is(.theme-digimon, .theme-mecha) .gundam-search-row {
+  border-color: rgba(var(--vault-rgb), .10);
+}
+
+:is(.theme-digimon, .theme-mecha) .archive-search-field {
+  border-color: rgba(var(--vault-rgb), .22);
+  background: rgba(0, 0, 0, .22);
+}
+
+:is(.theme-digimon, .theme-mecha) .archive-search-field:focus-within {
+  border-color: rgba(var(--vault-rgb), .55);
+  box-shadow: 0 0 0 1px rgba(var(--vault-rgb), .08), 0 0 16px rgba(var(--vault-rgb), .05);
+}
+
+:is(.theme-digimon, .theme-mecha) .archive-search-symbol {
+  color: rgb(var(--vault-rgb));
+}
+
+:is(.theme-digimon, .theme-mecha) .generic-explorer :is(.filter-button, .sort-button, .archive-action-button) {
+  border-color: rgba(var(--vault-rgb), .22);
+  background: rgba(var(--vault-rgb), .025);
+  box-shadow: none;
+}
+
+:is(.theme-digimon, .theme-mecha) .generic-explorer :is(.filter-button, .sort-button, .archive-action-button):hover {
+  border-color: rgba(var(--vault-rgb), .48);
+  background: rgba(var(--vault-rgb), .065);
+  color: var(--vault-text);
+}
+
+:is(.theme-digimon, .theme-mecha) .generic-explorer :is(.filter-button, .sort-button, .archive-action-button).active {
+  border-color: rgba(var(--vault-rgb), .68);
+  background: linear-gradient(180deg, rgba(var(--vault-rgb), .16), rgba(var(--vault-rgb), .075));
+  color: var(--vault-text);
+  box-shadow: 0 0 12px rgba(var(--vault-rgb), .055);
+}
+
+:is(.theme-digimon, .theme-mecha) .generic-explorer .status-filter-button {
+  border-color: rgba(var(--vault-rgb), .19);
+}
+
+:is(.theme-digimon, .theme-mecha) .generic-explorer .status-filter-button.active {
+  border-color: rgba(var(--vault-rgb), .68);
+  background: rgba(var(--vault-rgb), .10);
+}
+
+:is(.theme-digimon, .theme-mecha) .archive-statistics {
+  border-color: rgba(var(--vault-rgb), .22);
+}
+
+:is(.theme-digimon, .theme-mecha) :is(.statistics-head, .statistics-cell) {
+  border-color: rgba(var(--vault-rgb), .15);
+}
+
+:is(.theme-digimon, .theme-mecha) .statistics-cell strong {
+  color: var(--vault-text);
+}
+
+/* Catalog grid: same card width as a Gundam timeline card */
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .items-grid {
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 9px;
+  align-items: start;
+}
+
+/* Cards */
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .gundam-record {
+  border-color: rgba(var(--vault-rgb), .18);
+  background: var(--vault-panel);
+}
+
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .gundam-record:hover {
+  border-color: rgba(var(--vault-rgb), .58);
+  background:
+    linear-gradient(180deg, rgba(var(--vault-rgb), .07), transparent 48%),
+    rgba(0, 0, 0, .55);
+  box-shadow: 0 15px 28px rgba(0, 0, 0, .20), 0 0 20px rgba(var(--vault-rgb), .06);
+}
+
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .gundam-record-visual {
+  border-color: rgba(var(--vault-rgb), .12);
+  background:
+    radial-gradient(circle at 76% 38%, rgba(var(--vault-rgb), .14), transparent 20%),
+    linear-gradient(135deg, rgba(var(--vault-rgb), .10), rgba(0, 0, 0, .32)),
+    repeating-linear-gradient(90deg, transparent 0 27px, rgba(var(--vault-rgb), .025) 28px 29px);
+}
+
+/* Show the whole model (Gundam cards crop the 92%-height image to the 84px box). */
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .gundam-record-visual.has-image {
+  grid-template: 100% / 100%;
+}
+
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .unit-crosshair {
+  border-color: rgba(var(--vault-rgb), .24);
+}
+
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .unit-crosshair::before,
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .unit-crosshair::after {
+  background: rgba(var(--vault-rgb), .20);
+}
+
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .unit-ghost {
+  color: rgba(var(--vault-rgb), .16);
+}
+
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .gundam-record-meta > span:not(.kit-badge) {
+  border-color: rgba(var(--vault-rgb), .16);
+}
+
+:is(.theme-digimon, .theme-mecha, .theme-fantasy) .gundam-record:hover h4 {
+  color: var(--vault-text);
+}
+
+.gundam-record-meta > span:empty {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  :is(.theme-digimon, .theme-mecha, .theme-fantasy) .items-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  :is(.theme-digimon, .theme-mecha, .theme-fantasy) .items-grid {
+    grid-template-columns: 1fr;
+  }
+}

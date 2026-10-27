@@ -1412,7 +1412,8 @@ function makeStatusIconMarkup(statusKey) {
   `;
 }
 
-function makeGundamCard(item) {
+/* Also used for the Digimon, Mecha and Fantasy catalogs, so every vault shares one card. */
+function makeGundamCard(item, category = "gundam") {
   const status = getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status);
   const link = document.createElement("a");
   const visualStatus =
@@ -1420,7 +1421,7 @@ function makeGundamCard(item) {
       ? " is-faulted"
       : (status.key === "backlog" || status.key === "unassigned" ? " is-backlog" : "");
   link.className = `gundam-record${visualStatus}`;
-  link.href = `item.html?category=gundam&id=${encodeURIComponent(item.id)}`;
+  link.href = `item.html?category=${encodeURIComponent(category)}&id=${encodeURIComponent(item.id)}`;
 
   const sourceLabel = SOURCE_LABELS[item.source] || String(item.source || "").toUpperCase();
   const custom = item.custom
@@ -1457,7 +1458,7 @@ function makeGundamCard(item) {
   link.innerHTML = `
     <div class="gundam-record-visual ${item.image ? "has-image" : ""}">
       ${thumbnail}
-      <span class="unit-ghost">${escapeHtml((item.designation || item.id).slice(0, 8))}</span>
+      <span class="unit-ghost">${escapeHtml(((category === "gundam" && item.designation) || item.id).slice(0, 8))}</span>
       <span class="unit-crosshair" aria-hidden="true"></span>
     </div>
 
@@ -1838,80 +1839,7 @@ function renderGenericItems(items) {
     return;
   }
 
-  const tracksStatus = allItems.some(item =>
-    item.build_status !== undefined ||
-    item.buildStatus !== undefined ||
-    item.status !== undefined
-  );
-
-  items.forEach(item => {
-    const link = document.createElement("a");
-    link.className = `archive-record archive-record-${escapeClass(type)}`;
-    link.href = `item.html?category=${encodeURIComponent(type)}&id=${encodeURIComponent(item.id)}`;
-
-    const source = String(item.source || "").trim();
-    const sourceLabel = SOURCE_LABELS[source] || source.toUpperCase();
-    const group = genericGroupValue(item);
-    const status = getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status);
-
-    const imageMarkup = item.image
-      ? `<img class="archive-record-image" src="${escapeHtml(item.image)}" alt="" loading="lazy">`
-      : `<span class="archive-record-placeholder">${escapeHtml((item.designation || item.id || "?").slice(0, 10))}</span>`;
-
-    const statusIcon = tracksStatus ? makeStatusIconMarkup(status.key) : "";
-    const statusMarkup = tracksStatus
-      ? `
-        <div class="build-status-compact">
-          <span class="status-chip status-${escapeClass(status.key)}">${escapeHtml(status.label)}</span>
-          ${status.hideProgress ? "" : `<span class="status-percent">${status.percent}%</span>`}
-        </div>
-        ${status.hideProgress ? "" : `
-          <div class="status-meter" aria-hidden="true">
-            <span class="status-meter-fill status-${escapeClass(status.key)}" style="width:${status.percent}%"></span>
-          </div>
-        `}
-      `
-      : "";
-
-    const buildYear = String(item.build_date || item.buildDate || "").match(/^\d{4}/)?.[0] || "";
-    const metaCandidates = type === "fantasy"
-      ? [
-          item.subseries || item.line || item.grade,
-          item.franchise || item.series || (group !== "UNSORTED / UNASSIGNED" ? group : ""),
-          item.scale,
-          buildYear ? `BUILT ${buildYear}` : ""
-        ]
-      : [
-          item.grade,
-          item.scale,
-          group !== "UNSORTED / UNASSIGNED" ? group : ""
-        ];
-
-    const meta = [...new Set(
-      metaCandidates
-        .map(value => String(value || "").trim())
-        .filter(Boolean)
-    )];
-
-    link.innerHTML = `
-      <div class="archive-record-visual">
-        ${imageMarkup}
-      </div>
-      <div class="archive-record-topline">
-        <span class="archive-record-source">${escapeHtml(sourceLabel || type.toUpperCase())}</span>
-        ${statusIcon}
-      </div>
-      <span class="archive-record-designation">${escapeHtml(item.designation || item.id || "")}</span>
-      <h2>${escapeHtml(item.name || item.id || "Untitled record")}</h2>
-      <p>${escapeHtml(item.summary || item.description || "")}</p>
-      <div class="archive-record-meta">
-        ${meta.map(value => `<span>${escapeHtml(value)}</span>`).join("")}
-      </div>
-      ${statusMarkup}
-    `;
-
-    grid.appendChild(link);
-  });
+  items.forEach(item => grid.appendChild(makeGundamCard(item, type)));
 }
 
 function escapeClass(value) {

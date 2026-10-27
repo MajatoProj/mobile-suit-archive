@@ -1,0 +1,28 @@
+{
+  "category": "mecha",
+  "id": "SC-009-PERCIVAL-DX",
+  "designation": "SC-009",
+  "name": "Divine Invoker Percival (Deluxe Version)",
+  "summary": "The Round Table Knights / SNAA × Starry Craftsman",
+  "franchise": "The Round Table Knights",
+  "brand": "SNAA",
+  "manufacturer": "SNAA × Starry Craftsman",
+  "source": "3rd-party",
+  "custom": false,
+  "grade": "Deluxe Version",
+  "scale": "1/144",
+  "release_date": "2025-11",
+  "build_status": "detailing",
+  "archive_folder": "the-round-table-knights",
+  "image": "assets/images/mecha/the-round-table-knights/SC-009-PERCIVAL-DX.png",
+  "description": "SNAA × Starry Craftsman 1/144 plastic model kit SC-009 Divine Invoker Percival, Deluxe Version, from The Round Table Knights line. The Deluxe Version adds the full weapon set: a rack of swords on clear display arms, translucent blue wing blades and a display base.",
+  "specs": {
+    "Release date": "2025-11",
+    "Manufacturer": "SNAA × Starry Craftsman",
+    "Variant": "Deluxe Version",
+    "Build progress": "Panel lined; water decals still to apply",
+    "Paint": "Panel Line",
+    "Top coat": "None"
+  },
+  "notes": "Panel lined, no top coat. Water decals still to apply."
+}

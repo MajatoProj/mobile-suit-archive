@@ -25,7 +25,7 @@ function currentCategory() {
   if (document.body.classList.contains("external-page")) return "external";
 
   const params = new URLSearchParams(window.location.search);
-  const category = params.get("category");
+  const category = params.get("category") || params.get("type");
   if (category === "gundam" || category === "digimon") return category;
   if (category === "mecha" || category === "fantasy") return "external";
 

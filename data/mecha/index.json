@@ -10,6 +10,25 @@
       "summary": "Third-party / aftermarket mecha demonstration entry.",
       "image": "",
       "file": "DEMO-PROTOTYPE.json"
+    },
+    {
+      "category": "mecha",
+      "id": "SC-009-PERCIVAL-DX",
+      "designation": "SC-009",
+      "name": "Divine Invoker Percival (Deluxe Version)",
+      "summary": "The Round Table Knights / SNAA × Starry Craftsman",
+      "franchise": "The Round Table Knights",
+      "brand": "SNAA",
+      "manufacturer": "SNAA × Starry Craftsman",
+      "source": "3rd-party",
+      "custom": false,
+      "grade": "Deluxe Version",
+      "scale": "1/144",
+      "release_date": "2025-11",
+      "build_status": "detailing",
+      "archive_folder": "the-round-table-knights",
+      "image": "assets/images/mecha/the-round-table-knights/SC-009-PERCIVAL-DX.png",
+      "file": "the-round-table-knights/SC-009-PERCIVAL-DX.json"
     }
   ]
 }
