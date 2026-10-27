@@ -447,7 +447,7 @@
       "timeline_label": "SEED Destiny era",
       "timeline_parent": "Mobile Suit Gundam SEED Destiny",
       "family": "Astray Red Frame Family",
-      "source": "gundambase",
+      "source": "base",
       "custom": false,
       "build_status": "backlog",
       "grade": "HGGS",
@@ -658,7 +658,7 @@
           "name": "00 Qan[T]"
         }
       ],
-      "source": "third-party",
+      "source": "3rd-party",
       "brand": "Galaxy Seiko / Jujiang",
       "purchase_source": "AliExpress",
       "custom": false,
@@ -693,7 +693,7 @@
           "name": "00 Qan[T]"
         }
       ],
-      "source": "third-party",
+      "source": "3rd-party",
       "brand": "Galaxy Seiko / Jujiang",
       "purchase_source": "AliExpress",
       "custom": false,
@@ -720,7 +720,7 @@
       "timeline_label": "C.E. 74",
       "timeline_parent": "Mobile Suit Gundam SEED",
       "family": "Justice Family",
-      "source": "third-party",
+      "source": "3rd-party",
       "brand": "Star Motion",
       "purchase_source": "AliExpress",
       "custom": false,

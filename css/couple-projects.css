@@ -343,3 +343,8 @@
     min-height: 74px !important;
   }
 }
+
+/* v59 — in the family view the duo card sits inside the flow step itself. */
+.family-branch-row > .couple-project-family-card {
+  margin: 0 !important;
+}

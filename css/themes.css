@@ -3497,3 +3497,8 @@ body.theme-fantasy {
     grid-template-columns: 1fr;
   }
 }
+
+/* Parent series kept only to anchor a side story that matches the filter. */
+.series-node-main.is-filtered-empty {
+  opacity: .45;
+}

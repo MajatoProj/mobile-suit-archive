@@ -10,6 +10,29 @@
       "summary": "Replace or remove this demonstration entry.",
       "image": "",
       "file": "DEMO-DIGIMON.json"
+    },
+    {
+      "category": "digimon",
+      "id": "METALGARURUMON-FRS-AMP",
+      "designation": "Mega · Data · Cyborg",
+      "name": "MetalGarurumon",
+      "summary": "Digimon Adventure / Figure-rise Standard Amplified",
+      "franchise": "Digimon",
+      "series": "Digimon Adventure",
+      "line": "Figure-rise Standard Amplified",
+      "family": "Gabumon Line",
+      "form_stage": "Mega",
+      "brand": "Bandai Spirits",
+      "source": "bandai",
+      "custom": false,
+      "grade": "Figure-rise Standard Amplified",
+      "scale": "Non-scale",
+      "release_date": "2020-07",
+      "archive_folder": "digimon-adventure",
+      "image": "assets/images/digimon/digimon-adventure/METALGARURUMON-FRS-AMP.png",
+      "file": "digimon-adventure/METALGARURUMON-FRS-AMP.json",
+      "build_status": "completed",
+      "build_date": "2026-08-17"
     }
   ]
 }

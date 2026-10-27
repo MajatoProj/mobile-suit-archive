@@ -80,6 +80,38 @@ const SOURCE_LABELS = {
   custom: "CUSTOM"
 };
 
+// Older records and hand edits use other spellings; map them onto the filter keys above.
+const SOURCE_ALIASES = {
+  "third-party": "3rd-party",
+  "third party": "3rd-party",
+  thirdparty: "3rd-party",
+  "3rd party": "3rd-party",
+  "3rdparty": "3rd-party",
+  bootleg: "3rd-party",
+  gundambase: "base",
+  "gundam-base": "base",
+  "gundam base": "base",
+  "premium-bandai": "p-bandai",
+  "premium bandai": "p-bandai",
+  pbandai: "p-bandai"
+};
+
+// Extra words so search finds a source however it is typed.
+const SOURCE_SEARCH_TERMS = {
+  "3rd-party": "3rd party third party",
+  base: "gundam base exclusive",
+  "p-bandai": "premium bandai"
+};
+
+function canonicalSource(value) {
+  const key = String(value ?? "").trim().toLowerCase();
+  return SOURCE_ALIASES[key] || key;
+}
+
+function withCanonicalSource(item) {
+  return item.source ? { ...item, source: canonicalSource(item.source) } : item;
+}
+
 const GRADE_LABELS = ["ALL", "HG", "RG", "MG", "PG"];
 
 const STATUS_FILTERS = [
@@ -128,7 +160,7 @@ let genericDetailsHydrated = false;
 
 fetchArchiveJson(`data/${type}/index.json`)
   .then(data => {
-    allItems = data.items || [];
+    allItems = (data.items || []).map(withCanonicalSource);
     count.textContent = allItems.length;
 
     if (!allItems.length) {
@@ -399,7 +431,7 @@ async function hydrateGundamDetails() {
 
     try {
       const record = await fetchArchiveJson(`data/gundam/${meta.file}`);
-      return { ...meta, ...record, file: meta.file };
+      return withCanonicalSource({ ...meta, ...record, file: meta.file });
     } catch {
       return meta;
     }
@@ -438,6 +470,7 @@ function buildSearchText(item) {
     item.timeline_rejoin,
     item.family,
     item.source,
+    SOURCE_SEARCH_TERMS[item.source],
     item.grade,
     item.grade_family,
     item.scale,
@@ -588,6 +621,7 @@ function renderTimeline(items) {
   );
 
   const seriesPosition = group => {
+    if (Number.isFinite(group.position)) return group.position;
     const values = group.items.map(item => Number(item.timeline_position)).filter(Number.isFinite);
     return values.length ? Math.min(...values) : Number.MAX_SAFE_INTEGER;
   };
@@ -648,6 +682,16 @@ function renderTimeline(items) {
       .filter(group => seriesLane(group) === 'side-story')
       .sort((a, b) => compareSeriesGroups(a, b, continuity));
 
+    // A filter or search can hide every kit of a side story's parent series. Keep the parent
+    // as an empty stage so the side story stays visible in its usual place.
+    sideGroups.forEach(branch => {
+      const parent = seriesParent(branch);
+      if (parent && !mainGroups.some(group => normalizedName(group.series) === normalizedName(parent))) {
+        mainGroups.push({ series: parent, items: [], position: seriesPosition(branch) });
+      }
+    });
+    mainGroups.sort((a, b) => compareSeriesGroups(a, b, continuity));
+
     const branchMap = new Map();
 
     sideGroups.forEach(branch => {
@@ -699,6 +743,8 @@ function renderTimeline(items) {
         </div>
         <div class="series-items"></div>
       `;
+
+      if (!group.items.length) mainNode.classList.add('is-filtered-empty');
 
       const holder = mainNode.querySelector('.series-items');
       group.items
@@ -1772,7 +1818,7 @@ async function hydrateGenericDetails() {
     if (!meta.file) return meta;
     try {
       const record = await fetchArchiveJson(`data/${type}/${meta.file}`);
-      return { ...meta, ...record, file: meta.file };
+      return withCanonicalSource({ ...meta, ...record, file: meta.file });
     } catch {
       return meta;
     }

@@ -18,6 +18,8 @@ ROOT = Path(__file__).resolve().parent.parent
 VAULTS = ["gundam", "digimon", "mecha", "fantasy"]
 IMAGE_KEYS = ["image", "project_image"]
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp"}
+# Same keys as the entry builders and the site filter.
+SOURCES = {"bandai", "p-bandai", "base", "3rd-party", "custom"}
 
 
 def load(path, errors):
@@ -47,6 +49,9 @@ def check():
             for key in ["id", "name", "file"]:
                 if not item.get(key):
                     errors.append(f"{where}: '{key}' ontbreekt in index.json")
+
+            if item.get("source") and item["source"] not in SOURCES:
+                warnings.append(f"{where}: onbekende source '{item['source']}' (kies uit {', '.join(sorted(SOURCES))})")
 
             for key in IMAGE_KEYS:
                 rel = item.get(key)

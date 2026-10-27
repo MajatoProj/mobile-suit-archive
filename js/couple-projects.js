@@ -61,7 +61,8 @@
   }
 
   function sourceInfo(items) {
-    const sources = [...new Set(items.map(item => clean(item.source).toLowerCase()).filter(Boolean))];
+    const aliases = { "third-party": "3rd-party", thirdparty: "3rd-party", bootleg: "3rd-party", gundambase: "base" };
+    const sources = [...new Set(items.map(item => clean(item.source).toLowerCase()).map(key => aliases[key] || key).filter(Boolean))];
     if (sources.length !== 1) {
       return { key: "mixed", label: "MIXED SOURCE" };
     }
@@ -69,9 +70,9 @@
     const key = sources[0];
     const labels = {
       bandai: "BANDAI",
-      "third-party": "THIRD-PARTY",
-      thirdparty: "THIRD-PARTY",
-      bootleg: "THIRD-PARTY",
+      "p-bandai": "P-BANDAI",
+      base: "BASE EXCLUSIVE",
+      "3rd-party": "3RD PARTY",
       custom: "CUSTOM"
     };
 
@@ -309,11 +310,18 @@
       const card = makeProjectCard(group);
       card.classList.add("couple-project-family-card");
 
-      const flow = block.querySelector(".family-flow");
-      if (flow) block.insertBefore(card, flow);
-      else block.appendChild(card);
-
-      rows.forEach(row => row.remove());
+      if (rows.length) {
+        // Take the units' place in the flow, so the connector before them still points at a card.
+        rows[0].replaceChildren(card);
+        rows.slice(1).forEach(row => row.remove());
+        const stage = rows[0].closest(".family-stage");
+        if (stage && stage.querySelectorAll(".family-branch-row").length < 2) stage.classList.remove("is-branch");
+      } else {
+        const flow = block.querySelector(".family-flow");
+        if (flow) block.insertBefore(card, flow);
+        else block.appendChild(card);
+        links.forEach(link => link.remove());
+      }
     });
   }
 

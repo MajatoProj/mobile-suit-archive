@@ -561,6 +561,9 @@ function renderSpecs(item) {
     "base": "Gundam Base / Exclusive",
     "3rd-party": "3rd Party"
   };
+  // Older spellings of the same sources.
+  const sourceAliases = { "third-party": "3rd-party", thirdparty: "3rd-party", bootleg: "3rd-party", gundambase: "base" };
+  const sourceKey = sourceAliases[String(item.source || "").toLowerCase()] || item.source;
 
   const archiveRows = [
     ["Continuity", item.continuity],
@@ -577,7 +580,7 @@ function renderSpecs(item) {
   }));
 
   const kitRows = [
-    ["Source", item.source ? (sourceLabels[item.source] || item.source) : ""],
+    ["Source", item.source ? (sourceLabels[sourceKey] || item.source) : ""],
     ["Grade", item.grade],
     ["Scale", item.scale],
     ["Release date", rawSpecs["Release date"]]
@@ -783,10 +786,18 @@ function makeSpecRow(key, value, href = "") {
     valueNode = document.createElement("span");
   }
 
-  valueNode.textContent = value;
+  valueNode.textContent = formatDisplayDate(value);
   row.append(keySpan, valueNode);
 
   return row;
+}
+
+/* Data stays YYYY-MM-DD so sorting works; show it as DD-MM-YYYY (or MM-YYYY). */
+function formatDisplayDate(value) {
+  const match = String(value ?? "").trim().match(/^(\d{4})-(\d{2})(?:-(\d{2}))?$/);
+  if (!match) return value;
+  const [, year, month, day] = match;
+  return day ? `${day}-${month}-${year}` : `${month}-${year}`;
 }
 
 function normalizeOrigins(item) {
