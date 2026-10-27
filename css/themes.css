@@ -3632,6 +3632,11 @@ body.theme-fantasy {
   color: var(--vault-text);
 }
 
+/* Wide (phone, single-column) cards: keep the desktop framing instead of a thin strip. */
+.gundam-record-image:not(.couple-record-image) {
+  max-width: 146px;
+}
+
 .gundam-record-meta > span:empty {
   display: none;
 }
