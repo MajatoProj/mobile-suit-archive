@@ -373,14 +373,26 @@
       "family": "Destiny Family",
       "source": "bandai",
       "custom": false,
-      "build_status": "assembly",
+      "build_status": "completed",
       "grade": "HGCE",
       "grade_family": "HG",
       "scale": "1/144",
       "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X42S-HGCE.png",
       "file": "cosmic-era/seed-destiny/ZGMF-X42S-HGCE.json",
       "release_date": "2019-05-31",
-      "family_order": 1
+      "family_order": 1,
+      "relationships": [
+        {
+          "type": "variant",
+          "id": "ZGMF-X42S-REVOLUTION-HGGS",
+          "designation": "ZGMF-X42S-REVOLUTION",
+          "name": "Destiny Gundam (Heine Westenfluss Custom)"
+        }
+      ],
+      "build_date": "2026-10-22",
+      "paint": "Panel Line",
+      "decals": "Applied",
+      "top_coat": "Matte"
     },
     {
       "category": "gundam",
@@ -392,7 +404,7 @@
       "series": "Mobile Suit Gundam SEED Destiny",
       "timeline_position": 2,
       "timeline_lane": "main",
-      "timeline_label": "C.E. 73",
+      "timeline_label": "C.E. 74",
       "timeline_parent": "Mobile Suit Gundam SEED",
       "family": "Destiny Family",
       "family_order": 2,
@@ -518,7 +530,8 @@
       "scale": "1/144",
       "image": "assets/images/gundam/cosmic-era/seed/GAT-X105-AQM-E-X01-RG.png",
       "file": "cosmic-era/seed/GAT-X105-AQM-E-X01-RG.json",
-      "release_date": "2011-04-30"
+      "release_date": "2011-04-30",
+      "family_order": 1
     },
     {
       "category": "gundam",
@@ -563,7 +576,15 @@
       "scale": "1/144",
       "image": "assets/images/gundam/cosmic-era/stargazer/GAT-X105E-STRIKE-NOIR-HGGS.png",
       "file": "cosmic-era/stargazer/GAT-X105E-STRIKE-NOIR-HGGS.json",
-      "release_date": "2006-06-30"
+      "release_date": "2006-06-30",
+      "family_order": 2,
+      "design_origins": [
+        {
+          "id": "GAT-X105-AQM-E-X01-RG",
+          "designation": "GAT-X105+AQM/E-X01",
+          "name": "Aile Strike Gundam"
+        }
+      ]
     },
     {
       "category": "gundam",
@@ -606,7 +627,109 @@
       "scale": "1/144",
       "image": "assets/images/gundam/build-series/build-fighters/GAT-X105B-FP-HGBF.png",
       "file": "build-series/build-fighters/GAT-X105B-FP-HGBF.json",
-      "release_date": "2013-10-05"
+      "release_date": "2013-10-05",
+      "family_order": 2,
+      "design_origins": [
+        {
+          "id": "GAT-X105-AQM-E-X01-RG",
+          "designation": "GAT-X105+AQM/E-X01",
+          "name": "Aile Strike Gundam"
+        }
+      ]
+    },
+    {
+      "category": "gundam",
+      "id": "GNT-0000SHIA-BLUE-HGBF",
+      "designation": "GNT-0000SHIA",
+      "name": "Gundam 00 Shia Qan[T] (Blue)",
+      "summary": "Build Series / Gundam Build Fighters Try: Island Wars",
+      "continuity": "Build Series",
+      "series": "Gundam Build Fighters Try: Island Wars",
+      "timeline_position": 5,
+      "timeline_lane": "main",
+      "timeline_label": "Island Wars",
+      "timeline_parent": "Gundam Build Fighters Try",
+      "family": "00 Family",
+      "family_order": 4,
+      "design_origins": [
+        {
+          "id": "GNT-0000-RG",
+          "designation": "GNT-0000",
+          "name": "00 Qan[T]"
+        }
+      ],
+      "source": "third-party",
+      "brand": "Galaxy Seiko / Jujiang",
+      "purchase_source": "AliExpress",
+      "custom": false,
+      "build_status": "assembly",
+      "grade": "HGBF",
+      "grade_family": "HG",
+      "scale": "1/144",
+      "project_group": "Couple Build // Shia Qan[T] Duo",
+      "project_variant": "Blue",
+      "image": "assets/images/gundam/build-series/build-fighters-try-island-wars/GNT-0000SHIA-BLUE-HGBF.png",
+      "file": "build-series/build-fighters-try-island-wars/GNT-0000SHIA-BLUE-HGBF.json",
+      "project_image": "assets/images/gundam/projects/shia-qant-duo.png"
+    },
+    {
+      "category": "gundam",
+      "id": "GNT-0000SHIA-PINK-HGBF",
+      "designation": "GNT-0000SHIA",
+      "name": "Gundam 00 Shia Qan[T] (Pink)",
+      "summary": "Build Series / Gundam Build Fighters Try: Island Wars",
+      "continuity": "Build Series",
+      "series": "Gundam Build Fighters Try: Island Wars",
+      "timeline_position": 5,
+      "timeline_lane": "main",
+      "timeline_label": "Island Wars",
+      "timeline_parent": "Gundam Build Fighters Try",
+      "family": "00 Family",
+      "family_order": 4,
+      "design_origins": [
+        {
+          "id": "GNT-0000-RG",
+          "designation": "GNT-0000",
+          "name": "00 Qan[T]"
+        }
+      ],
+      "source": "third-party",
+      "brand": "Galaxy Seiko / Jujiang",
+      "purchase_source": "AliExpress",
+      "custom": false,
+      "build_status": "assembly",
+      "grade": "HGBF",
+      "grade_family": "HG",
+      "scale": "1/144",
+      "project_group": "Couple Build // Shia Qan[T] Duo",
+      "project_variant": "Pink",
+      "image": "assets/images/gundam/build-series/build-fighters-try-island-wars/GNT-0000SHIA-PINK-HGBF.png",
+      "file": "build-series/build-fighters-try-island-wars/GNT-0000SHIA-PINK-HGBF.json",
+      "project_image": "assets/images/gundam/projects/shia-qant-duo.png"
+    },
+    {
+      "category": "gundam",
+      "id": "ZGMF-X19A-UC-STAR-MOTION-HG",
+      "designation": "ZGMF-X19A",
+      "name": "Infinite Justice Gundam (Unactivated Color)",
+      "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny",
+      "continuity": "Cosmic Era",
+      "series": "Mobile Suit Gundam SEED Destiny",
+      "timeline_position": 2,
+      "timeline_lane": "main",
+      "timeline_label": "C.E. 74",
+      "timeline_parent": "Mobile Suit Gundam SEED",
+      "family": "Justice Family",
+      "source": "third-party",
+      "brand": "Star Motion",
+      "purchase_source": "AliExpress",
+      "custom": false,
+      "build_status": "assembly",
+      "grade": "HG",
+      "grade_family": "HG",
+      "scale": "1/144",
+      "file": "cosmic-era/seed-destiny/ZGMF-X19A-UC-STAR-MOTION-HG.json",
+      "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X19A-UC-STAR-MOTION-HG.png"
     }
   ]
 }

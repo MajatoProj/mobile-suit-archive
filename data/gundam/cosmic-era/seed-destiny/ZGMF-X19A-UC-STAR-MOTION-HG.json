@@ -1,0 +1,35 @@
+{
+  "category": "gundam",
+  "id": "ZGMF-X19A-UC-STAR-MOTION-HG",
+  "designation": "ZGMF-X19A",
+  "name": "Infinite Justice Gundam (Unactivated Color)",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny",
+  "description": "Star Motion third-party HG 1/144 New Infinite Justice Gundam - Unactivated Color, purchased from AliExpress. The product listing identifies the kit as Star Motion and includes a display base and decals. Build just started; currently at the first assembly step.",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED Destiny",
+  "timeline_position": 2,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 74",
+  "timeline_parent": "Mobile Suit Gundam SEED",
+  "family": "Justice Family",
+  "design_origins": [],
+  "mobile_suit_data": {
+    "pilot": "Athrun Zala"
+  },
+  "source": "third-party",
+  "brand": "Star Motion",
+  "purchase_source": "AliExpress",
+  "custom": false,
+  "build_status": "assembly",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "specs": {
+    "Manufacturer": "Star Motion",
+    "Purchase source": "AliExpress",
+    "Variant": "Unactivated Color",
+    "Included extras": "Display base + decals",
+    "Build progress": "First assembly step"
+  },
+  "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X19A-UC-STAR-MOTION-HG.png"
+}

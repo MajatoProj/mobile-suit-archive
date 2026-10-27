@@ -4,7 +4,7 @@
   "designation": "ZGMF-X42S",
   "name": "Destiny Gundam",
   "summary": "Cosmic Era / Mobile Suit Gundam SEED Destiny",
-	"description": "Assembly complete. Detail painting added with Gundam Marker and panel lining completed. Water-slide decals still to be applied.",
+  "description": "",
   "continuity": "Cosmic Era",
   "series": "Mobile Suit Gundam SEED Destiny",
   "timeline_position": 2,
@@ -12,22 +12,50 @@
   "timeline_label": "C.E. 74",
   "timeline_parent": "Mobile Suit Gundam SEED",
   "family": "Destiny Family",
+  "family_order": 1,
   "design_origins": [],
+  "relationships": [
+    {
+      "type": "variant",
+      "id": "ZGMF-X42S-REVOLUTION-HGGS",
+      "designation": "ZGMF-X42S-REVOLUTION",
+      "name": "Destiny Gundam (Heine Westenfluss Custom)"
+    }
+  ],
   "mobile_suit_data": {
     "pilot": "Shinn Asuka",
     "height": "18.08 m",
-    "weight": "79.44 t"
+    "weight": "79.44 t",
+    "armament": [
+      "MMI-GAU26 17.5mm CIWS ×2",
+      "MA-BAR73/S High-Energy Beam Rifle",
+      "Anti-Beam Shield",
+      "MX2351 “Solidus Fulgor” Beam Shield Generator ×2",
+      "M2000GX High-Energy Long-Range Beam Cannon",
+      "MMI-X340 “Palma Fiocina” Palm Beam Cannon ×2",
+      "RQM60F “Flash-Edge 2” Beam Boomerang ×2",
+      "MMI-714 “Arondight” Beam Sword"
+    ],
+    "features": [
+      "Hyper-Deuterion Engine",
+      "Variable Phase Shift Armor",
+      "Voiture Lumiere Propulsion System",
+      "Mirage Colloid System",
+      "Wings of Light"
+    ]
   },
   "source": "bandai",
   "custom": false,
-  "build_status": "finishing",
+  "build_status": "completed",
   "grade": "HGCE",
   "grade_family": "HG",
   "scale": "1/144",
   "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X42S-HGCE.png",
   "specs": {
     "Release date": "2019-05-31",
-    "Paint": "Details"
-  },
-  "family_order": 1
+    "Build date": "2026-10-22",
+    "Paint": "Panel Line",
+    "Decals": "Applied",
+    "Top coat": "Matte"
+  }
 }

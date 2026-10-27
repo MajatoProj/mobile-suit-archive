@@ -1,0 +1,324 @@
+/* v51 — Couple Build card follows the normal Gundam card as the rule.
+   Only the double width, project tags and Blue/Pink unit row are special. */
+
+.series-items > .couple-project-record {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  justify-self: stretch !important;
+}
+
+.series-items.has-couple-project-card {
+  align-items: start;
+}
+
+.couple-project-record {
+  /* Let the site's normal .gundam-record styling do the heavy lifting. */
+  min-width: 0;
+}
+
+.couple-record-visual {
+  /* A duo image benefits from a wider/shallower frame than a single unit. */
+  min-height: 150px;
+  aspect-ratio: 2 / 1;
+}
+
+.couple-record-image {
+  width: 94% !important;
+  height: 94% !important;
+  object-fit: contain !important;
+}
+
+.couple-record-topline {
+  align-items: center;
+}
+
+.couple-record-tags {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.badge-project {
+  border-color: rgba(181, 147, 255, .32) !important;
+  color: #b9dff1 !important;
+  background:
+    linear-gradient(90deg, rgba(92,199,255,.08), rgba(239,131,185,.07)) !important;
+}
+
+.badge-project i {
+  border-color: rgba(181, 147, 255, .62) !important;
+}
+
+.couple-card-units {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.couple-unit-chip {
+  min-width: 0;
+  padding: 6px 8px;
+  border: 1px solid rgba(127,199,255,.11);
+  background: rgba(8,22,33,.5);
+}
+
+.couple-unit-chip.is-blue {
+  border-left: 2px solid rgba(92,199,255,.8);
+}
+
+.couple-unit-chip.is-pink {
+  border-left: 2px solid rgba(239,131,185,.78);
+}
+
+.couple-unit-chip b {
+  display: block;
+  color: #bfd8e5;
+  font-size: .54rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.couple-status-meter {
+  margin-top: 5px;
+}
+
+/* Families can use the same visual card, but it should not force the family flow wider. */
+.couple-project-family-card {
+  width: min(360px, 100%) !important;
+  max-width: 360px !important;
+  margin: 0 0 16px;
+}
+
+@media (max-width: 760px) {
+  .series-items > .couple-project-record {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+  }
+
+  .couple-record-visual {
+    min-height: 130px;
+  }
+}
+
+
+/* ============================================================
+   v52 — Couple Build card height correction
+   Double width is the exception; vertical rhythm stays close to
+   a normal Gundam archive card.
+   ============================================================ */
+
+.series-items > .couple-project-record {
+  padding-bottom: 8px !important;
+}
+
+/* Keep the wide duo image, but do not let width create a tall 2:1 box. */
+.couple-project-record .couple-record-visual {
+  aspect-ratio: auto !important;
+  min-height: 0 !important;
+  height: 112px !important;
+  margin-bottom: 6px !important;
+}
+
+.couple-project-record .couple-record-image {
+  width: 92% !important;
+  height: 96% !important;
+  object-fit: contain !important;
+}
+
+.couple-project-record .gundam-record-topline {
+  margin-top: 0 !important;
+  margin-bottom: 5px !important;
+}
+
+.couple-project-record h4 {
+  margin-top: 0 !important;
+  margin-bottom: 6px !important;
+}
+
+.couple-project-record .couple-card-units {
+  margin-top: 0 !important;
+  margin-bottom: 6px !important;
+  gap: 6px;
+}
+
+.couple-project-record .couple-unit-chip {
+  padding: 4px 7px !important;
+  min-height: 0 !important;
+}
+
+.couple-project-record .gundam-record-meta {
+  margin-top: 0 !important;
+  margin-bottom: 6px !important;
+}
+
+.couple-project-record .build-status-compact {
+  margin-top: 0 !important;
+}
+
+.couple-project-record .couple-status-meter {
+  margin-top: 4px !important;
+}
+
+/* Mobile still gets enough image room without becoming a tall card. */
+@media (max-width: 760px) {
+  .couple-project-record .couple-record-visual {
+    height: 104px !important;
+  }
+}
+
+/* v54 — Couple card follows the normal Gundam card much more closely. */
+.series-items > .couple-project-record {
+  padding: 8px !important;
+}
+
+/* Match the visual height of a normal archive card instead of using a banner. */
+.couple-project-record .couple-record-visual {
+  height: 84px !important;
+  min-height: 84px !important;
+  aspect-ratio: auto !important;
+  margin-bottom: 5px !important;
+}
+
+.couple-project-record .couple-record-image {
+  width: 88% !important;
+  height: 92% !important;
+  object-fit: contain !important;
+}
+
+/* Same left-to-right badge grammar as normal Gundam cards. */
+.couple-project-record .couple-record-topline {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  margin: 0 0 4px !important;
+}
+
+.couple-project-record .couple-record-tags {
+  justify-content: flex-start !important;
+  gap: 4px !important;
+  width: auto !important;
+}
+
+.couple-project-record h4 {
+  margin: 0 0 5px !important;
+  line-height: 1.15 !important;
+}
+
+/* Keep the duo identity, but make it one compact exceptional row. */
+.couple-project-record .couple-card-units {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 4px !important;
+  margin: 0 0 5px !important;
+}
+
+.couple-project-record .couple-unit-chip {
+  padding: 3px 6px !important;
+  min-height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.couple-project-record .couple-unit-chip b {
+  font-size: .5rem !important;
+  line-height: 1 !important;
+}
+
+.couple-project-record .gundam-record-meta {
+  margin: 0 0 5px !important;
+}
+
+.couple-project-record .build-status-compact {
+  margin: 0 !important;
+}
+
+.couple-project-record .couple-status-meter {
+  margin-top: 4px !important;
+}
+
+@media (max-width: 760px) {
+  .couple-project-record .couple-record-visual {
+    height: 82px !important;
+    min-height: 82px !important;
+  }
+}
+
+
+/* ============================================================
+   v55 — Match the normal Gundam card topline exactly:
+   tags/source LEFT, build status icon RIGHT.
+   ============================================================ */
+
+.couple-project-record .gundam-record-topline.couple-record-topline {
+  display: flex !important;
+  width: 100% !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin: 0 0 4px !important;
+}
+
+.couple-project-record .couple-record-tags {
+  display: flex !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 4px !important;
+  order: 1 !important;
+}
+
+.couple-project-record .couple-record-tags .kit-badge {
+  margin: 0 !important;
+  flex: 0 0 auto !important;
+}
+
+.couple-project-record .gundam-record-topicons {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  margin-left: auto !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  order: 2 !important;
+}
+
+
+
+/* v57 — align Couple Build card bottom with normal Gundam cards.
+   Keep the Blue/Pink row; reclaim that height from the image area. */
+.couple-project-record .couple-record-visual {
+  height: 74px !important;
+  min-height: 74px !important;
+}
+
+.couple-project-record .couple-record-image {
+  width: 86% !important;
+  height: 94% !important;
+}
+
+.couple-project-record .couple-card-units {
+  margin-bottom: 4px !important;
+}
+
+.couple-project-record .couple-unit-chip {
+  min-height: 18px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+@media (max-width: 760px) {
+  .couple-project-record .couple-record-visual {
+    height: 72px !important;
+    min-height: 72px !important;
+  }
+}

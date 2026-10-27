@@ -1,0 +1,49 @@
+{
+  "category": "gundam",
+  "designation": "GNT-0000SHIA",
+  "name": "Gundam 00 Shia Qan[T] (Pink)",
+  "summary": "Build Series / Gundam Build Fighters Try: Island Wars",
+  "continuity": "Build Series",
+  "series": "Gundam Build Fighters Try: Island Wars",
+  "timeline_position": 5,
+  "timeline_lane": "main",
+  "timeline_label": "Island Wars",
+  "timeline_parent": "Gundam Build Fighters Try",
+  "family": "00 Family",
+  "family_order": 4,
+  "design_origins": [
+    {
+      "id": "GNT-0000-RG",
+      "designation": "GNT-0000",
+      "name": "00 Qan[T]"
+    }
+  ],
+  "mobile_suit_data": {
+    "pilot": "Shia Kijima",
+    "height": "18.4 m",
+    "weight": "63.1 t",
+    "armament": [
+      "GN Sword",
+      "GN Sword Bit ×2"
+    ]
+  },
+  "source": "third-party",
+  "brand": "Galaxy Seiko / Jujiang",
+  "purchase_source": "AliExpress",
+  "custom": false,
+  "build_status": "assembly",
+  "grade": "HGBF",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "project_group": "Couple Build // Shia Qan[T] Duo",
+  "id": "GNT-0000SHIA-PINK-HGBF",
+  "project_variant": "Pink",
+  "description": "Galaxy Seiko / Jujiang third-party pink-color version of the 1/144 HGBF Gundam 00 Shia Qan[T], purchased from AliExpress. Currently in assembly. Paired with the blue version as part of the Couple Build // Shia Qan[T] Duo project.",
+  "image": "assets/images/gundam/build-series/build-fighters-try-island-wars/GNT-0000SHIA-PINK-HGBF.png",
+  "specs": {
+    "Manufacturer": "Galaxy Seiko / Jujiang",
+    "Purchase source": "AliExpress",
+    "Color": "Pink"
+  },
+  "project_image": "assets/images/gundam/projects/shia-qant-duo.png"
+}
