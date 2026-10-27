@@ -4,15 +4,6 @@
   "items": [
     {
       "category": "digimon",
-      "id": "DEMO-DIGIMON",
-      "designation": "DEMO // DIGITAL WORLD",
-      "name": "Example Digimon Record",
-      "summary": "Replace or remove this demonstration entry.",
-      "image": "",
-      "file": "DEMO-DIGIMON.json"
-    },
-    {
-      "category": "digimon",
       "id": "METALGARURUMON-FRS-AMP",
       "designation": "Mega · Data · Cyborg",
       "name": "MetalGarurumon",
@@ -53,7 +44,7 @@
       "release_date": "2021-10-07",
       "build_status": "backlog",
       "archive_folder": "digimon-adventure",
-      "image": "",
+      "image": "assets/images/digimon/digimon-adventure/WARGREYMON-FRS.png",
       "file": "digimon-adventure/WARGREYMON-FRS.json"
     },
     {
@@ -75,7 +66,7 @@
       "release_date": "2021-11-27",
       "build_status": "backlog",
       "archive_folder": "digimon-digital-monster-x-evolution",
-      "image": "",
+      "image": "assets/images/digimon/digimon-digital-monster-x-evolution/OMEGAMON-X-FRS-AMP.png",
       "file": "digimon-digital-monster-x-evolution/OMEGAMON-X-FRS-AMP.json"
     }
   ]

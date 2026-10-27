@@ -37,8 +37,12 @@ def destination(category, item_id):
     index = json.loads((ROOT / "data" / category / "index.json").read_text(encoding="utf-8"))
     item = next((i for i in index.get("items", []) if i.get("id") == item_id), None)
     if item and item.get("image"):
-        return ROOT / item["image"], True
-    return ROOT / "assets" / "images" / category / f"{item_id}.png", False
+        return ROOT / item["image"], None
+    if item and item.get("file"):
+        # record bestaat maar heeft nog geen plaatje: zelfde map als de JSON
+        folder = Path(item["file"]).parent
+        return ROOT / "assets" / "images" / category / folder / f"{item_id}.png", "zet dit pad als \"image\" in index.json en in het record"
+    return ROOT / "assets" / "images" / category / f"{item_id}.png", "ID staat nog niet in index.json: voeg het record toe en draai tools/organize-archive-folders.py"
 
 
 def main():
@@ -52,7 +56,7 @@ def main():
 
     if not args.input.is_file():
         sys.exit(f"Niet gevonden: {args.input}")
-    dst, known = destination(args.category, args.id)
+    dst, hint = destination(args.category, args.id)
     if dst.suffix.lower() != ".png":
         sys.exit(f"index.json noemt {dst.name}; archiefplaatjes moeten .png zijn")
     if dst.exists() and not args.force:
@@ -76,8 +80,8 @@ def main():
     dst.parent.mkdir(parents=True, exist_ok=True)
     img.save(dst, optimize=True)
     print(f"Opgeslagen: {dst.relative_to(ROOT)}  ({SIZE}x{SIZE})")
-    if not known:
-        print("ID staat nog niet in index.json: voeg het record toe en draai tools/organize-archive-folders.py")
+    if hint:
+        print(hint)
 
 
 if __name__ == "__main__":
