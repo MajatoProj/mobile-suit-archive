@@ -1423,7 +1423,10 @@ function makeGundamCard(item, category = "gundam") {
   link.className = `gundam-record${visualStatus}`;
   link.href = `item.html?category=${encodeURIComponent(category)}&id=${encodeURIComponent(item.id)}`;
 
-  const sourceLabel = SOURCE_LABELS[item.source] || String(item.source || "").toUpperCase();
+  // Everything in Mecha is 3rd party, so the tag names the maker (e.g. SNAA) instead.
+  const sourceLabel = category === "mecha" && item.brand
+    ? String(item.brand).toUpperCase()
+    : SOURCE_LABELS[item.source] || String(item.source || "").toUpperCase();
   const custom = item.custom
     ? `<span class="kit-badge badge-custom"><i></i>CUSTOM</span>`
     : "";
@@ -1578,7 +1581,7 @@ function renderGenericControls() {
     });
     genericSourceFilters.appendChild(button);
   });
-  if (genericSourceRow) genericSourceRow.hidden = sources.length === 0;
+  if (genericSourceRow) genericSourceRow.hidden = sources.length === 0 || type === "mecha";
 
   const tracksStatus = allItems.some(item =>
     item.build_status !== undefined ||
