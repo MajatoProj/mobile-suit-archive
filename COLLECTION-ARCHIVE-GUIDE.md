@@ -516,13 +516,15 @@ category=fantasy
 For normal collection work:
 
 ```text
-1. Add/update JSON.
-2. Add the matching image.
+1. Add/update JSON (tools/gundam-entry-builder-local.html).
+2. Make the image: tools/new-image.py photo.jpg ID.
 3. Run tools/organize-archive-folders.py.
-4. Start the local HTTP server.
-5. Test the archive.
+4. Run tools/check-data.py.
+5. Start the local HTTP server and test the archive.
 6. Commit/upload to GitHub.
 ```
+
+Or double-click `tools/menu.bat` and pick the step (see section 16).
 
 Main commands:
 
@@ -535,3 +537,97 @@ Main commands:
 ```
 
 That is the core maintenance workflow.
+
+---
+
+## 16. Tools
+
+Everything lives in `tools/`. Run the commands from the repository root.
+`py` below is short for:
+
+```bat
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe"
+```
+
+### Menu (easiest)
+
+Double-click `tools/menu.bat`. It asks for file names and IDs itself:
+
+```text
+1  Start the local server and open the archive
+2  Check the data
+3  Make an archive image from a photo
+4  Organize folders (preview first)
+5  Open the NFC card printer
+6  Publish to GitHub (checks the data first)
+0  Quit
+```
+
+### Check the data
+
+Run before every push. Exit code 1 means something is broken.
+
+```bat
+py tools/check-data.py
+```
+
+- **FOUT**: must be fixed (missing JSON/image, invalid JSON, duplicate ID,
+  index.json and the record disagree).
+- **waarschuwing**: worth a look (no image, unused files, unknown references).
+
+The same check runs automatically on GitHub after every push that changes
+`data/` or `assets/images/` (tab **Actions**).
+
+### Make an archive image
+
+One step: remove background, crop with 8% padding, upscale when smaller than
+1254 px, resize to 1254x1254, save as `<ID>.png` where index.json expects it.
+
+```bat
+py tools/new-image.py photo.jpg ZGMF-X10A-HGCE
+py tools/new-image.py photo.jpg FGO-PETITRITS-ALTRIA --category fantasy
+py tools/new-image.py photo.jpg ZGMF-X10A-HGCE --force
+```
+
+- A photo that is already transparent skips background removal.
+- `--force` replaces an existing image.
+- A new ID (not yet in index.json) lands in `assets/images/<category>/`;
+  run the organizer afterwards.
+- The first background removal downloads the rembg model once (~170 MB).
+
+The single steps are also available:
+
+```bat
+py tools/remove_bg.py photo.jpg
+py tools/upscale.py image.png
+py tools/upscale.py image.png --model fsrcnn
+```
+
+`upscale.py` models are stored in `tools/models/`; nothing is downloaded.
+
+### Print NFC cards
+
+Start the local server (menu option 1), then open:
+
+```text
+http://localhost:8000/tools/nfc-cards.html
+```
+
+Pick the kits, check the scan link, press **Print**. In the print dialog turn
+on **Background graphics**. A4, 10 cards per sheet, credit-card size, with a
+QR code to `scan.html?category=gundam&id=<ID>` as a backup for the NFC chip.
+
+### Entry builders
+
+Open in the browser:
+
+```text
+tools/gundam-entry-builder-local.html
+tools/other-archive-entry-builder-local.html
+```
+
+### Requirements
+
+```bat
+py -m pip install pillow rembg opencv-contrib-python
+```

@@ -20,8 +20,13 @@ KNOWN_GUNDAM_SERIES = {
     "Gundam Build Fighters: GM's Counterattack": "gm-counterattack",
     "Gundam Build Fighters Try": "build-fighters-try",
     "Gundam Build Fighters Honoo Try": "honoo-try",
-    "Gundam Build Fighters Try: Island Wars": "try-island-wars",
+    "Gundam Build Fighters Try: Island Wars": "build-fighters-try-island-wars",
     "Gundam Reconguista in G": "reconguista-in-g",
+    "Mobile Suit Gundam SEED Destiny Astray R": "seed-destiny-astray-r",
+    "Mobile Suit Gundam SEED C.E. 73: Stargazer": "stargazer",
+    "Mobile Suit Gundam Unicorn": "gundam-unicorn",
+    "Gundam Build Fighters": "build-fighters",
+    "Gundam Build Divers": "build-divers",
 }
 
 KNOWN_GUNDAM_CONTINUITIES = {
