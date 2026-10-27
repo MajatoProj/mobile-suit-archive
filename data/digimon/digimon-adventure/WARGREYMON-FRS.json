@@ -1,0 +1,31 @@
+{
+  "category": "digimon",
+  "id": "WARGREYMON-FRS",
+  "designation": "Mega · Vaccine · Dragon Man",
+  "name": "WarGreymon",
+  "summary": "Digimon Adventure / Figure-rise Standard",
+  "franchise": "Digimon",
+  "series": "Digimon Adventure",
+  "line": "Figure-rise Standard",
+  "family": "Agumon Line",
+  "form_stage": "Mega",
+  "brand": "Bandai Spirits",
+  "source": "bandai",
+  "custom": false,
+  "grade": "Figure-rise Standard",
+  "scale": "Non-scale",
+  "release_date": "2021-10-07",
+  "build_status": "backlog",
+  "archive_folder": "digimon-adventure",
+  "image": "",
+  "description": "Bandai Figure-rise Standard model kit of WarGreymon, the Mega-level form of Agumon and partner of Tai (Taichi Yagami) in Digimon Adventure, based on the anime design.",
+  "specs": {
+    "Release date": "2021-10-07",
+    "Level": "Mega (Ultimate)",
+    "Attribute": "Vaccine",
+    "Type": "Dragon Man",
+    "Partner": "Tai Kamiya (Taichi Yagami)",
+    "Digivolution": "Agumon → Greymon → MetalGreymon → WarGreymon",
+    "Signature attacks": "Terra Force, Great Tornado"
+  }
+}

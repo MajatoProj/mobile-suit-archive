@@ -547,7 +547,7 @@ function getBuildStatusInfo(value) {
     return { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
   }
 
-  return map[key] || { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
+  return map[key] ? { key, ...map[key] } : { key: "unassigned", label: "Wanted", percent: 0, hideProgress: false };
 }
 
 function renderSpecs(item) {
