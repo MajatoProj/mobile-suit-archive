@@ -3652,3 +3652,8 @@ body.theme-fantasy {
     grid-template-columns: 1fr;
   }
 }
+
+/* The row CSS sets display:grid, which beat the hidden attribute the JS sets. */
+.gundam-filter-row[hidden] {
+  display: none;
+}
