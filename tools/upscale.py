@@ -7,33 +7,31 @@ Gebruik:
     py tools/upscale.py foto.png -o groot.png
     py tools/upscale.py foto.png --model fsrcnn    (sneller, iets minder scherp)
 
-Het model wordt bij eerste gebruik gedownload naar ~/.cache/opencv-superres.
+De modellen staan in tools/models/, dus er wordt niets gedownload.
 Transparantie (PNG met alfakanaal) blijft behouden.
 """
 import argparse
 import sys
-import urllib.request
 from pathlib import Path
 
 import cv2
 import numpy as np
 
 SCALE = 4
+# Kopieën van Saafke/EDSR_Tensorflow, fannymonori/TF-ESPCN, Saafke/FSRCNN_Tensorflow, fannymonori/TF-LapSRN
 MODELS = {
-    "edsr": "https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x4.pb",
-    "espcn": "https://github.com/fannymonori/TF-ESPCN/raw/master/export/ESPCN_x4.pb",
-    "fsrcnn": "https://github.com/Saafke/FSRCNN_Tensorflow/raw/master/models/FSRCNN_x4.pb",
-    "lapsrn": "https://github.com/fannymonori/TF-LapSRN/raw/master/export/LapSRN_x4.pb",
+    "edsr": "EDSR_x4.pb",
+    "espcn": "ESPCN_x4.pb",
+    "fsrcnn": "FSRCNN_x4.pb",
+    "lapsrn": "LapSRN_x4.pb",
 }
-CACHE = Path.home() / ".cache" / "opencv-superres"
+MODEL_DIR = Path(__file__).parent / "models"
 
 
 def model_path(name):
-    path = CACHE / Path(MODELS[name]).name
-    if not path.exists():
-        CACHE.mkdir(parents=True, exist_ok=True)
-        print(f"Model {name} downloaden...")
-        urllib.request.urlretrieve(MODELS[name], path)
+    path = MODEL_DIR / MODELS[name]
+    if not path.is_file():
+        sys.exit(f"Model ontbreekt: {path}")
     return path
 
 
