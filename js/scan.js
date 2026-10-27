@@ -92,7 +92,7 @@
     const detailPath = record.file || record.json || record.record || record.path;
     if (detailPath) {
       try {
-        const detail = await fetchJson(cleanPath(detailPath));
+        const detail = await fetchJson(`data/${encodeURIComponent(category)}/${cleanPath(detailPath)}`);
         record = { ...record, ...detail };
       } catch (error) {
         console.warn("Detailed record unavailable; using index entry.", error);
