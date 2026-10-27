@@ -257,3 +257,49 @@ body.page-leaving {
     font-size: .52rem;
   }
 }
+
+/* Phone: the 3D rotator becomes three full-size buttons, one tap goes there. */
+@media (max-width: 760px) {
+  .category-rotator {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    perspective: none;
+  }
+
+  .rotator-card,
+  .rotator-card.rotator-front,
+  .rotator-card.rotator-left,
+  .rotator-card.rotator-right {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    height: 46px;
+    padding: 0 6px;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
+  .rotator-card:not(.rotator-front) {
+    opacity: .7;
+  }
+
+  .rotator-card.rotator-front {
+    border-color: var(--rotator-accent);
+  }
+
+  .rotator-card span {
+    font-size: .62rem;
+    letter-spacing: .08em;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

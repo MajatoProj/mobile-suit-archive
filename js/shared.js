@@ -52,7 +52,8 @@ if (rotatorCards.length) {
 
   rotatorCards.forEach((card, index) => {
     card.addEventListener("click", () => {
-      if (index !== rotatorIndex) {
+      // On phones all three are plain buttons, so skip the rotate-first step.
+      if (index !== rotatorIndex && !window.matchMedia("(max-width: 760px)").matches) {
         rotatorIndex = index;
         updateRotator();
         return;

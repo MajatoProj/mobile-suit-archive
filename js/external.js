@@ -17,15 +17,3 @@ panels.forEach(panel => {
 });
 
 selector.addEventListener("mouseleave", clear);
-
-// Touch: first tap previews the branch; second tap follows the link.
-panels.forEach(panel => {
-  panel.addEventListener("click", event => {
-    if (!window.matchMedia("(hover: none)").matches) return;
-
-    if (!panel.classList.contains("is-active")) {
-      event.preventDefault();
-      activate(panel);
-    }
-  });
-});

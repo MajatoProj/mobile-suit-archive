@@ -4,15 +4,6 @@
   "items": [
     {
       "category": "mecha",
-      "id": "DEMO-PROTOTYPE",
-      "designation": "EXT // TEST UNIT",
-      "name": "Example Prototype Mecha",
-      "summary": "Third-party / aftermarket mecha demonstration entry.",
-      "image": "",
-      "file": "DEMO-PROTOTYPE.json"
-    },
-    {
-      "category": "mecha",
       "id": "SC-009-PERCIVAL-DX",
       "designation": "SC-009",
       "name": "Divine Invoker Percival (Deluxe Version)",

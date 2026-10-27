@@ -306,5 +306,5 @@
   .category-card.pos-right {
     transform: translate(-18%, -56%) translateZ(-100px) rotateY(-12deg) scale(.78);
   }
-  .carousel-nav { width: 38px; height: 52px; }
+  .carousel-nav { width: 44px; height: 52px; }
 }

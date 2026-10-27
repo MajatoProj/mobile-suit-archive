@@ -3147,7 +3147,6 @@ body.theme-fantasy {
   }
 
   .category-page {
-    touch-action: pan-y;
     -webkit-text-size-adjust: 100%;
   }
 
@@ -3160,28 +3159,12 @@ body.theme-fantasy {
   }
 
   .category-header h1 {
-    font-size: clamp(2rem, 15vw, 4rem);
+    font-size: clamp(2rem, 11vw, 4rem);
     overflow-wrap: anywhere;
   }
 
   .category-subtitle {
     max-width: none;
-  }
-
-  .category-rotator {
-    width: 100%;
-    max-width: 100%;
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
-    overflow: visible !important;
-  }
-
-  .category-rotator .rotator-card {
-    width: auto !important;
-    min-width: 0 !important;
-    min-height: 44px;
-    padding-inline: 6px;
   }
 
   .category-content,
@@ -3492,10 +3475,6 @@ body.theme-fantasy {
   .statistics-grid {
     grid-template-columns: 1fr;
   }
-
-  .category-rotator {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Parent series kept only to anchor a side story that matches the filter. */
@@ -3630,11 +3609,6 @@ body.theme-fantasy {
     radial-gradient(circle at 76% 38%, rgba(var(--vault-rgb), .14), transparent 20%),
     linear-gradient(135deg, rgba(var(--vault-rgb), .10), rgba(0, 0, 0, .32)),
     repeating-linear-gradient(90deg, transparent 0 27px, rgba(var(--vault-rgb), .025) 28px 29px);
-}
-
-/* Show the whole model (Gundam cards crop the 92%-height image to the 84px box). */
-:is(.theme-digimon, .theme-mecha, .theme-fantasy) .gundam-record-visual.has-image {
-  grid-template: 100% / 100%;
 }
 
 :is(.theme-digimon, .theme-mecha, .theme-fantasy) .unit-crosshair {
