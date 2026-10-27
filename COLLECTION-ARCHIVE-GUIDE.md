@@ -22,7 +22,7 @@ collection-archive/
 ├── item.html
 ├── external.html
 ├── robots.txt
-├── organize-archive-folders.py
+├── tools/          (organizer, entry builders, image scripts, data check)
 ├── css/
 ├── js/
 ├── data/
@@ -146,22 +146,22 @@ franchise-or-universe / series
 
 ## 5. Universal folder organizer
 
-Keep this file in the repository root:
+The organizer lives in the tools folder:
 
 ```text
-organize-archive-folders.py
+tools/organize-archive-folders.py
 ```
 
 ### Organize all vaults
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py
 ```
 
 ### Preview changes first
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --dry-run
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --dry-run
 ```
 
 This is useful before a large reorganization because it does not move or edit anything.
@@ -171,25 +171,25 @@ This is useful before a large reorganization because it does not move or edit an
 Gundam:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --category gundam
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --category gundam
 ```
 
 Digimon:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --category digimon
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --category digimon
 ```
 
 Mecha:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --category mecha
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --category mecha
 ```
 
 Fantasy:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --category fantasy
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --category fantasy
 ```
 
 ### What the organizer does
@@ -229,7 +229,7 @@ JSON image-paths bijgewerkt: 0
 
 Recommended workflow:
 
-1. Create the record with the Gundam Entry Builder.
+1. Create the record with the Gundam Entry Builder (tools/gundam-entry-builder-local.html).
 2. Update `data/gundam/index.json`.
 3. Put the new individual JSON temporarily in:
 
@@ -255,7 +255,7 @@ ASW-G-08-6TH-HG.png
 6. Run:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --category gundam
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --category gundam
 ```
 
 The organizer moves both files to the correct continuity/series folder and updates the paths.
@@ -278,7 +278,7 @@ assets/images/digimon/
 Then run:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --category digimon
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --category digimon
 ```
 
 ### Mecha
@@ -293,7 +293,7 @@ assets/images/mecha/
 Then run:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --category mecha
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --category mecha
 ```
 
 ### Fantasy
@@ -308,7 +308,7 @@ assets/images/fantasy/
 Then run:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py --category fantasy
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py --category fantasy
 ```
 
 ---
@@ -518,7 +518,7 @@ For normal collection work:
 ```text
 1. Add/update JSON.
 2. Add the matching image.
-3. Run organize-archive-folders.py.
+3. Run tools/organize-archive-folders.py.
 4. Start the local HTTP server.
 5. Test the archive.
 6. Commit/upload to GitHub.
@@ -527,7 +527,7 @@ For normal collection work:
 Main commands:
 
 ```bat
-"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" organize-archive-folders.py
+"C:\Users\Jeremy\AppData\Local\Programs\Python\Python313\python.exe" tools/organize-archive-folders.py
 ```
 
 ```bat

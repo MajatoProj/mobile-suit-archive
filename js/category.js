@@ -126,11 +126,7 @@ let activeGenericSort = "name";
 let genericDetailsHydrated = false;
 
 
-fetch(`data/${type}/index.json`, { cache: "no-store" })
-  .then(response => {
-    if (!response.ok) throw new Error(`Could not load ${type} index.`);
-    return response.json();
-  })
+fetchArchiveJson(`data/${type}/index.json`)
   .then(data => {
     allItems = data.items || [];
     count.textContent = allItems.length;
@@ -402,9 +398,7 @@ async function hydrateGundamDetails() {
     if (!meta.file) return meta;
 
     try {
-      const response = await fetch(`data/gundam/${meta.file}`, { cache: "no-store" });
-      if (!response.ok) return meta;
-      const record = await response.json();
+      const record = await fetchArchiveJson(`data/gundam/${meta.file}`);
       return { ...meta, ...record, file: meta.file };
     } catch {
       return meta;
@@ -1777,9 +1771,7 @@ async function hydrateGenericDetails() {
   const hydrated = await Promise.all(allItems.map(async meta => {
     if (!meta.file) return meta;
     try {
-      const response = await fetch(`data/${type}/${meta.file}`, { cache: "no-store" });
-      if (!response.ok) return meta;
-      const record = await response.json();
+      const record = await fetchArchiveJson(`data/${type}/${meta.file}`);
       return { ...meta, ...record, file: meta.file };
     } catch {
       return meta;

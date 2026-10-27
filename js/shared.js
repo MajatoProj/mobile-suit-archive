@@ -95,3 +95,21 @@ document.addEventListener("click", event => {
   event.preventDefault();
   window.archiveNavigate(url.href);
 });
+
+/* One fetch per JSON file per page: category.js and couple-projects.js both
+   need the same index and records. "no-cache" revalidates (cheap 304) instead
+   of re-downloading, so edits still show up immediately. */
+const archiveJsonCache = new Map();
+window.fetchArchiveJson = function(url) {
+  if (!archiveJsonCache.has(url)) {
+    archiveJsonCache.set(url, fetch(url, { cache: "no-cache" }).then(response => {
+      if (!response.ok) throw new Error(`${response.status} ${url}`);
+      return response.json();
+    }).catch(error => {
+      archiveJsonCache.delete(url);
+      throw error;
+    }));
+  }
+  // Each caller gets its own copy, so one script can't change another's data.
+  return archiveJsonCache.get(url).then(data => structuredClone(data));
+};

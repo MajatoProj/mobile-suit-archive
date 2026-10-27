@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>NFC Card Printer</title>
+  <style>
+    :root {
+      --bg: #050914;
+      --panel: #0a1322;
+      --line: rgba(150, 211, 255, .32);
+      --text: #e5f5ff;
+      --muted: #86a2b5;
+      --accent: #7fc7ff;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.4 "Segoe UI", Inter, Arial, sans-serif; }
+
+    .controls { max-width: 1100px; margin: 0 auto; padding: 24px 16px 8px; }
+    .controls h1 { margin: 0 0 4px; letter-spacing: .12em; font-size: 1.3rem; }
+    .controls p { margin: 0 0 16px; color: var(--muted); }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+    input[type=text], input[type=url] { background: var(--panel); color: var(--text); border: 1px solid var(--line); padding: 7px 10px; font: inherit; }
+    input[type=url] { flex: 1 1 420px; }
+    button { background: transparent; color: var(--accent); border: 1px solid var(--line); padding: 7px 14px; font: inherit; letter-spacing: .08em; cursor: pointer; }
+    button.primary { background: rgba(127, 199, 255, .12); }
+    .picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 4px 16px; max-height: 260px; overflow: auto; border: 1px solid var(--line); padding: 10px; background: var(--panel); }
+    .picker label { display: flex; gap: 8px; align-items: center; color: var(--muted); cursor: pointer; }
+    .picker label:has(input:checked) { color: var(--text); }
+    .error { color: #ff9a9a; }
+
+    /* A4 sheet with credit-card sized cards (85.6 x 54 mm). */
+    .sheet { width: 210mm; margin: 16px auto; padding: 10mm 12mm; background: #fff; display: grid; grid-template-columns: repeat(2, 85.6mm); gap: 4mm 8mm; justify-content: center; align-content: start; }
+    .card {
+      width: 85.6mm; height: 54mm; position: relative; overflow: hidden;
+      background: radial-gradient(circle at 22% 45%, #13304a 0, #081322 55%, #050914 100%);
+      color: var(--text); border: .3mm solid #2b4a63; border-radius: 3mm;
+      display: grid; grid-template-columns: 31mm 1fr; padding: 3mm;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(127,199,255,.06) 1px, transparent 1px) 0 0 / 4mm 4mm, linear-gradient(rgba(127,199,255,.06) 1px, transparent 1px) 0 0 / 4mm 4mm; pointer-events: none; }
+    .card-visual { position: relative; display: grid; place-items: center; }
+    .card-visual img { max-width: 100%; max-height: 46mm; object-fit: contain; filter: drop-shadow(0 0 2mm rgba(127,199,255,.25)); }
+    .card-body { position: relative; display: flex; flex-direction: column; padding-left: 2mm; min-width: 0; }
+    .card-code { font-size: 1.9mm; letter-spacing: .3mm; color: var(--accent); }
+    .card-name { font-size: 3.6mm; font-weight: 700; line-height: 1.15; margin: 1mm 0 .8mm; }
+    .card-designation { font-size: 2.3mm; color: var(--muted); }
+    .card-series { font-size: 1.9mm; color: var(--muted); margin-top: .8mm; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .card-foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 2mm; }
+    .card-tags { display: flex; gap: 1mm; flex-wrap: wrap; }
+    .card-tags span { font-size: 1.8mm; border: .2mm solid var(--line); padding: .4mm 1.2mm; color: var(--text); }
+    .card-qr { width: 15mm; height: 15mm; background: #fff; padding: .8mm; flex: none; }
+    .card-qr img { width: 100% !important; height: 100% !important; display: block; }
+    .card-qr canvas { display: none !important; }
+    .card-nfc { font-size: 1.6mm; letter-spacing: .4mm; color: var(--muted); }
+    .card-code { overflow-wrap: anywhere; }
+
+    @media print {
+      @page { size: A4; margin: 0; }
+      body { background: #fff; }
+      .controls { display: none; }
+      .sheet { margin: 0; break-after: page; }
+      .sheet:last-child { break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+  <section class="controls">
+    <h1>NFC CARD PRINTER</h1>
+    <p>Kies kits, controleer de link en print op A4. Zet in het printvenster "Achtergrondafbeeldingen" aan. Werkt via de lokale server (<code>py -m http.server 8000</code> in de repo, open <code>/tools/nfc-cards.html</code>).</p>
+    <div class="row">
+      <label for="baseUrl">Scan-link</label>
+      <input type="url" id="baseUrl" value="https://majatoproj.github.io/mobile-suit-archive/scan.html">
+    </div>
+    <div class="row">
+      <input type="text" id="search" placeholder="Zoek op naam of ID" aria-label="Zoeken">
+      <button type="button" id="all">Alles</button>
+      <button type="button" id="none">Niets</button>
+      <button type="button" class="primary" id="print">Print</button>
+      <span id="count"></span>
+    </div>
+    <div class="picker" id="picker"></div>
+  </section>
+  <main id="sheets"></main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    const CARDS_PER_SHEET = 10;
+    const $ = id => document.getElementById(id);
+    let items = [];
+    const selected = new Set(JSON.parse(localStorageGet("nfcCards.selected") || "[]"));
+
+    function localStorageGet(key) { try { return localStorage.getItem(key); } catch { return null; } }
+    function localStorageSet(key, value) { try { localStorage.setItem(key, value); } catch {} }
+    const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[c]);
+
+    function scanUrl(id) {
+      const url = new URL($("baseUrl").value);
+      url.search = new URLSearchParams({ category: "gundam", id }).toString();
+      return url.href;
+    }
+
+    function renderPicker() {
+      const q = $("search").value.trim().toLowerCase();
+      $("picker").innerHTML = items
+        .filter(i => !q || `${i.name} ${i.id}`.toLowerCase().includes(q))
+        .map(i => `<label><input type="checkbox" value="${esc(i.id)}" ${selected.has(i.id) ? "checked" : ""}>${esc(i.name)}</label>`)
+        .join("");
+    }
+
+    function renderCards() {
+      const chosen = items.filter(i => selected.has(i.id));
+      $("count").textContent = `${chosen.length} kaart(en)`;
+      localStorageSet("nfcCards.selected", JSON.stringify([...selected]));
+      const sheets = $("sheets");
+      sheets.innerHTML = "";
+      for (let s = 0; s < chosen.length; s += CARDS_PER_SHEET) {
+        const sheet = document.createElement("div");
+        sheet.className = "sheet";
+        chosen.slice(s, s + CARDS_PER_SHEET).forEach(item => sheet.appendChild(card(item)));
+        sheets.appendChild(sheet);
+      }
+    }
+
+    function card(item) {
+      const el = document.createElement("article");
+      el.className = "card";
+      el.innerHTML = `
+        <div class="card-visual">${item.image ? `<img src="../${esc(item.image)}" alt="">` : ""}</div>
+        <div class="card-body">
+          <span class="card-nfc">IDENTIFICATION CARD</span>
+          <span class="card-code">ARCHIVE // ${esc(item.id)}</span>
+          <div class="card-name">${esc(item.name)}</div>
+          <div class="card-designation">${esc(item.designation)}</div>
+          <div class="card-series">${esc(item.series)}</div>
+          <div class="card-foot">
+            <div class="card-tags">${[item.grade, item.scale].filter(Boolean).map(t => `<span>${esc(t)}</span>`).join("")}</div>
+            <div class="card-qr"></div>
+          </div>
+        </div>`;
+      if (window.QRCode) {
+        new QRCode(el.querySelector(".card-qr"), { text: scanUrl(item.id), width: 160, height: 160, correctLevel: QRCode.CorrectLevel.M });
+      }
+      return el;
+    }
+
+    $("picker").addEventListener("change", e => {
+      if (e.target.checked) selected.add(e.target.value); else selected.delete(e.target.value);
+      renderCards();
+    });
+    $("search").addEventListener("input", renderPicker);
+    $("baseUrl").addEventListener("change", renderCards);
+    $("all").addEventListener("click", () => { items.forEach(i => selected.add(i.id)); renderPicker(); renderCards(); });
+    $("none").addEventListener("click", () => { selected.clear(); renderPicker(); renderCards(); });
+    $("print").addEventListener("click", () => window.print());
+
+    fetch("../data/gundam/index.json")
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(data => {
+        items = (data.items || []).slice().sort((a, b) => String(a.name).localeCompare(String(b.name)));
+        renderPicker();
+        renderCards();
+      })
+      .catch(() => {
+        $("picker").innerHTML = `<span class="error">Kan ../data/gundam/index.json niet laden. Open deze pagina via de lokale server, niet als bestand.</span>`;
+      });
+  </script>
+</body>
+</html>

@@ -46,7 +46,6 @@
 
 .category-intro {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   margin-bottom: 24px;
   border: 1px solid var(--theme-line);
@@ -305,8 +304,6 @@ body.theme-fantasy {
 
 .item-summary p { color: #a7bac3; }
 
-.item-specs { padding: 18px; }
-
 .spec-row {
   display: grid;
   grid-template-columns: minmax(100px, .7fr) 1.3fr;
@@ -328,7 +325,7 @@ body.theme-fantasy {
 }
 
 @media (max-width: 760px) {
-  .category-intro { grid-template-columns: 1fr; }
+
   .item-layout { grid-template-columns: 1fr; }
   .category-header { padding-inline: 18px; }
   .category-content, .item-layout { padding-inline: 18px; }
@@ -340,12 +337,6 @@ body.theme-fantasy {
 
 .category-header > div:first-child {
   min-width: 0;
-}
-
-@media (max-width: 760px) {
-  .category-header {
-    align-items: center;
-  }
 }
 
 /* ============================================================
@@ -607,19 +598,6 @@ body.theme-fantasy {
   gap: 5px;
 }
 
-.gundam-record-topline {
-  justify-content: space-between;
-}
-
-.gundam-record h4 {
-  min-height: 2.4em;
-  margin: .48rem 0 .62rem;
-  font-size: .78rem;
-  line-height: 1.2;
-  letter-spacing: .035em;
-  font-weight: 590;
-}
-
 .gundam-record-meta {
   flex-wrap: wrap;
 }
@@ -706,7 +684,6 @@ body.theme-fantasy {
 
 .family-flow {
   display: flex;
-  align-items: stretch;
   overflow-x: auto;
   padding: 20px;
   scrollbar-width: thin;
@@ -758,10 +735,6 @@ body.theme-fantasy {
 }
 
 @media (max-width: 760px) {
-  .gundam-filter-row {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
 
   .series-node {
     flex-basis: min(360px, 88vw);
@@ -1354,9 +1327,7 @@ body.theme-fantasy {
 .family-stage.is-branch .family-branch-row::before {
   content: "";
   position: absolute;
-  left: -18px;
   top: 50%;
-  width: 18px;
   border-top: 1px solid rgba(127,199,255,.42);
 }
 
@@ -1364,9 +1335,7 @@ body.theme-fantasy {
 .family-stage.is-branch::before {
   content: "";
   position: absolute;
-  left: 0;
   top: 50%;
-  width: 16px;
   border-top: 1px solid rgba(127,199,255,.42);
 }
 
@@ -1380,21 +1349,9 @@ body.theme-fantasy {
 }
 
 @media (max-width: 760px) {
-  .family-stage .gundam-record {
-    width: 185px;
-  }
-
-  .family-stage.is-branch .family-stage-stack {
-    padding-left: 28px;
-  }
 
   .family-stage.is-branch .family-stage-stack::before {
     left: 13px;
-  }
-
-  .family-stage.is-branch .family-branch-row::before {
-    left: -15px;
-    width: 15px;
   }
 
   .family-stage.is-branch::before {
@@ -1537,8 +1494,6 @@ body.theme-fantasy {
   width: 22px;
   height: 22px;
   border: 1px solid rgba(127,199,255,.18);
-  background: rgba(255,255,255,.03);
-  color: #9fc5da;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.015);
 }
 
@@ -1561,26 +1516,18 @@ body.theme-fantasy {
 
 .icon-assembly {
   color: #7fc4ef;
-  border-color: rgba(127,196,239,.24);
-  background: rgba(127,196,239,.06);
 }
 
 .icon-detailing {
   color: #88d3d9;
-  border-color: rgba(136,211,217,.24);
-  background: rgba(136,211,217,.06);
 }
 
 .icon-finishing {
   color: #87e0bc;
-  border-color: rgba(135,224,188,.24);
-  background: rgba(135,224,188,.06);
 }
 
 .icon-completed {
   color: #9be8a3;
-  border-color: rgba(155,232,163,.24);
-  background: rgba(155,232,163,.06);
 }
 
 .icon-completed svg {
@@ -1590,8 +1537,6 @@ body.theme-fantasy {
 
 .icon-faulted {
   color: #abb3ba;
-  border-color: rgba(171,179,186,.24);
-  background: rgba(171,179,186,.06);
 }
 
 .build-status-symbol-wrap {
@@ -1992,7 +1937,6 @@ body.theme-fantasy {
 }
 
 .family-completion-meter {
-  grid-column: 1 / -1;
   width: 100%;
   height: 5px;
   margin-top: 9px;
@@ -2081,17 +2025,13 @@ body.theme-fantasy {
 }
 
 @media (max-width: 760px) {
-  .category-intro { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
   .archive-search { grid-template-columns: 1fr; gap: 6px; }
   .gundam-toolbar-top { align-items: stretch; flex-direction: column; }
-  .archive-action-button { width: fit-content; }
+
   .family-heading-meta { margin-left: 0; width: 100%; justify-content: space-between; }
   .relationship-row { grid-template-columns: 1fr; gap: 7px; }
   .relationship-target-row { grid-template-columns: 18px minmax(0,1fr); }
-}
-
-@media (max-width: 520px) {
-  .statistics-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 
 /* v28 family heading layout overrides */
@@ -2301,12 +2241,6 @@ body.theme-fantasy {
   background:
     radial-gradient(circle at 50% 38%, rgba(87, 218, 176, .13), transparent 38%),
     linear-gradient(180deg, rgba(13, 50, 43, .28), rgba(4, 18, 19, .18));
-}
-
-.theme-fantasy .archive-record-visual {
-  background:
-    radial-gradient(circle at 50% 34%, rgba(213, 194, 126, .13), transparent 40%),
-    linear-gradient(180deg, rgba(58, 54, 31, .22), rgba(13, 17, 12, .18));
 }
 
 .theme-mecha .archive-record-visual {
@@ -2934,17 +2868,6 @@ body.theme-fantasy {
   width: 16px;
 }
 
-@media (max-width: 760px) {
-  .family-stage.is-branch .family-branch-row::before {
-    left: -15px;
-    width: 15px;
-  }
-
-  .family-stage.is-branch .family-branch-row::after {
-    left: -15px;
-  }
-}
-
 /* ============================================================
    SIDE-STORY TIMELINE BRANCHES v39
    Side stories leave the main continuity rail, stack below their
@@ -3187,14 +3110,6 @@ body.theme-fantasy {
   .timeline-shelf-rail {
     --timeline-stage-width: min(330px, calc(100vw - 56px));
     --timeline-stage-gap: 22px;
-  }
-
-  .timeline-shelf-main-stage .series-items {
-    grid-template-columns: 1fr;
-  }
-
-  .timeline-branch-shelf-grid {
-    grid-template-columns: 1fr;
   }
 
   .timeline-side-series.has-multiple-items {

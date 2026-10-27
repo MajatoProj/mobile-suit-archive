@@ -27,7 +27,7 @@ loadItem().catch(showMissing);
 async function loadItem() {
   if (!category || !id) return showMissing();
 
-  const indexResponse = await fetch(`data/${category}/index.json`, { cache: "no-store" });
+  const indexResponse = await fetch(`data/${category}/index.json`, { cache: "no-cache" });
   if (!indexResponse.ok) throw new Error("Index not found.");
 
   const index = await indexResponse.json();
@@ -35,7 +35,7 @@ async function loadItem() {
 
   if (!meta || !meta.file) return showMissing();
 
-  const itemResponse = await fetch(`data/${category}/${meta.file}`, { cache: "no-store" });
+  const itemResponse = await fetch(`data/${category}/${meta.file}`, { cache: "no-cache" });
   if (!itemResponse.ok) throw new Error("Record file not found.");
 
   const record = await itemResponse.json();

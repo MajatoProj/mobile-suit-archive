@@ -29,9 +29,7 @@
     if (!item?.file) return item;
     try {
       const path = `data/gundam/${String(item.file).replace(/^\/?/, "")}`;
-      const response = await fetch(path, { cache: "no-store" });
-      if (!response.ok) return item;
-      return { ...item, ...(await response.json()) };
+      return { ...item, ...(await window.fetchArchiveJson(path)) };
     } catch (_) {
       return item;
     }
@@ -343,9 +341,7 @@
 
   async function init() {
     try {
-      const response = await fetch(INDEX_URL, { cache: "no-store" });
-      if (!response.ok) return;
-      const index = await response.json();
+      const index = await window.fetchArchiveJson(INDEX_URL);
       const paired = extractItems(index).filter(item => clean(item.project_group));
       if (!paired.length) return;
 

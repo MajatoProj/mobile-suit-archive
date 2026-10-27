@@ -55,7 +55,7 @@
   }
 
   async function fetchJson(path) {
-    const response = await fetch(path, { cache: "no-store" });
+    const response = await fetch(path, { cache: "no-cache" });
     if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
     return response.json();
   }

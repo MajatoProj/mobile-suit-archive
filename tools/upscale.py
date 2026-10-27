@@ -35,6 +35,22 @@ def model_path(name):
     return path
 
 
+def upscale(img, model="edsr"):
+    """Vergroot een OpenCV-afbeelding (BGR of BGRA) 4x; alfa wordt apart bicubisch vergroot."""
+    if img.ndim == 2:
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    sr = cv2.dnn_superres.DnnSuperResImpl_create()
+    sr.readModel(str(model_path(model)))
+    sr.setModel(model, SCALE)
+
+    # Het model werkt alleen op 3 kanalen; het alfakanaal wordt apart (bicubisch) vergroot
+    result = sr.upsample(img[:, :, :3])
+    if img.shape[2] == 4:
+        alpha = cv2.resize(img[:, :, 3], (result.shape[1], result.shape[0]), interpolation=cv2.INTER_CUBIC)
+        result = np.dstack([result, alpha])
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description="Upscale een afbeelding 4x met OpenCV Super Resolution.")
     parser.add_argument("input", type=Path, help="afbeelding om te upscalen")
@@ -49,18 +65,8 @@ def main():
     img = cv2.imdecode(np.fromfile(args.input, np.uint8), cv2.IMREAD_UNCHANGED)
     if img is None:
         sys.exit(f"Kan afbeelding niet lezen: {args.input}")
-    if img.ndim == 2:
-        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
-    sr = cv2.dnn_superres.DnnSuperResImpl_create()
-    sr.readModel(str(model_path(args.model)))
-    sr.setModel(args.model, SCALE)
-
-    # Het model werkt alleen op 3 kanalen; het alfakanaal wordt apart (bicubisch) vergroot
-    result = sr.upsample(img[:, :, :3])
-    if img.shape[2] == 4:
-        alpha = cv2.resize(img[:, :, 3], (result.shape[1], result.shape[0]), interpolation=cv2.INTER_CUBIC)
-        result = np.dstack([result, alpha])
+    result = upscale(img, args.model)
 
     dst = args.output or args.input.with_name(f"{args.input.stem}-x4.png")
     ok, buf = cv2.imencode(dst.suffix or ".png", result)
