@@ -70,6 +70,7 @@ start "" "http://localhost:8000/tools/nfc-cards.html"
 goto menu
 
 :publish
+"%PY%" tools\card_thumbs.py
 "%PY%" tools\check-data.py
 if errorlevel 1 (
   echo.

@@ -1,0 +1,29 @@
+{
+  "category": "gundam",
+  "designation": "ASW-G-29",
+  "summary": "Post Disaster / Mobile Suit Gundam IRON-BLOODED ORPHANS Gekko",
+  "continuity": "Post Disaster",
+  "series": "Mobile Suit Gundam IRON-BLOODED ORPHANS Gekko",
+  "timeline_position": 1,
+  "timeline_lane": "side-story",
+  "timeline_label": "P.D. 323",
+  "timeline_parent": "Mobile Suit Gundam IRON-BLOODED ORPHANS",
+  "family": "Astaroth Family",
+  "source": "bandai",
+  "custom": false,
+  "build_status": "",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "id": "ASW-G-29-RINASCIMENTO-HG",
+  "name": "Gundam Astaroth Rinascimento",
+  "family_order": 3,
+  "image": "assets/images/gundam/post-disaster/gekko/ASW-G-29-RINASCIMENTO-HG.png",
+  "description": "Bandai HG IRON-BLOODED ORPHANS #39 1/144 Gundam Astaroth Rinascimento, the rebuilt final form of the Astaroth from the Gekko side story. On the wanted list.",
+  "mobile_suit_data": {
+    "pilot": "Argi Mirage"
+  },
+  "specs": {
+    "Release date": "2017-07"
+  }
+}

@@ -241,6 +241,10 @@ def process_category(root: Path, category: str, dry_run: bool) -> dict:
                     if not target_image.exists():
                         shutil.move(str(image_path), str(target_image))
                         result["images_moved"] += 1
+                        # The small card thumbnail travels with its image.
+                        thumb = image_path.with_name(f"{image_path.stem}-card.webp")
+                        if thumb.is_file():
+                            shutil.move(str(thumb), str(target_image.with_name(thumb.name)))
                     else:
                         target_image = image_path
         else:

@@ -114,3 +114,16 @@ window.fetchArchiveJson = function(url) {
   // Each caller gets its own copy, so one script can't change another's data.
   return archiveJsonCache.get(url).then(data => structuredClone(data));
 };
+
+/* Cards show a small WebP made by tools/card_thumbs.py; the full PNG is for the item page. */
+window.cardThumb = function(path) {
+  return String(path || "").replace(/\.png$/i, "-card.webp");
+};
+
+// A missing thumbnail falls back to the full image named in data-full.
+document.addEventListener("error", event => {
+  const img = event.target;
+  if (img.tagName === "IMG" && img.dataset.full && !img.src.endsWith(img.dataset.full)) {
+    img.src = img.dataset.full;
+  }
+}, true);

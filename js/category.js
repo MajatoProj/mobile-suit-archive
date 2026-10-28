@@ -1434,7 +1434,7 @@ function makeGundamCard(item, category = "gundam") {
     : "";
 
   const thumbnail = item.image
-    ? `<img class="gundam-record-image" src="${escapeHtml(item.image)}" alt="" loading="lazy">`
+    ? `<img class="gundam-record-image" src="${escapeHtml(window.cardThumb(item.image))}" data-full="${escapeHtml(item.image)}" alt="" loading="lazy">`
     : "";
 
   const cardTitle = item.name || item.designation || item.id;

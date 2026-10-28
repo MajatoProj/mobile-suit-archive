@@ -235,7 +235,7 @@
     card.innerHTML = `
       <div class="gundam-record-visual couple-record-visual ${image ? "has-image" : ""}">
         ${image
-          ? `<img class="gundam-record-image couple-record-image" src="${escapeHtml(image)}" alt="" loading="lazy">`
+          ? `<img class="gundam-record-image couple-record-image" src="${escapeHtml(window.cardThumb(image))}" data-full="${escapeHtml(image)}" alt="" loading="lazy">`
           : ""}
         <span class="unit-ghost">DUO</span>
         <span class="unit-crosshair" aria-hidden="true"></span>
