@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Collection Archive // Startup</title>
-  <link rel="stylesheet" href="css/main.css?v=2">
+  <script>
+    // The boot plays once per visit; after that go straight to the archive.
+    try {
+      if (sessionStorage.getItem("archiveBooted")) location.replace("archive.html");
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="css/main.css?v=3">
   <link rel="stylesheet" href="css/startup.css?v=2">
 </head>
 <body class="startup-page">
@@ -36,6 +42,6 @@
     </div>
   </noscript>
 
-  <script src="js/startup.js?v=3"></script>
+  <script src="js/startup.js?v=4"></script>
 </body>
 </html>

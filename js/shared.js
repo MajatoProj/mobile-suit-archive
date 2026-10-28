@@ -12,7 +12,7 @@ window.archiveNavigate = function(url) {
   document.body.classList.add("page-leaving");
   setTimeout(() => {
     window.location.href = url;
-  }, 360);
+  }, 180);
 };
 
 /* Persistent compact category rotator */

@@ -100,9 +100,9 @@ body {
   opacity: 0;
   transform: translateY(6px);
   transition:
-    opacity .42s ease,
-    transform .42s cubic-bezier(.2,.8,.2,1),
-    filter .42s ease;
+    opacity .22s ease,
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    filter .22s ease;
 }
 
 body.page-ready,

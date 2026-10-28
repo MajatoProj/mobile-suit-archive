@@ -1,0 +1,143 @@
+/* Refined look, matching the OS-boot startup: thin wide-spaced headings, monospace
+   for labels and data, cyan accent, no text glow. Loaded last on archive, category
+   and item pages. The category page top (header, status strip, filters) is the
+   quietest part: grey labels, hairline panels, underlined filters. */
+
+:root { --accent: #7fd3ff; }
+
+body * { text-shadow: none !important; }
+
+.hud-corners::before,
+.hud-corners::after,
+.unit-crosshair,
+.unit-ghost { display: none !important; }
+
+.eyebrow,
+.panel-label,
+.back-link,
+.continuity-index,
+.gundam-record-meta span,
+.status-percent,
+.status-chip,
+.kit-badge,
+.filter-button,
+.view-button,
+.archive-action-button,
+.category-intro strong,
+.series-node p,
+.archive-help,
+.header-status {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace !important;
+}
+
+h1 {
+  font-weight: 300 !important;
+  font-size: clamp(2rem, 4.6vw, 3.1rem) !important;
+  line-height: 1.15 !important;
+  letter-spacing: .28em !important;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.75rem !important;
+    letter-spacing: .14em !important;
+  }
+}
+
+h2 {
+  font-weight: 300 !important;
+  letter-spacing: .22em !important;
+  text-transform: uppercase;
+}
+
+.eyebrow,
+.panel-label {
+  color: #7fd3ff !important;
+  letter-spacing: .24em !important;
+}
+
+.continuity-block,
+.gundam-record,
+.rotator-card { box-shadow: none !important; }
+
+.gundam-record h4 { font-weight: 500 !important; }
+
+.kit-badge { font-weight: 400 !important; }
+
+.status-chip {
+  background: transparent !important;
+  border: 1px solid currentColor !important;
+  font-weight: 400 !important;
+}
+
+
+/* ---------------- Category page top ---------------- */
+.category-page:not(.item-page) .category-header h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem) !important;
+  line-height: 1.2 !important;
+  color: #eaf6ff !important;
+}
+
+.category-page:not(.item-page) .category-header .eyebrow,
+.category-intro .panel-label,
+.gundam-toolbar .panel-label,
+.continuity-header .panel-label,
+.family-heading .panel-label {
+  color: #5b6b77 !important;
+  letter-spacing: .26em !important;
+  font-size: .68rem !important;
+}
+
+.category-header .back-link {
+  color: #7fd3ff !important;
+  letter-spacing: .2em;
+}
+
+.category-subtitle {
+  color: #5b6b77 !important;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace !important;
+  letter-spacing: .12em;
+}
+
+.category-intro,
+.gundam-toolbar {
+  background: transparent !important;
+  background-image: none !important;
+  border-color: rgba(127, 211, 255, .12) !important;
+  box-shadow: none !important;
+}
+
+.category-intro > div { border-color: rgba(127, 211, 255, .1) !important; }
+
+.category-intro strong {
+  font-weight: 300 !important;
+  font-size: 1.6rem !important;
+  color: #eaf6ff !important;
+}
+
+.collection-bar { height: 2px !important; }
+
+.gundam-toolbar .filter-button,
+.gundam-toolbar .view-button,
+.gundam-toolbar .archive-action-button {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: #5b6b77 !important;
+  letter-spacing: .18em;
+}
+
+.gundam-toolbar .filter-button.active,
+.gundam-toolbar .view-button.active {
+  color: #eaf6ff !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  border-bottom: 1px solid #7fd3ff !important;
+}
+
+.gundam-toolbar .archive-search-field {
+  background: transparent !important;
+  border-color: rgba(127, 211, 255, .14) !important;
+}

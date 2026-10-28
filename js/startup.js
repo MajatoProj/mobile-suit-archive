@@ -8,6 +8,8 @@ const WORDS = [
   ["E", "xhibit"]
 ];
 
+try { sessionStorage.setItem("archiveBooted", "1"); } catch (e) {}
+
 const acronym = document.getElementById("acronym");
 const bootPercent = document.getElementById("bootPercent");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -36,14 +38,16 @@ later(openArchive, 2450);
 
 function openArchive() {
   timers.forEach(clearTimeout);
-  window.location.href = "archive.html";
+  // Replace, so Back from the archive doesn't land on the boot screen again.
+  window.location.replace("archive.html");
 }
 
 // Any click, tap or key skips straight to the archive.
 document.addEventListener("click", openArchive);
 document.addEventListener("keydown", openArchive);
 
-// Coming back with the Back button shows the finished (black) boot; play it again instead.
+// Coming back with the Back button shows the finished (black) boot; reload, which
+// skips to the archive (or replays the boot if storage is blocked).
 window.addEventListener("pageshow", event => {
   if (event.persisted) window.location.reload();
 });
