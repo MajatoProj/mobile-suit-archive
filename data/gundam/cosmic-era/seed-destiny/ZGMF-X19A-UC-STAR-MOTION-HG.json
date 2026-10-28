@@ -31,5 +31,6 @@
     "Included extras": "Display base + decals",
     "Build progress": "First assembly step"
   },
-  "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X19A-UC-STAR-MOTION-HG.png"
+  "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X19A-UC-STAR-MOTION-HG.png",
+  "family_order": 1
 }

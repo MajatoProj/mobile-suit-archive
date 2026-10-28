@@ -508,7 +508,15 @@
       "scale": "1/144",
       "image": "assets/images/gundam/cosmic-era/seed-freedom/STTS-808-HGCE.png",
       "file": "cosmic-era/seed-freedom/STTS-808-HGCE.json",
-      "release_date": "2024-01-26"
+      "release_date": "2024-01-26",
+      "family_order": 2,
+      "design_origins": [
+        {
+          "id": "ZGMF-X19A-UC-STAR-MOTION-HG",
+          "designation": "ZGMF-X19A",
+          "name": "Infinite Justice Gundam (Unactivated Color)"
+        }
+      ]
     },
     {
       "category": "gundam",
@@ -729,7 +737,8 @@
       "grade_family": "HG",
       "scale": "1/144",
       "file": "cosmic-era/seed-destiny/ZGMF-X19A-UC-STAR-MOTION-HG.json",
-      "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X19A-UC-STAR-MOTION-HG.png"
+      "image": "assets/images/gundam/cosmic-era/seed-destiny/ZGMF-X19A-UC-STAR-MOTION-HG.png",
+      "family_order": 1
     },
     {
       "category": "gundam",

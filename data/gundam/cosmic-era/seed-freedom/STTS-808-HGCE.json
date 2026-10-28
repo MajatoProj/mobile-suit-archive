@@ -11,7 +11,13 @@
   "timeline_label": "C.E. 75",
   "timeline_parent": "Mobile Suit Gundam SEED Destiny",
   "family": "Justice Family",
-  "design_origins": [],
+  "design_origins": [
+    {
+      "id": "ZGMF-X19A-UC-STAR-MOTION-HG",
+      "designation": "ZGMF-X19A",
+      "name": "Infinite Justice Gundam (Unactivated Color)"
+    }
+  ],
   "mobile_suit_data": {
     "pilot": "Shinn Asuka",
     "height": "18.50 m",
@@ -26,5 +32,6 @@
   "image": "assets/images/gundam/cosmic-era/seed-freedom/STTS-808-HGCE.png",
   "specs": {
     "Release date": "2024-01-26"
-  }
+  },
+  "family_order": 2
 }
