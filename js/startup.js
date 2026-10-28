@@ -42,3 +42,8 @@ function openArchive() {
 // Any click, tap or key skips straight to the archive.
 document.addEventListener("click", openArchive);
 document.addEventListener("keydown", openArchive);
+
+// Coming back with the Back button shows the finished (black) boot; play it again instead.
+window.addEventListener("pageshow", event => {
+  if (event.persisted) window.location.reload();
+});

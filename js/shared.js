@@ -2,6 +2,11 @@ requestAnimationFrame(() => {
   document.body.classList.add("page-ready");
 });
 
+// Back/forward restores the page as it was when we left it: faded out. Undo that.
+window.addEventListener("pageshow", event => {
+  if (event.persisted) document.body.classList.remove("page-leaving");
+});
+
 window.archiveNavigate = function(url) {
   if (!url) return;
   document.body.classList.add("page-leaving");
