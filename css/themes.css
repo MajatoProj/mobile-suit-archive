@@ -3657,3 +3657,68 @@ body.theme-fantasy {
 .gundam-filter-row[hidden] {
   display: none;
 }
+
+/* ============================================================
+   COLLECTION STATUS v56
+   B: the top strip counts the vault by status, with a split bar.
+   A: every card carries a thin line in its status colour.
+   C: a quiet kit count under each series name.
+   ============================================================ */
+
+.category-intro strong small {
+  font-size: .78em;
+  opacity: .55;
+}
+
+.collection-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 2px;
+  height: 5px;
+  margin: 0 14px 13px;
+}
+
+.collection-bar > span {
+  min-width: 3px;
+}
+
+.collection-bar .status-faulted {
+  background: rgba(151, 158, 166, .55);
+}
+
+.gundam-record {
+  --status-rgb: 171, 180, 188;
+}
+
+.gundam-record:has([data-build-status="completed"]) { --status-rgb: 108, 216, 143; }
+.gundam-record:has([data-build-status="finishing"]) { --status-rgb: 95, 206, 175; }
+.gundam-record:has([data-build-status="detailing"]) { --status-rgb: 123, 189, 213; }
+.gundam-record:has([data-build-status="assembly"])  { --status-rgb: 104, 168, 215; }
+
+.gundam-record::before {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  inset: 0 0 auto;
+  height: 2px;
+  background: rgba(var(--status-rgb), .85);
+  pointer-events: none;
+}
+
+.gundam-record:has(:is([data-build-status="backlog"], [data-build-status="unassigned"], [data-build-status="faulted"]))::before {
+  background: rgba(var(--status-rgb), .3);
+}
+
+/* Built and in-progress kits get a soft glow of their status colour under the model. */
+.gundam-record:has(:is([data-build-status="completed"], [data-build-status="finishing"], [data-build-status="detailing"], [data-build-status="assembly"])) .gundam-record-visual {
+  box-shadow: inset 0 -30px 34px -24px rgba(var(--status-rgb), .45);
+}
+
+.series-progress {
+  display: block;
+  margin-top: 4px;
+  color: rgba(170, 199, 215, .48);
+  font-size: .56rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}

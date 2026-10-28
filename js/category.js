@@ -42,9 +42,6 @@ document.title = `${theme.title} // Collection Archive`;
 
 const grid = document.getElementById("itemsGrid");
 const empty = document.getElementById("emptyState");
-const count = document.getElementById("entryCount");
-const displayModeValue = document.getElementById("displayModeValue");
-const activeFilterValue = document.getElementById("activeFilterValue");
 const gundamExplorer = document.getElementById("gundamExplorer");
 const timelineView = document.getElementById("gundamTimelineView");
 const familiesView = document.getElementById("gundamFamiliesView");
@@ -161,7 +158,7 @@ let genericDetailsHydrated = false;
 fetchArchiveJson(`data/${type}/index.json`)
   .then(data => {
     allItems = (data.items || []).map(withCanonicalSource);
-    count.textContent = allItems.length;
+    renderCollectionStats(allItems);
 
     if (!allItems.length) {
       empty.hidden = false;
@@ -189,7 +186,6 @@ fetchArchiveJson(`data/${type}/index.json`)
 
 function setupGundamArchive() {
   renderFilterButtons();
-  updateDisplayMode();
   renderStatistics();
 
   document.querySelectorAll("[data-gundam-view]").forEach(button => {
@@ -202,7 +198,6 @@ function setupGundamArchive() {
 
       timelineView.hidden = activeView !== "timeline";
       familiesView.hidden = activeView !== "families";
-      updateDisplayMode();
     });
   });
 
@@ -337,41 +332,9 @@ function filteredGundamItems() {
 
 function renderGundam() {
   const items = filteredGundamItems();
-  updateArchiveSummary(items);
   renderStatistics();
   renderTimeline(items);
   renderFamilies(items);
-}
-
-function updateDisplayMode() {
-  if (!displayModeValue) return;
-  displayModeValue.textContent = activeView === "families" ? "FAMILIES" : "TIMELINE";
-}
-
-function updateArchiveSummary(items) {
-  const total = allItems.length;
-  const visible = items.length;
-  const hasFilters =
-    activeSource !== "all" ||
-    activeGrade !== "ALL" ||
-    activeStatus !== "all" ||
-    Boolean(searchQuery.trim());
-
-  count.textContent = hasFilters ? `${visible} / ${total}` : String(total);
-
-  if (activeFilterValue) {
-    const labels = [];
-    if (activeSource !== "all") labels.push(SOURCE_LABELS[activeSource] || activeSource.toUpperCase());
-    if (activeGrade !== "ALL") labels.push(activeGrade);
-    if (activeStatus !== "all") {
-      const status = STATUS_FILTERS.find(entry => entry.value === activeStatus);
-      labels.push((status && status.label ? status.label : activeStatus).toUpperCase());
-    }
-    if (searchQuery.trim()) labels.push(`“${searchQuery.trim()}”`);
-
-    activeFilterValue.textContent = labels.length ? labels.join(" / ") : "ALL";
-    activeFilterValue.title = labels.length ? labels.join(" / ") : "No filters active";
-  }
 }
 
 function renderStatistics() {
@@ -742,6 +705,7 @@ function renderTimeline(items) {
         <div class="series-heading">
           <span class="panel-label">MAIN STORY</span>
           <h3>${escapeHtml(group.series)}</h3>
+          ${seriesProgressMarkup(group.items)}
         </div>
         <div class="series-items"></div>
       `;
@@ -787,6 +751,7 @@ function renderTimeline(items) {
             <div class="side-story-series-marker"></div>
             <div class="side-story-series-heading">
               <h4>${escapeHtml(branch.series)}</h4>
+              ${seriesProgressMarkup(branch.items)}
             </div>
             <div class="side-story-series-items"></div>
           `;
@@ -1290,6 +1255,34 @@ function makeFallbackBucket(items, title) {
 }
 
 
+/* Top strip: how the whole vault is doing, plus a bar split by status. */
+function renderCollectionStats(items) {
+  const keys = items.map(item => getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status).key);
+  const n = key => keys.filter(k => k === key).length;
+  const set = (id, html) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  };
+
+  set("statBuilt", `${n("completed")} <small>/ ${items.length}</small>`);
+  set("statProgress", n("assembly") + n("detailing") + n("finishing"));
+  set("statBacklog", n("backlog"));
+  set("statWanted", n("unassigned"));
+
+  const bar = document.getElementById("collectionBar");
+  if (!bar) return;
+  bar.innerHTML = ["completed", "finishing", "detailing", "assembly", "faulted", "backlog", "unassigned"]
+    .filter(key => n(key))
+    .map(key => `<span class="status-${key}" style="flex:${n(key)}" title="${getBuildStatusInfo(key === "unassigned" ? "" : key).label}: ${n(key)}"></span>`)
+    .join("");
+}
+
+function seriesProgressMarkup(items) {
+  if (!items.length) return "";
+  const built = items.filter(item => getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status).key === "completed").length;
+  return `<span class="series-progress">${items.length} ${items.length === 1 ? "kit" : "kits"} · ${built} built</span>`;
+}
+
 function getBuildStatusInfo(value) {
   const map = {
     backlog: { label: "Backlog", percent: 10, hideProgress: false },
@@ -1491,7 +1484,6 @@ function setupGenericArchive() {
 
   genericExplorer.hidden = false;
   grid.hidden = false;
-  if (displayModeValue) displayModeValue.textContent = "CATALOG";
 
   const labels = {
     digimon: { explorer: "DIGITAL COLLECTION", group: "SERIES / WORLD" },
@@ -1717,35 +1709,8 @@ function compareGenericItems(a, b) {
 
 function renderGenericArchive() {
   const items = filteredGenericItems().slice().sort(compareGenericItems);
-  renderGenericSummary(items);
   renderGenericStatistics();
   renderGenericItems(items);
-}
-
-function renderGenericSummary(items) {
-  const total = allItems.length;
-  const visible = items.length;
-  const hasFilters =
-    activeGenericGroup !== "all" ||
-    activeGenericSource !== "all" ||
-    activeGenericStatus !== "all" ||
-    Boolean(genericSearchQuery.trim());
-
-  count.textContent = hasFilters ? `${visible} / ${total}` : String(total);
-
-  const labels = [];
-  if (activeGenericGroup !== "all") labels.push(activeGenericGroup.toUpperCase());
-  if (activeGenericSource !== "all") labels.push((SOURCE_LABELS[activeGenericSource] || activeGenericSource).toUpperCase());
-  if (activeGenericStatus !== "all") {
-    const match = STATUS_FILTERS.find(entry => entry.value === activeGenericStatus);
-    labels.push((match?.label || activeGenericStatus).toUpperCase());
-  }
-  if (genericSearchQuery.trim()) labels.push(`“${genericSearchQuery.trim()}”`);
-
-  if (activeFilterValue) {
-    activeFilterValue.textContent = labels.length ? labels.join(" / ") : "ALL";
-    activeFilterValue.title = labels.length ? labels.join(" / ") : "No filters active";
-  }
 }
 
 function renderGenericStatistics() {

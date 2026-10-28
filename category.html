@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Collection Category</title>
   <link rel="stylesheet" href="css/main.css?v=2">
-  <link rel="stylesheet" href="css/themes.css?v=55">
+  <link rel="stylesheet" href="css/themes.css?v=56">
   <link rel="stylesheet" href="css/couple-projects.css?v=59">
 </head>
 <body class="category-page">
@@ -48,21 +48,22 @@
   <main class="category-content">
     <section class="category-intro hud-corners">
       <div>
-        <span class="panel-label">DATABASE STATUS</span>
-        <strong>ONLINE</strong>
+        <span class="panel-label">BUILT</span>
+        <strong id="statBuilt">0</strong>
       </div>
       <div>
-        <span class="panel-label">ENTRIES</span>
-        <strong id="entryCount">0</strong>
+        <span class="panel-label">IN PROGRESS</span>
+        <strong id="statProgress">0</strong>
       </div>
       <div>
-        <span class="panel-label">DISPLAY MODE</span>
-        <strong id="displayModeValue">ARCHIVE</strong>
+        <span class="panel-label">BACKLOG</span>
+        <strong id="statBacklog">0</strong>
       </div>
-      <div class="filter-status-cell">
-        <span class="panel-label">FILTER</span>
-        <strong id="activeFilterValue" title="Current archive filters">ALL</strong>
+      <div>
+        <span class="panel-label">WANTED</span>
+        <strong id="statWanted">0</strong>
       </div>
+      <span class="collection-bar" id="collectionBar" aria-hidden="true"></span>
     </section>
 
     <section class="gundam-explorer" id="gundamExplorer" hidden>
@@ -168,7 +169,7 @@
   </main>
 
   <script src="js/shared.js?v=5"></script>
-  <script src="js/category.js?v=56"></script>
+  <script src="js/category.js?v=57"></script>
   <script src="js/couple-projects.js?v=59"></script>
 </body>
 </html>
