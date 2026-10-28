@@ -569,6 +569,7 @@ function renderTimeline(items) {
     'Anno Domini',
     'Post Disaster',
     'Regild Century',
+    'Ad Stella',
     'Build Series'
   ];
 
@@ -596,6 +597,7 @@ function renderTimeline(items) {
       'Mobile Suit Gundam IRON-BLOODED ORPHANS Gekko'
     ],
     'Regild Century': ['Gundam Reconguista in G'],
+    'Ad Stella': ['Mobile Suit Gundam: The Witch from Mercury'],
     'Build Series': [
       'Gundam Build Fighters',
       "Gundam Build Fighters: GM's Counterattack",

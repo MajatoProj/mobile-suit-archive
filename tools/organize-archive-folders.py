@@ -27,6 +27,7 @@ KNOWN_GUNDAM_SERIES = {
     "Mobile Suit Gundam Unicorn": "gundam-unicorn",
     "Gundam Build Fighters": "build-fighters",
     "Gundam Build Divers": "build-divers",
+    "Mobile Suit Gundam: The Witch from Mercury": "witch-from-mercury",
 }
 
 KNOWN_GUNDAM_CONTINUITIES = {
@@ -36,6 +37,7 @@ KNOWN_GUNDAM_CONTINUITIES = {
     "Build Series": "build-series",
     "Regild Century": "regild-century",
     "Universal Century": "universal-century",
+    "Ad Stella": "ad-stella",
 }
 
 CATEGORIES = ("gundam", "digimon", "mecha", "fantasy")

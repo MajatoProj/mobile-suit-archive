@@ -1,0 +1,33 @@
+{
+  "category": "gundam",
+  "id": "ZGMF-X10A-UC-HG",
+  "designation": "ZGMF-X10A",
+  "name": "Freedom Gundam (Unactivated Color)",
+  "summary": "Cosmic Era / Mobile Suit Gundam SEED",
+  "continuity": "Cosmic Era",
+  "series": "Mobile Suit Gundam SEED",
+  "timeline_position": 1,
+  "timeline_lane": "main",
+  "timeline_label": "C.E. 71",
+  "timeline_parent": "",
+  "family": "Freedom Family",
+  "family_order": 1,
+  "source": "3rd-party",
+  "purchase_source": "AliExpress",
+  "custom": true,
+  "build_status": "backlog",
+  "grade": "HG",
+  "grade_family": "HG",
+  "scale": "1/144",
+  "description": "Third-party HG 1/144 Freedom Gundam in unactivated (Phase Shift off) grey, sold on AliExpress as \"Newdom Unactivated Color ZGMF-X10A\". Bandai never released this colourway; the maker is not named in the listing.",
+  "mobile_suit_data": {
+    "pilot": "Kira Yamato"
+  },
+  "specs": {
+    "Purchase source": "AliExpress",
+    "Variant": "Unactivated Color",
+    "Planned custom": "Hatsune Miku-style paint"
+  },
+  "notes": "Backlog. Planned custom: repaint in a Hatsune Miku-style colour scheme.",
+  "image": "assets/images/gundam/cosmic-era/seed/ZGMF-X10A-UC-HG.png"
+}
