@@ -6,69 +6,28 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Collection Archive // Startup</title>
   <link rel="stylesheet" href="css/main.css?v=2">
-  <link rel="stylesheet" href="css/startup.css">
+  <link rel="stylesheet" href="css/startup.css?v=2">
 </head>
 <body class="startup-page">
-  <div class="startup-space" aria-hidden="true">
-    <div class="stars stars-a"></div>
-    <div class="stars stars-b"></div>
-    <div class="startup-scan"></div>
-  </div>
+  <header class="os-bar os-top">
+    <span>COLLECTION ARCHIVE // OPERATING SYSTEM</span>
+    <span id="clock">00:00:00</span>
+  </header>
 
-  <main class="startup-shell" aria-live="polite">
-    <section class="startup-panel hud-corners">
-      <header class="startup-header">
-        <div>
-          <p class="eyebrow">COLLECTION ARCHIVE NETWORK</p>
-          <h1>ARCHIVE STARTUP</h1>
-        </div>
-        <div class="startup-id">
-          <span>SYS // ARC-01</span>
-          <span id="clock">00:00:00</span>
-        </div>
-      </header>
-
-      <div class="warning-strip">
-        <span class="warning-mark">CAUTION</span>
-        <span>ARCHIVE SYSTEM INITIALIZATION IN PROGRESS</span>
-      </div>
-
-      <div class="startup-grid">
-        <section class="boot-log" id="bootLog" aria-label="Startup log"></section>
-
-        <aside class="startup-status">
-          <p class="panel-label">SYSTEM CHECK</p>
-          <div class="status-row"><span>CORE</span><b data-system="core">STANDBY</b></div>
-          <div class="status-row"><span>INDEX</span><b data-system="index">STANDBY</b></div>
-          <div class="status-row"><span>VISUAL</span><b data-system="visual">STANDBY</b></div>
-          <div class="status-row"><span>ACCESS</span><b data-system="access">STANDBY</b></div>
-
-          <div class="micro-reticle" aria-hidden="true">
-            <span></span><i></i>
-          </div>
-        </aside>
-      </div>
-
-      <div class="progress-block">
-        <div class="progress-meta">
-          <span>BOOT SEQUENCE</span>
-          <span id="progressPercent">0%</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-      </div>
-
-      <div class="startup-footer">
-        <span>UNAUTHORIZED MODIFICATION OF ARCHIVE DATA IS PROHIBITED</span>
-        <span id="startupFinal">WAITING FOR SYSTEM RESPONSE...</span>
-      </div>
-    </section>
+  <main class="os-stage" aria-live="polite">
+    <div class="os-acronym" id="acronym" aria-label="Archive"></div>
+    <div class="os-wordmark">
+      <h1>ARCHIVE</h1>
+      <p>ALL SYSTEMS NOMINAL</p>
+    </div>
   </main>
 
-  <div class="transition-shutter transition-shutter-left" aria-hidden="true"></div>
-  <div class="transition-shutter transition-shutter-right" aria-hidden="true"></div>
-  <div class="transition-flash" aria-hidden="true"></div>
+  <div class="os-sweep" aria-hidden="true"></div>
+
+  <footer class="os-bar os-bottom">
+    <span>REV 2.6 // UNIT ARC-01</span>
+    <span id="bootPercent">BOOT 000</span>
+  </footer>
 
   <noscript>
     <div class="noscript-box">
@@ -77,6 +36,6 @@
     </div>
   </noscript>
 
-  <script src="js/startup.js"></script>
+  <script src="js/startup.js?v=2"></script>
 </body>
 </html>
