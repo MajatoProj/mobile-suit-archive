@@ -57,13 +57,24 @@ function renderItem(item) {
   if (item.image) {
     imageBox.innerHTML = "";
     const img = document.createElement("img");
-    img.src = item.image;
     img.alt = item.name || item.id;
     img.decoding = "async";
 
     img.addEventListener("load", () => {
       applyAutomaticImagePalette(imageBox, img);
     }, { once: true });
+
+    // Show the card picture (usually cached from the list) at once, then swap in the
+    // 900 px item WebP; the full PNG is only the fallback.
+    const thumb = window.cardThumb(item.image);
+    const sharp = String(item.image).replace(/\.png$/i, "-item.webp");
+    img.src = thumb;
+    img.addEventListener("error", () => { img.src = item.image; }, { once: true });
+
+    const loader = new Image();
+    loader.onload = () => { img.src = sharp; };
+    loader.onerror = () => { img.src = item.image; };
+    loader.src = sharp;
 
     imageBox.appendChild(img);
   }

@@ -6,7 +6,7 @@ Gebruik:
 Fouten (exit-code 1): ontbrekende JSON of plaatjes, ongeldige JSON, dubbele ID's,
 ID's die niet kloppen met de bestandsnaam, en velden die in index.json anders zijn
 dan in het losse record (de itempagina toont het losse record, de lijst de index).
-Waarschuwingen: records zonder plaatje of kaart-plaatje (-card.webp), ongebruikte JSON of plaatjes, en
+Waarschuwingen: records zonder plaatje, kaart-plaatje (-card.webp) of itempagina-plaatje (-item.webp), ongebruikte JSON of plaatjes, en
 verwijzingen naar onbekende ID's.
 """
 import json
@@ -65,6 +65,11 @@ def check():
                 used.add(thumb.resolve())
                 if path.suffix.lower() == ".png" and path.is_file() and not thumb.is_file():
                     warnings.append(f"{where}: geen kaart-plaatje voor {key} (draai py tools/card_thumbs.py)")
+                if key == "image":
+                    item_webp = path.with_name(f"{path.stem}-item.webp")
+                    used.add(item_webp.resolve())
+                    if path.suffix.lower() == ".png" and path.is_file() and not item_webp.is_file():
+                        warnings.append(f"{where}: geen itempagina-plaatje (draai py tools/card_thumbs.py)")
                 if not path.is_file():
                     errors.append(f"{where}: {key} bestaat niet: {rel}")
                 elif key == "image" and path.stem != iid:

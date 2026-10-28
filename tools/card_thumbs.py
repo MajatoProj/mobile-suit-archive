@@ -1,12 +1,14 @@
-"""Maak kleine kaart-plaatjes (<naam>-card.webp) naast elk archiefplaatje.
+"""Maak kleine kaart-plaatjes (<naam>-card.webp) en itempagina-plaatjes
+(<naam>-item.webp) naast elk archiefplaatje.
 
 Gebruik:
     py tools/card_thumbs.py
 
-De kaarten in de lijst tonen een plaatje van ~140 px breed; het volle PNG
-(1254x1254, ~1 MB) is alleen nodig op de itempagina. Dit script maakt voor elk
-'image' en 'project_image' in de index.json-bestanden een WebP van 320 px
-(duo-plaatjes 640 px) en slaat bestaande, actuele thumbnails over.
+De kaarten in de lijst tonen een plaatje van ~140 px breed en de itempagina
+een van ~430 px; het volle PNG (1254x1254, ~1 MB) blijft het origineel. Dit script
+maakt voor elk 'image' en 'project_image' in de index.json-bestanden een WebP van
+320 px (duo-plaatjes 640 px) en voor elk 'image' een WebP van 900 px voor de
+itempagina, en slaat bestaande, actuele plaatjes over.
 new-image.py roept make_thumb() zelf aan; menu-optie 6 draait dit script voor het pushen.
 """
 import json
@@ -17,22 +19,27 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 VAULTS = ["gundam", "digimon", "mecha", "fantasy"]
 SIZES = {"image": 320, "project_image": 640}
+ITEM_SIZE = 900
 
 
-def thumb_path(image_path):
-    return image_path.with_name(f"{image_path.stem}-card.webp")
+def thumb_path(image_path, kind="card"):
+    return image_path.with_name(f"{image_path.stem}-{kind}.webp")
 
 
-def make_thumb(image_path, size=320):
-    """Schrijf de thumbnail als hij ontbreekt of ouder is dan het plaatje. Geeft True als hij is gemaakt."""
+def make_thumb(image_path, size=320, kind="card"):
+    """Schrijf de WebP als hij ontbreekt of ouder is dan het plaatje. Geeft True als hij is gemaakt."""
     image_path = Path(image_path)
-    out = thumb_path(image_path)
+    out = thumb_path(image_path, kind)
     if out.is_file() and out.stat().st_mtime >= image_path.stat().st_mtime:
         return False
     img = Image.open(image_path).convert("RGBA")
     img.thumbnail((size, size), Image.LANCZOS)
-    img.save(out, "WEBP", quality=82, method=6)
+    img.save(out, "WEBP", quality=82 if kind == "card" else 86, method=6)
     return True
+
+
+def make_item_image(image_path):
+    return make_thumb(image_path, ITEM_SIZE, "item")
 
 
 def main():
@@ -49,7 +56,10 @@ def main():
                     if make_thumb(path, size):
                         made += 1
                         print(f"gemaakt: {thumb_path(path).relative_to(ROOT)}")
-    print(f"{made} kaart-plaatjes gemaakt")
+                    if key == "image" and make_item_image(path):
+                        made += 1
+                        print(f"gemaakt: {thumb_path(path, 'item').relative_to(ROOT)}")
+    print(f"{made} WebP-plaatjes gemaakt")
 
 
 if __name__ == "__main__":

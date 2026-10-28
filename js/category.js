@@ -170,13 +170,11 @@ fetchArchiveJson(`data/${type}/index.json`)
       gundamExplorer.hidden = false;
       setupGundamArchive();
       renderGundam();
-      hydrateGundamDetails();
       return;
     }
 
     setupGenericArchive();
     renderGenericArchive();
-    hydrateGenericDetails();
   })
   .catch(() => {
     empty.hidden = false;
@@ -203,7 +201,10 @@ function setupGundamArchive() {
 
   if (searchInput) {
     let searchTimer = null;
+    // Pilot, armament and notes live in the per-kit records; only fetch them once someone searches.
+    searchInput.addEventListener("focus", hydrateGundamDetails, { once: true });
     searchInput.addEventListener("input", () => {
+      hydrateGundamDetails();
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => {
         searchQuery = String(searchInput.value || "").trim();
@@ -388,6 +389,7 @@ function renderStatistics() {
 
 async function hydrateGundamDetails() {
   if (type !== "gundam" || !allItems.length || detailsHydrated) return;
+  detailsHydrated = true;
 
   const hydrated = await Promise.all(allItems.map(async meta => {
     if (!meta.file) return meta;
@@ -401,7 +403,6 @@ async function hydrateGundamDetails() {
   }));
 
   allItems = hydrated;
-  detailsHydrated = true;
   renderGundam();
 }
 
@@ -1501,7 +1502,9 @@ function setupGenericArchive() {
 
   if (genericSearch) {
     let timer = null;
+    genericSearch.addEventListener("focus", hydrateGenericDetails, { once: true });
     genericSearch.addEventListener("input", () => {
+      hydrateGenericDetails();
       clearTimeout(timer);
       timer = setTimeout(() => {
         genericSearchQuery = String(genericSearch.value || "").trim();
@@ -1787,6 +1790,7 @@ function makeStatisticsMarkup(rows, total) {
 
 async function hydrateGenericDetails() {
   if (type === "gundam" || !allItems.length || genericDetailsHydrated) return;
+  genericDetailsHydrated = true;
 
   const hydrated = await Promise.all(allItems.map(async meta => {
     if (!meta.file) return meta;
@@ -1799,7 +1803,6 @@ async function hydrateGenericDetails() {
   }));
 
   allItems = hydrated;
-  genericDetailsHydrated = true;
   renderGenericControls();
   renderGenericArchive();
 }

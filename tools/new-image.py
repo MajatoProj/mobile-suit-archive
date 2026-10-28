@@ -20,7 +20,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageOps
 
-from card_thumbs import make_thumb
+from card_thumbs import make_item_image, make_thumb
 from remove_bg import pad
 from upscale import upscale
 
@@ -81,6 +81,7 @@ def main():
     dst.parent.mkdir(parents=True, exist_ok=True)
     img.save(dst, optimize=True)
     make_thumb(dst)
+    make_item_image(dst)
     print(f"Opgeslagen: {dst.relative_to(ROOT)}  ({SIZE}x{SIZE})")
     if hint:
         print(hint)
