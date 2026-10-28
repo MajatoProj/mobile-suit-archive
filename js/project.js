@@ -31,16 +31,10 @@
     return [];
   }
 
-  async function fetchJson(path) {
-    const response = await fetch(path, { cache: "no-cache" });
-    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-    return response.json();
-  }
-
   async function enrich(item) {
     if (!item.file) return item;
     try {
-      const detail = await fetchJson(`data/${category}/${String(item.file).replace(/^\/?/, "")}`);
+      const detail = await window.fetchArchiveJson(`data/${category}/${String(item.file).replace(/^\/?/, "")}`);
       return { ...item, ...detail };
     } catch (_) {
       return item;
@@ -113,7 +107,7 @@
     }
 
     try {
-      const index = await fetchJson(`data/${category}/index.json`);
+      const index = await window.fetchArchiveJson(`data/${category}/index.json`);
       const matches = extractItems(index).filter(item => clean(item.project_group) === groupName);
       if (matches.length < 2) throw new Error("Project group incomplete.");
 
@@ -130,7 +124,10 @@
       els.notes.textContent = notesFor(items);
 
       if (image) {
-        els.image.innerHTML = `<img src="${esc(image)}" alt="${esc(title)}">`;
+        const img = document.createElement("img");
+        img.alt = title;
+        window.showSharpImage(img, image);
+        els.image.replaceChildren(img);
       }
 
       els.record.hidden = false;

@@ -595,9 +595,10 @@ py tools/new-image.py photo.jpg ZGMF-X10A-HGCE --force
   run the organizer afterwards.
 - The first background removal downloads the rembg model once (~170 MB).
 - It also writes `<ID>-card.webp` (320 px), the small picture the cards load, and
-  `<ID>-item.webp` (900 px), the picture the item page loads (the PNG stays the
-  original). `py tools/card_thumbs.py` makes any missing ones; menu option 6 runs
-  it before publishing, and check-data warns when one is missing.
+  `<ID>-item.webp` (900 px, duo pictures 1200 px), the picture the item and duo
+  pages load (the PNG stays the original). `py tools/card_thumbs.py` makes any
+  missing ones; menu option 6 runs it before publishing, and check-data warns when
+  one is missing.
 
 The single steps are also available:
 

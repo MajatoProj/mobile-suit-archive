@@ -65,11 +65,10 @@ def check():
                 used.add(thumb.resolve())
                 if path.suffix.lower() == ".png" and path.is_file() and not thumb.is_file():
                     warnings.append(f"{where}: geen kaart-plaatje voor {key} (draai py tools/card_thumbs.py)")
-                if key == "image":
-                    item_webp = path.with_name(f"{path.stem}-item.webp")
-                    used.add(item_webp.resolve())
-                    if path.suffix.lower() == ".png" and path.is_file() and not item_webp.is_file():
-                        warnings.append(f"{where}: geen itempagina-plaatje (draai py tools/card_thumbs.py)")
+                item_webp = path.with_name(f"{path.stem}-item.webp")
+                used.add(item_webp.resolve())
+                if path.suffix.lower() == ".png" and path.is_file() and not item_webp.is_file():
+                    warnings.append(f"{where}: geen itempagina-plaatje voor {key} (draai py tools/card_thumbs.py)")
                 if not path.is_file():
                     errors.append(f"{where}: {key} bestaat niet: {rel}")
                 elif key == "image" and path.stem != iid:

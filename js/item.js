@@ -27,18 +27,12 @@ loadItem().catch(showMissing);
 async function loadItem() {
   if (!category || !id) return showMissing();
 
-  const indexResponse = await fetch(`data/${category}/index.json`, { cache: "no-cache" });
-  if (!indexResponse.ok) throw new Error("Index not found.");
-
-  const index = await indexResponse.json();
+  const index = await window.fetchArchiveJson(`data/${category}/index.json`);
   const meta = (index.items || []).find(item => String(item.id) === id);
 
   if (!meta || !meta.file) return showMissing();
 
-  const itemResponse = await fetch(`data/${category}/${meta.file}`, { cache: "no-cache" });
-  if (!itemResponse.ok) throw new Error("Record file not found.");
-
-  const record = await itemResponse.json();
+  const record = await window.fetchArchiveJson(`data/${category}/${meta.file}`);
   const item = { ...meta, ...record };
 
   renderItem(item);
@@ -64,18 +58,7 @@ function renderItem(item) {
       applyAutomaticImagePalette(imageBox, img);
     }, { once: true });
 
-    // Show the card picture (usually cached from the list) at once, then swap in the
-    // 900 px item WebP; the full PNG is only the fallback.
-    const thumb = window.cardThumb(item.image);
-    const sharp = String(item.image).replace(/\.png$/i, "-item.webp");
-    img.src = thumb;
-    img.addEventListener("error", () => { img.src = item.image; }, { once: true });
-
-    const loader = new Image();
-    loader.onload = () => { img.src = sharp; };
-    loader.onerror = () => { img.src = item.image; };
-    loader.src = sharp;
-
+    window.showSharpImage(img, item.image);
     imageBox.appendChild(img);
   }
 

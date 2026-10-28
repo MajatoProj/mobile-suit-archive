@@ -106,10 +106,22 @@ document.addEventListener("click", event => {
    need the same index and records. "no-cache" revalidates (cheap 304) instead
    of re-downloading, so edits still show up immediately. */
 const archiveJsonCache = new Map();
+// GitHub Pages stamps every file with the deploy time (Last-Modified). index.json is
+// always checked with the server; the records of that same deploy then get the stamp
+// in their URL and can come straight from the browser cache until the next push.
+let archiveDeployStamp = "";
+
 window.fetchArchiveJson = function(url) {
   if (!archiveJsonCache.has(url)) {
-    archiveJsonCache.set(url, fetch(url, { cache: "no-cache" }).then(response => {
+    const isIndex = url.endsWith("index.json");
+    const request = archiveDeployStamp && !isIndex
+      ? fetch(`${url}?d=${encodeURIComponent(archiveDeployStamp)}`, { cache: "force-cache" })
+      : fetch(url, { cache: "no-cache" });
+    archiveJsonCache.set(url, request.then(response => {
       if (!response.ok) throw new Error(`${response.status} ${url}`);
+      if (isIndex && location.hostname.endsWith("github.io")) {
+        archiveDeployStamp = response.headers.get("last-modified") || archiveDeployStamp;
+      }
       return response.json();
     }).catch(error => {
       archiveJsonCache.delete(url);
@@ -123,6 +135,20 @@ window.fetchArchiveJson = function(url) {
 /* Cards show a small WebP made by tools/card_thumbs.py; the full PNG is for the item page. */
 window.cardThumb = function(path) {
   return String(path || "").replace(/\.png$/i, "-card.webp");
+};
+
+// Item and duo pages: show the card picture (usually cached from the list) at once, then
+// swap in the sharper <name>-item.webp; the full PNG is only the fallback.
+window.showSharpImage = function(img, path) {
+  const sharp = String(path).replace(/\.png$/i, "-item.webp");
+  img.decoding = "async";
+  img.src = window.cardThumb(path);
+  img.addEventListener("error", () => { img.src = path; }, { once: true });
+
+  const loader = new Image();
+  loader.onload = () => { img.src = sharp; };
+  loader.onerror = () => { img.src = path; };
+  loader.src = sharp;
 };
 
 // A missing thumbnail falls back to the full image named in data-full.

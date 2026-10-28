@@ -7,8 +7,8 @@ Gebruik:
 De kaarten in de lijst tonen een plaatje van ~140 px breed en de itempagina
 een van ~430 px; het volle PNG (1254x1254, ~1 MB) blijft het origineel. Dit script
 maakt voor elk 'image' en 'project_image' in de index.json-bestanden een WebP van
-320 px (duo-plaatjes 640 px) en voor elk 'image' een WebP van 900 px voor de
-itempagina, en slaat bestaande, actuele plaatjes over.
+320 px (duo-plaatjes 640 px) en een WebP voor de item- en duopagina (900 px,
+duo-plaatjes 1200 px), en slaat bestaande, actuele plaatjes over.
 new-image.py roept make_thumb() zelf aan; menu-optie 6 draait dit script voor het pushen.
 """
 import json
@@ -19,7 +19,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 VAULTS = ["gundam", "digimon", "mecha", "fantasy"]
 SIZES = {"image": 320, "project_image": 640}
-ITEM_SIZE = 900
+ITEM_SIZES = {"image": 900, "project_image": 1200}
 
 
 def thumb_path(image_path, kind="card"):
@@ -38,8 +38,8 @@ def make_thumb(image_path, size=320, kind="card"):
     return True
 
 
-def make_item_image(image_path):
-    return make_thumb(image_path, ITEM_SIZE, "item")
+def make_item_image(image_path, size=ITEM_SIZES["image"]):
+    return make_thumb(image_path, size, "item")
 
 
 def main():
@@ -56,7 +56,7 @@ def main():
                     if make_thumb(path, size):
                         made += 1
                         print(f"gemaakt: {thumb_path(path).relative_to(ROOT)}")
-                    if key == "image" and make_item_image(path):
+                    if make_item_image(path, ITEM_SIZES[key]):
                         made += 1
                         print(f"gemaakt: {thumb_path(path, 'item').relative_to(ROOT)}")
     print(f"{made} WebP-plaatjes gemaakt")
