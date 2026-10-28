@@ -141,3 +141,11 @@ h2 {
   background: transparent !important;
   border-color: rgba(127, 211, 255, .14) !important;
 }
+
+
+/* ---------------- Card alignment ---------------- */
+/* Room for a two-line series title, so every shelf's cards start at the same height. */
+.series-heading { min-height: 77px !important; }
+
+/* Cards in one row share a height, also when one has no progress bar (faulted). */
+.series-items { align-items: stretch !important; }
