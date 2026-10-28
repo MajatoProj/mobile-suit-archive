@@ -3709,9 +3709,9 @@ body.theme-fantasy {
   background: rgba(var(--status-rgb), .3);
 }
 
-/* Built and in-progress kits get a soft glow in the vault's own accent colour under the model. */
+/* Built and in-progress kits get a soft glow in the main colour of their own picture (set by shared.js). */
 .gundam-record:has(:is([data-build-status="completed"], [data-build-status="finishing"], [data-build-status="detailing"], [data-build-status="assembly"])) .gundam-record-visual {
-  box-shadow: inset 0 -30px 34px -24px color-mix(in srgb, var(--theme-accent) 40%, transparent);
+  box-shadow: inset 0 -30px 34px -24px rgba(var(--glow-rgb, 127, 199, 255), .45);
 }
 
 .series-progress {
