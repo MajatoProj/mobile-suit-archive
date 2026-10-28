@@ -1255,6 +1255,9 @@ function makeFallbackBucket(items, title) {
 }
 
 
+// Past assembly counts as built: detailing and finishing work on a built kit, faulted is built but stored away.
+const BUILT_KEYS = ["detailing", "finishing", "completed", "faulted"];
+
 /* Top strip: how the whole vault is doing, plus a bar split by status. */
 function renderCollectionStats(items) {
   const keys = items.map(item => getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status).key);
@@ -1264,8 +1267,8 @@ function renderCollectionStats(items) {
     if (el) el.innerHTML = html;
   };
 
-  set("statBuilt", `${n("completed")} <small>/ ${items.length}</small>`);
-  set("statProgress", n("assembly") + n("detailing") + n("finishing"));
+  set("statBuilt", `${BUILT_KEYS.reduce((sum, key) => sum + n(key), 0)} <small>/ ${items.length}</small>`);
+  set("statProgress", n("assembly"));
   set("statBacklog", n("backlog"));
   set("statWanted", n("unassigned"));
 
@@ -1279,7 +1282,7 @@ function renderCollectionStats(items) {
 
 function seriesProgressMarkup(items) {
   if (!items.length) return "";
-  const built = items.filter(item => getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status).key === "completed").length;
+  const built = items.filter(item => BUILT_KEYS.includes(getBuildStatusInfo(item.build_status ?? item.buildStatus ?? item.status).key)).length;
   return `<span class="series-progress">${items.length} ${items.length === 1 ? "kit" : "kits"} · ${built} built</span>`;
 }
 
