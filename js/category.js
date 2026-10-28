@@ -1557,7 +1557,7 @@ function renderGenericControls() {
     });
     genericGroupFilters.appendChild(button);
   });
-  if (genericGroupRow) genericGroupRow.hidden = groups.length <= 1;
+  if (genericGroupRow) genericGroupRow.hidden = groups.length <= 1 && type !== "fantasy";
 
   const sources = uniqueValues(
     allItems.map(item => String(item.source || "").trim()).filter(Boolean)
